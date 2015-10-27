@@ -143,6 +143,20 @@
 (push '("\\*magit\.+" . motion) evil-buffer-regexps)
 (push '("\\*magit-\.+popup\\*" . emacs) evil-buffer-regexps)
 
+;; evil doesn't override the text property keymaps, so we unbind these
+(define-key magit-commit-section-map    "v" nil)
+(define-key magit-file-section-map      "v" nil)
+(define-key magit-hunk-section-map      "v" nil)
+(define-key magit-staged-section-map    "v" nil)
+(define-key magit-stash-section-map     "v" nil)
+(define-key magit-stashes-section-map   "v" nil)
+(define-key magit-tag-section-map       "v" nil)
+(define-key magit-unpulled-section-map  "v" nil)
+(define-key magit-unpushed-section-map  "v" nil)
+(define-key magit-unstaged-section-map  "v" nil)
+(define-key magit-untracked-section-map "v" nil)
+
+
 (evil-define-key 'motion magit-mode-map "g" nil)
 (evil-define-key 'motion magit-mode-map "\t"    'magit-section-toggle)
 (evil-define-key 'motion magit-mode-map [C-tab] 'magit-section-cycle)
@@ -374,6 +388,22 @@
 
 (evil-define-key 'motion git-commit-mode-map (kbd "gk") 'git-commit-prev-message)
 (evil-define-key 'motion git-commit-mode-map (kbd "gj") 'git-commit-next-message)
+
+;; probably not necessary 
+;; (evil-define-key 'motion magit-stash-section-map     "v" 'set-mark-command)
+;; (evil-define-key 'motion magit-stash-section-map     "V" 'set-mark-command)
+;; (evil-define-key 'motion magit-stashes-section-map   "v" 'set-mark-command)
+;; (evil-define-key 'motion magit-stashes-section-map   "V" 'set-mark-command)
+;; (evil-define-key 'motion magit-tag-section-map       "v" 'set-mark-command)
+;; (evil-define-key 'motion magit-tag-section-map       "V" 'set-mark-command)
+;; (evil-define-key 'motion magit-unpulled-section-map  "v" 'set-mark-command)
+;; (evil-define-key 'motion magit-unpulled-section-map  "V" 'set-mark-command)
+;; (evil-define-key 'motion magit-unpushed-section-map  "v" 'set-mark-command)
+;; (evil-define-key 'motion magit-unpushed-section-map  "V" 'set-mark-command)
+;; (evil-define-key 'motion magit-unstaged-section-map  "v" 'set-mark-command)
+;; (evil-define-key 'motion magit-unstaged-section-map  "V" 'set-mark-command)
+;; (evil-define-key 'motion magit-untracked-section-map "v" 'set-mark-command)
+;; (evil-define-key 'motion magit-untracked-section-map "V" 'set-mark-command)
 
 ;;; evil-magit.el ends soon
 (provide 'evil-magit)
