@@ -363,8 +363,10 @@
 (evil-define-key 'normal magit-blame-mode-map "\d" 'magit-diff-show-or-scroll-down)
 (evil-define-key 'normal magit-blame-mode-map "b"  'magit-blame-popup)
 (evil-define-key 'normal magit-blame-mode-map "j"  'magit-blame-next-chunk) ; was n
+(evil-define-key 'normal magit-blame-mode-map "\C-j" 'evil-next-visual-line)
 (evil-define-key 'normal magit-blame-mode-map "J"  'magit-blame-next-chunk-same-commit) ; was N
 (evil-define-key 'normal magit-blame-mode-map "k"  'magit-blame-previous-chunk)
+(evil-define-key 'normal magit-blame-mode-map "\C-k" 'evil-previous-visual-line)
 (evil-define-key 'normal magit-blame-mode-map "K"  'magit-blame-previous-chunk-same-commit)
 (evil-define-key 'normal magit-blame-mode-map "q"  'magit-blame-quit)
 (evil-define-key 'normal magit-blame-mode-map "t"  'magit-blame-toggle-headings)
