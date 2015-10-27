@@ -36,58 +36,59 @@
 
 ;; The basic scheme is as follows:
 
-;; | Command      | Old | New  |
-;; |--------------+-----+------|
-;; | cherry pick  | a/A |      |
-;; | branch       | b   |      |
-;; | bisect       | B   |      |
-;; | commit       | c   |      |
-;; | diff         | d/D |      |
-;; | help         | h/? | ?    |
-;; | ediff        | e/E |      |
-;; | fetch        | f   |      |
-;; | pull         | F   |      |
-;; | ignore       | i/I |      |
-;; | jump         | j   | g    |
-;; | delete       | k   | x    |
-;; | untrack      | K   | X    |
-;; | log          | l/L |      |
-;; | merge        | m   |      |
-;; | remote       | M   |      |
-;; | next section | n   | j    |
-;; | submodule    | o   |      |
-;; | prev section | p   | k    |
-;; | push         | P   |      |
-;; | rebase       | r   | R    |
-;; | rename       | R   | _    |
-;; | stage        | s/S |      |
-;; | tag          | t   |      |
-;; | notes        | T   |      |
-;; | unstage      | u/U |      |
-;; | revert       | v/V | h/H  |
-;; | am           | w   |      |
-;; | patch        | W   |      |
-;; | reset        | x   | #    |
-;; | show-refs    | y   |      |
-;; | cherry       | Y   |      |
-;; | stash        | z/Z |      |
-;; | git-cmd      | :   | vbar |
-;; | run          | !   |      |
+;;   Command      | Old | New
+;;  --------------|-----|------
+;;   cherry pick  | a/A |
+;;   branch       | b   |
+;;   bisect       | B   |
+;;   commit       | c   |
+;;   diff         | d/D |
+;;   help         | h/? | ?
+;;   ediff        | e/E |
+;;   fetch        | f   |
+;;   pull         | F   |
+;;   ignore       | i/I |
+;;   jump         | j   | g
+;;   delete       | k   | x
+;;   untrack      | K   | X
+;;   log          | l/L |
+;;   merge        | m   |
+;;   remote       | M   |
+;;   next section | n   | j
+;;   submodule    | o   |
+;;   prev section | p   | k
+;;   push         | P   |
+;;   rebase       | r   | R
+;;   rename       | R   | _
+;;   stage        | s/S |
+;;   tag          | t   |
+;;   notes        | T   |
+;;   unstage      | u/U |
+;;   revert       | v/V | h/H
+;;   am           | w   |
+;;   patch        | W   |
+;;   reset        | x   | #
+;;   show-refs    | y   |
+;;   cherry       | Y   |
+;;   stash        | z/Z |
+;;   git-cmd      | :   | \|
+;;   run          | !   |
 
 ;; Additions
-;; | Command                                                | New    |
-;; |--------------------------------------------------------+--------|
-;; | evil-goto-line                                         | G      |
-;; | evil-search-next                                       | n      |
-;; | evil-search-previous                                   | N      |
-;; | set-mark-command                                       | v or V |
-;; | evil-ex                                                | :      |
-;; | evil-search-forward                                    | /      |
-;; | evil-scroll-page-up                                    | C-b    |
-;; | magit-section-forward-sibling                          | C-d    |
-;; | evil-scroll-page-down                                  | C-f    |
-;; | magit-section-backward-sibling (if C-u scroll enabled) | C-u    |
-;; | evil-emacs-state                                       | C-z    |
+
+;;   Command                                                | New
+;;  --------------------------------------------------------|--------
+;;   evil-goto-line                                         | G
+;;   evil-search-next                                       | n
+;;   evil-search-previous                                   | N
+;;   set-mark-command                                       | v or V
+;;   evil-ex                                                | :
+;;   evil-search-forward                                    | /
+;;   evil-scroll-page-up                                    | C-b
+;;   magit-section-forward-sibling                          | gj or C-d
+;;   evil-scroll-page-down                                  | C-f
+;;   magit-section-backward-sibling (if C-u scroll enabled) | gk or C-u (if C-u scroll enabled)
+;;   evil-emacs-state                                       | C-z
 
 ;; maps changed
 ;;
@@ -126,6 +127,10 @@
 ;; magit-unstaged-section-map
 ;; magit-untracked-section-map
 ;; with-editor-mode-map
+
+;; TODO
+;; 1. popups
+;; 2. v is not working yet
 
 ;;; Code:
 
@@ -252,7 +257,7 @@
 (evil-define-key 'normal magit-blob-mode-map "k" 'magit-blob-previous)
 (evil-define-key 'normal magit-blob-mode-map "q" 'magit-kill-this-buffer)
 
-(evil-define-key 'normal magit-commit-section-map "v" nil)
+(evil-define-key 'normal magit-commit-section-map "v" 'set-mark-command)
 (evil-define-key 'normal magit-commit-section-map "h" 'magit-revert-no-commit)
 
 (evil-define-key 'normal magit-diff-mode-map "j" nil)
@@ -269,6 +274,7 @@
 (evil-define-key 'normal magit-file-section-map "s"  'magit-stage)
 (evil-define-key 'normal magit-file-section-map "u"  'magit-unstage)
 (evil-define-key 'normal magit-file-section-map "h"  'magit-reverse) ; was v
+(evil-define-key 'normal magit-file-section-map "v"  'set-mark-command)
 
 (evil-define-key 'normal magit-hunk-section-map [C-return] 'magit-diff-visit-file-worktree)
 (evil-define-key 'normal magit-hunk-section-map "\C-j"     'magit-diff-visit-file-worktree)
@@ -279,8 +285,9 @@
 (evil-define-key 'normal magit-hunk-section-map "s"  'magit-stage)
 (evil-define-key 'normal magit-hunk-section-map "u"  'magit-unstage)
 (evil-define-key 'normal magit-hunk-section-map "h"  'magit-reverse) ; was v
+(evil-define-key 'normal magit-hunk-section-map "v"  'set-mark-command)
 
-(evil-define-key 'normal magit-staged-section-map "v" nil)
+(evil-define-key 'normal magit-staged-section-map "v" 'set-mark-command)
 (evil-define-key 'normal magit-staged-section-map "h" 'magit-reverse)
 
 (evil-define-key 'normal magit-blame-mode-map "\r" 'magit-show-commit)
