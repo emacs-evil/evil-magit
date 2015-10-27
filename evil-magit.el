@@ -346,6 +346,10 @@
 
  C-h m  show all key bindings" nil))
 
+(magit-change-popup-key 'magit-rebase-popup :actions ?r ?R)
+(magit-change-popup-key 'magit-revert-popup :actions ?v ?h)
+(magit-change-popup-key 'magit-revert-popup :actions ?V ?H)
+
 (evil-define-key evil-magit-state magit-status-mode-map "gz" 'magit-jump-to-stashes)
 (evil-define-key evil-magit-state magit-status-mode-map "gt" 'magit-jump-to-tracked)
 (evil-define-key evil-magit-state magit-status-mode-map "gn" 'magit-jump-to-untracked)
