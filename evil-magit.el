@@ -279,6 +279,26 @@
 (evil-define-key evil-magit-state magit-mode-map "\C-w"   'magit-copy-section-value)
 (evil-define-key evil-magit-state magit-mode-map "\M-w"   'magit-copy-buffer-revision)
 
+;;evil bindings
+(evil-define-key evil-magit-state magit-mode-map [remap evil-previous-line] 'evil-previous-visual-line)
+(evil-define-key evil-magit-state magit-mode-map [remap evil-next-line] 'evil-next-visual-line)
+(evil-define-key evil-magit-state magit-mode-map "v" 'set-mark-command)
+(evil-define-key evil-magit-state magit-mode-map "V" 'set-mark-command)
+(evil-define-key evil-magit-state magit-mode-map "gg" 'evil-goto-first-line)
+(evil-define-key evil-magit-state magit-mode-map "G" 'evil-goto-line)
+;; (evil-define-key evil-magit-state map "\C-d" 'evil-scroll-down)
+(evil-define-key evil-magit-state magit-mode-map "\C-d" 'magit-section-forward-sibling) ; was M-n
+(evil-define-key evil-magit-state magit-mode-map "\C-f" 'evil-scroll-page-down)
+(when evil-want-C-u-scroll
+  ;; (evil-define-key evil-magit-state map "\C-u" 'evil-scroll-up)
+  (evil-define-key evil-magit-state magit-mode-map "\C-u" 'magit-section-backward-sibling)) ; was M-p
+(evil-define-key evil-magit-state magit-mode-map "\C-b" 'evil-scroll-page-up)
+(evil-define-key evil-magit-state magit-mode-map ":" 'evil-ex)
+(evil-define-key evil-magit-state magit-mode-map "/" 'evil-search-forward)
+(evil-define-key evil-magit-state magit-mode-map "n" 'evil-search-next)
+(evil-define-key evil-magit-state magit-mode-map "N" 'evil-search-previous)
+(evil-define-key evil-magit-state magit-mode-map "\C-z" 'evil-emacs-state)
+
 ;; dispatch-popup
 (plist-put magit-dispatch-popup
            :actions '("Popup and dwim commands"
@@ -322,26 +342,6 @@
  RET    visit thing at point
 
  C-h m  show all key bindings" nil))
-
-;;evil bindings
-(evil-define-key evil-magit-state magit-mode-map [remap evil-previous-line] 'evil-previous-visual-line)
-(evil-define-key evil-magit-state magit-mode-map [remap evil-next-line] 'evil-next-visual-line)
-(evil-define-key evil-magit-state magit-mode-map "v" 'set-mark-command)
-(evil-define-key evil-magit-state magit-mode-map "V" 'set-mark-command)
-(evil-define-key evil-magit-state magit-mode-map "gg" 'evil-goto-first-line)
-(evil-define-key evil-magit-state magit-mode-map "G" 'evil-goto-line)
-;; (evil-define-key evil-magit-state map "\C-d" 'evil-scroll-down)
-(evil-define-key evil-magit-state magit-mode-map "\C-d" 'magit-section-forward-sibling) ; was M-n
-(evil-define-key evil-magit-state magit-mode-map "\C-f" 'evil-scroll-page-down)
-(when evil-want-C-u-scroll
-  ;; (evil-define-key evil-magit-state map "\C-u" 'evil-scroll-up)
-  (evil-define-key evil-magit-state magit-mode-map "\C-u" 'magit-section-backward-sibling)) ; was M-p
-(evil-define-key evil-magit-state magit-mode-map "\C-b" 'evil-scroll-page-up)
-(evil-define-key evil-magit-state magit-mode-map ":" 'evil-ex)
-(evil-define-key evil-magit-state magit-mode-map "/" 'evil-search-forward)
-(evil-define-key evil-magit-state magit-mode-map "n" 'evil-search-next)
-(evil-define-key evil-magit-state magit-mode-map "N" 'evil-search-previous)
-(evil-define-key evil-magit-state magit-mode-map "\C-z" 'evil-emacs-state)
 
 (evil-define-key evil-magit-state magit-status-mode-map "gz" 'magit-jump-to-stashes)
 (evil-define-key evil-magit-state magit-status-mode-map "gt" 'magit-jump-to-tracked)
