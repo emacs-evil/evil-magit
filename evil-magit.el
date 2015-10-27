@@ -132,6 +132,9 @@
 (require 'evil)
 (require 'magit)
 
+;;temporary until popups are fixed
+(push '("\\*magit-\.+popup\\*" . emacs) evil-buffer-regexps)
+
 (evil-define-key 'normal magit-mode-map "g" nil)
 (evil-define-key 'normal magit-mode-map "\t"    'magit-section-toggle)
 (evil-define-key 'normal magit-mode-map [C-tab] 'magit-section-cycle)
