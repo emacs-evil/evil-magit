@@ -328,6 +328,7 @@
 (evil-define-key 'normal magit-blame-mode-map "q"  'magit-blame-quit)
 (evil-define-key 'normal magit-blame-mode-map "t"  'magit-blame-toggle-headings)
 (evil-define-key 'normal magit-blame-mode-map "\M-w" 'magit-blame-copy-hash)
+(add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
 
 (evil-define-key 'motion git-rebase-mode-map (kbd "q")    'undefined)
 (evil-define-key 'motion git-rebase-mode-map [remap undo] 'git-rebase-undo)
