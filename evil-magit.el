@@ -222,6 +222,50 @@
 (evil-define-key 'motion magit-mode-map "\C-w"   'magit-copy-section-value)
 (evil-define-key 'motion magit-mode-map "\M-w"   'magit-copy-buffer-revision)
 
+;; dispatch-popup
+(plist-put magit-dispatch-popup
+           :actions '("Popup and dwim commands"
+                      (?A "Cherry-picking"  magit-cherry-pick-popup)
+                      (?b "Branching"       magit-branch-popup)
+                      (?B "Bisecting"       magit-bisect-popup)
+                      (?c "Committing"      magit-commit-popup)
+                      (?d "Diffing"         magit-diff-popup)
+                      (?D "Change diffs"    magit-diff-refresh-popup)
+                      (?e "Ediff dwimming"  magit-ediff-dwim)
+                      (?E "Ediffing"        magit-ediff-popup)
+                      (?f "Fetching"        magit-fetch-popup)
+                      (?F "Pulling"         magit-pull-popup)
+                      (?H "Reverting"       magit-revert-popup)
+                      (?l "Logging"         magit-log-popup)
+                      (?m "Merging"         magit-merge-popup)
+                      (?M "Remoting"        magit-remote-popup)
+                      (?o "Submodules"      magit-submodule-popup)
+                      (?P "Pushing"         magit-push-popup)
+                      (?R "Rebasing"        magit-rebase-popup)
+                      (?t "Tagging"         magit-tag-popup)
+                      (?T "Notes"           magit-notes-popup)
+                      (?w "Apply patches"   magit-am-popup)
+                      (?W "Format patches"  magit-patch-popup)
+                      (?y "Show Refs"       magit-show-refs-popup)
+                      (?z "Stashing"        magit-stash-popup)
+                      (?! "Running"         magit-run-popup)
+                      "Applying changes"
+                      (?a "Apply"           magit-apply)
+                      (?s "Stage"           magit-stage)
+                      (?u "Unstage"         magit-unstage)
+                      nil
+                      (?h "Reverse"         magit-reverse)
+                      (?S "Stage all"       magit-stage-modified)
+                      (?U "Unstage all"     magit-unstage-all)
+                      nil
+                      (?x "Discard"         magit-discard)
+                      "\
+ r      refresh current buffer
+ TAB    toggle section at point
+ RET    visit thing at point
+
+ C-h m  show all key bindings" nil))
+
 ;;evil bindings
 (evil-define-key 'motion magit-mode-map [remap evil-previous-line] 'evil-previous-visual-line)
 (evil-define-key 'motion magit-mode-map [remap evil-next-line] 'evil-next-visual-line)
