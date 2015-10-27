@@ -143,18 +143,17 @@
 (push '("\\*magit\.+" . motion) evil-buffer-regexps)
 (push '("\\*magit-\.+popup\\*" . emacs) evil-buffer-regexps)
 
-;; evil doesn't override the text property keymaps, so we unbind these
-(define-key magit-commit-section-map    "v" nil)
-(define-key magit-file-section-map      "v" nil)
-(define-key magit-hunk-section-map      "v" nil)
-(define-key magit-staged-section-map    "v" nil)
-(define-key magit-stash-section-map     "v" nil)
-(define-key magit-stashes-section-map   "v" nil)
-(define-key magit-tag-section-map       "v" nil)
-(define-key magit-unpulled-section-map  "v" nil)
-(define-key magit-unpushed-section-map  "v" nil)
-(define-key magit-unstaged-section-map  "v" nil)
-(define-key magit-untracked-section-map "v" nil)
+;; evil doesn't override the text property keymaps, so we need special functions
+;; for these commands
+(defun evil-magit-set-mark-or-revert-no-commit ()
+  (interactive)
+  (call-interactively
+   (if (evil-motion-state-p) 'set-mark-command 'magit-revert-no-commit)))
+
+(defun evil-magit-set-mark-or-reverse ()
+  (interactive)
+  (call-interactively
+   (if (evil-motion-state-p) 'set-mark-command 'magit-reverse)))
 
 (evil-define-key 'motion magit-mode-map "g" nil)
 (evil-define-key 'motion magit-mode-map "\t"    'magit-section-toggle)
@@ -317,8 +316,9 @@
 (evil-define-key 'motion magit-blob-mode-map "k" 'magit-blob-previous)
 (evil-define-key 'motion magit-blob-mode-map "q" 'magit-kill-this-buffer)
 
-(evil-define-key 'motion magit-commit-section-map "v" 'set-mark-command)
-(evil-define-key 'motion magit-commit-section-map "h" 'magit-revert-no-commit)
+(define-key magit-commit-section-map "v" 'evil-magit-set-mark-or-revert-no-commit)
+(define-key magit-commit-section-map "h" 'magit-revert-no-commit)
+
 
 (evil-define-key 'motion magit-diff-mode-map "j" nil)
 (evil-define-key 'motion magit-diff-mode-map "J" 'magit-jump-to-diffstat-or-diff)
@@ -333,8 +333,8 @@
 (evil-define-key 'motion magit-file-section-map "_"  'magit-file-rename) ; was R
 (evil-define-key 'motion magit-file-section-map "s"  'magit-stage)
 (evil-define-key 'motion magit-file-section-map "u"  'magit-unstage)
-(evil-define-key 'motion magit-file-section-map "h"  'magit-reverse) ; was v
-(evil-define-key 'motion magit-file-section-map "v"  'set-mark-command)
+(define-key magit-file-section-map "v" 'evil-magit-set-mark-or-reverse)
+(define-key magit-file-section-map "h"  'magit-reverse) ; was v
 
 (evil-define-key 'motion magit-hunk-section-map [C-return] 'magit-diff-visit-file-worktree)
 (evil-define-key 'motion magit-hunk-section-map "\C-j"     'magit-diff-visit-file-worktree)
@@ -344,11 +344,11 @@
 (evil-define-key 'motion magit-hunk-section-map "C"  'magit-commit-add-log)
 (evil-define-key 'motion magit-hunk-section-map "s"  'magit-stage)
 (evil-define-key 'motion magit-hunk-section-map "u"  'magit-unstage)
-(evil-define-key 'motion magit-hunk-section-map "h"  'magit-reverse) ; was v
-(evil-define-key 'motion magit-hunk-section-map "v"  'set-mark-command)
+(define-key magit-hunk-section-map "v" 'evil-magit-set-mark-or-reverse)
+(define-key magit-hunk-section-map "h"  'magit-reverse) ; was v
 
-(evil-define-key 'motion magit-staged-section-map "v" 'set-mark-command)
-(evil-define-key 'motion magit-staged-section-map "h" 'magit-reverse)
+(define-key magit-staged-section-map "v" 'evil-magit-set-mark-or-reverse)
+(define-key magit-staged-section-map "h" 'magit-reverse)
 
 (evil-define-key 'motion magit-blame-mode-map "\r" 'magit-show-commit)
 (evil-define-key 'motion magit-blame-mode-map "\s" 'magit-diff-show-or-scroll-up)
