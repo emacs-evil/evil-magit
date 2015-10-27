@@ -140,7 +140,7 @@
 (require 'magit)
 
 ;;temporary until popups are fixed
-(push '("\\*magit\.+\\*" . motion) evil-buffer-regexps)
+(push '("\\*magit\.+" . motion) evil-buffer-regexps)
 (push '("\\*magit-\.+popup\\*" . emacs) evil-buffer-regexps)
 
 (evil-define-key 'motion magit-mode-map "g" nil)
