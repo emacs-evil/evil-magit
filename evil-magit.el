@@ -140,8 +140,44 @@
 (require 'magit)
 
 ;; temporary until popups are fixed
-(push '("\\*magit\.+" . motion) evil-buffer-regexps)
-(push '("\\*magit-\.+popup\\*" . emacs) evil-buffer-regexps)
+;; (push '("\\*magit\.+" . motion) evil-buffer-regexps)
+;; (push '("\\*magit-\.+popup\\*" . emacs) evil-buffer-regexps)
+(dolist (mode '(git-commit-mode
+                magit-mode
+                magit-cherry-mode
+                magit-diff-mode
+                magit-log-mode
+                magit-log-select-mode
+                ;; magit-popup-mode
+                ;; magit-popup-sequence-mode
+                magit-process-mode
+                magit-reflog-mode
+                magit-refs-mode
+                magit-revision-mode
+                magit-stash-mode
+                magit-stashes-mode
+                magit-status-mode))
+  (setq evil-emacs-state-modes (delq mode evil-emacs-state-modes)))
+(dolist (mode '(magit-mode
+                git-popup-mode
+                git-rebase-mode
+                magit-blame-mode
+                magit-blob-mode
+                magit-cherry-mode
+                magit-diff-mode
+                magit-file-mode
+                magit-gitflow-mode
+                magit-log-mode
+                ;; magit-popup-mode
+                ;; magit-popup-sequence-mode
+                magit-process-mode
+                magit-reflog-mode
+                magit-refs-mode
+                magit-revision-mode
+                magit-stash-mode
+                magit-stashes-mode
+                magit-status-mode))
+  (add-to-list (intern (format "evil-%s-state-modes" evil-magit-state)) mode))
 
 ;; evil doesn't override the text property keymaps, so we need special functions
 ;; for these commands
