@@ -131,6 +131,8 @@
 ;; TODO
 ;; 1. popups
 ;; 2. v is not working yet
+;; 3. now that we're using evil-define-key and normal state we're going to have
+;;    to define more keys (the ones that conflict with normal state)
 
 ;;; Code:
 
