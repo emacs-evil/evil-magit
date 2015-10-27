@@ -139,8 +139,7 @@
 (require 'evil)
 (require 'magit)
 
-
-;;temporary until popups are fixed
+;; temporary until popups are fixed
 (push '("\\*magit\.+" . motion) evil-buffer-regexps)
 (push '("\\*magit-\.+popup\\*" . emacs) evil-buffer-regexps)
 
@@ -318,17 +317,17 @@
 (evil-define-key 'motion magit-diff-mode-map "j" nil)
 (evil-define-key 'motion magit-diff-mode-map "J" 'magit-jump-to-diffstat-or-diff)
 
-(evil-define-key 'motion magit-blame-mode-map "\r" 'magit-show-commit)
-(evil-define-key 'motion magit-blame-mode-map "\s" 'magit-diff-show-or-scroll-up)
-(evil-define-key 'motion magit-blame-mode-map "\d" 'magit-diff-show-or-scroll-down)
-(evil-define-key 'motion magit-blame-mode-map "b"  'magit-blame-popup)
-(evil-define-key 'motion magit-blame-mode-map "j"  'magit-blame-next-chunk) ; was n
-(evil-define-key 'motion magit-blame-mode-map "J"  'magit-blame-next-chunk-same-commit) ; was N
-(evil-define-key 'motion magit-blame-mode-map "k"  'magit-blame-previous-chunk)
-(evil-define-key 'motion magit-blame-mode-map "K"  'magit-blame-previous-chunk-same-commit)
-(evil-define-key 'motion magit-blame-mode-map "q"  'magit-blame-quit)
-(evil-define-key 'motion magit-blame-mode-map "t"  'magit-blame-toggle-headings)
-(evil-define-key 'motion magit-blame-mode-map "\M-w" 'magit-blame-copy-hash)
+(evil-define-key 'normal magit-blame-mode-map "\r" 'magit-show-commit)
+(evil-define-key 'normal magit-blame-mode-map "\s" 'magit-diff-show-or-scroll-up)
+(evil-define-key 'normal magit-blame-mode-map "\d" 'magit-diff-show-or-scroll-down)
+(evil-define-key 'normal magit-blame-mode-map "b"  'magit-blame-popup)
+(evil-define-key 'normal magit-blame-mode-map "j"  'magit-blame-next-chunk) ; was n
+(evil-define-key 'normal magit-blame-mode-map "J"  'magit-blame-next-chunk-same-commit) ; was N
+(evil-define-key 'normal magit-blame-mode-map "k"  'magit-blame-previous-chunk)
+(evil-define-key 'normal magit-blame-mode-map "K"  'magit-blame-previous-chunk-same-commit)
+(evil-define-key 'normal magit-blame-mode-map "q"  'magit-blame-quit)
+(evil-define-key 'normal magit-blame-mode-map "t"  'magit-blame-toggle-headings)
+(evil-define-key 'normal magit-blame-mode-map "\M-w" 'magit-blame-copy-hash)
 
 (evil-define-key 'motion git-rebase-mode-map (kbd "q")    'undefined)
 (evil-define-key 'motion git-rebase-mode-map [remap undo] 'git-rebase-undo)
