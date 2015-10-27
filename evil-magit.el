@@ -139,21 +139,26 @@
 (require 'evil)
 (require 'magit)
 
+
 ;;temporary until popups are fixed
 (push '("\\*magit\.+" . motion) evil-buffer-regexps)
 (push '("\\*magit-\.+popup\\*" . emacs) evil-buffer-regexps)
 
 ;; evil doesn't override the text property keymaps, so we need special functions
 ;; for these commands
-(defun evil-magit-set-mark-or-revert-no-commit ()
-  (interactive)
-  (call-interactively
-   (if (evil-motion-state-p) 'set-mark-command 'magit-revert-no-commit)))
-
-(defun evil-magit-set-mark-or-reverse ()
-  (interactive)
-  (call-interactively
-   (if (evil-motion-state-p) 'set-mark-command 'magit-reverse)))
+(defmacro evil-magit-define-key (map key evil-magit-cmd &optional magit-cmd)
+  (let* ((evil-magit-cmd (eval evil-magit-cmd))
+         (magit-cmd (eval magit-cmd))
+         (fun (intern (format "evil-magit-%s-or-%s" evil-magit-cmd magit-cmd)))
+         (doc (format "Call %s if in evil's motion state and %s otherwise." evil-magit-cmd magit-cmd)))
+    `(progn (defun ,fun ()
+              ,doc
+              (interactive)
+              (call-interactively
+               (if (evil-motion-state-p)
+                   ',evil-magit-cmd
+                 ',magit-cmd)))
+            (define-key ,map ,key ',fun))))
 
 (evil-define-key 'motion magit-mode-map "g" nil)
 (evil-define-key 'motion magit-mode-map "\t"    'magit-section-toggle)
@@ -306,48 +311,12 @@
 (evil-define-key 'motion magit-status-mode-map "gf" 'magit-jump-to-unpulled)
 (evil-define-key 'motion magit-status-mode-map "gp" 'magit-jump-to-unpushed)
 
-(evil-define-key 'motion magit-branch-section-map "R" nil)
-(evil-define-key 'motion magit-branch-section-map "_" 'magit-branch-rename)
-
-(evil-define-key 'motion magit-remote-section-map "R" nil)
-(evil-define-key 'motion magit-remote-section-map "_" 'magit-branch-rename)
-
 (evil-define-key 'motion magit-blob-mode-map "j" 'magit-blob-next)
 (evil-define-key 'motion magit-blob-mode-map "k" 'magit-blob-previous)
 (evil-define-key 'motion magit-blob-mode-map "q" 'magit-kill-this-buffer)
 
-(define-key magit-commit-section-map "v" 'evil-magit-set-mark-or-revert-no-commit)
-(evil-define-key 'motion magit-commit-section-map "h" 'magit-revert-no-commit)
-
 (evil-define-key 'motion magit-diff-mode-map "j" nil)
 (evil-define-key 'motion magit-diff-mode-map "J" 'magit-jump-to-diffstat-or-diff)
-
-(evil-define-key 'motion magit-file-section-map [C-return] 'magit-diff-visit-file-worktree)
-(evil-define-key 'motion magit-file-section-map "\C-j"     'magit-diff-visit-file-worktree)
-(evil-define-key 'motion magit-file-section-map [remap magit-visit-thing]  'magit-diff-visit-file)
-(evil-define-key 'motion magit-file-section-map [remap magit-delete-thing] 'magit-discard)
-(evil-define-key 'motion magit-file-section-map "a"  'magit-apply)
-(evil-define-key 'motion magit-file-section-map "C"  'magit-commit-add-log)
-(evil-define-key 'motion magit-file-section-map "X"  'magit-file-untrack) ; was K
-(evil-define-key 'motion magit-file-section-map "_"  'magit-file-rename) ; was R
-(evil-define-key 'motion magit-file-section-map "s"  'magit-stage)
-(evil-define-key 'motion magit-file-section-map "u"  'magit-unstage)
-(define-key magit-file-section-map "v" 'evil-magit-set-mark-or-reverse)
-(evil-define-key 'motion magit-file-section-map "h"  'magit-reverse) ; was v
-
-(evil-define-key 'motion magit-hunk-section-map [C-return] 'magit-diff-visit-file-worktree)
-(evil-define-key 'motion magit-hunk-section-map "\C-j"     'magit-diff-visit-file-worktree)
-(evil-define-key 'motion magit-hunk-section-map [remap magit-visit-thing]  'magit-diff-visit-file)
-(evil-define-key 'motion magit-hunk-section-map [remap magit-delete-thing] 'magit-discard)
-(evil-define-key 'motion magit-hunk-section-map "a"  'magit-apply)
-(evil-define-key 'motion magit-hunk-section-map "C"  'magit-commit-add-log)
-(evil-define-key 'motion magit-hunk-section-map "s"  'magit-stage)
-(evil-define-key 'motion magit-hunk-section-map "u"  'magit-unstage)
-(define-key magit-hunk-section-map "v" 'evil-magit-set-mark-or-reverse)
-(evil-define-key 'motion magit-hunk-section-map "h"  'magit-reverse) ; was v
-
-(define-key magit-staged-section-map "v" 'evil-magit-set-mark-or-reverse)
-(evil-define-key 'motion magit-staged-section-map "h" 'magit-reverse)
 
 (evil-define-key 'motion magit-blame-mode-map "\r" 'magit-show-commit)
 (evil-define-key 'motion magit-blame-mode-map "\s" 'magit-diff-show-or-scroll-up)
@@ -386,6 +355,30 @@
 
 (evil-define-key 'motion git-commit-mode-map (kbd "gk") 'git-commit-prev-message)
 (evil-define-key 'motion git-commit-mode-map (kbd "gj") 'git-commit-next-message)
+
+;; section maps: evil-define-key doesn't work here, because these maps are text overlays
+
+(evil-magit-define-key magit-remote-section-map "R" 'magit-rebase-popup 'magit-branch-rename)
+(evil-magit-define-key magit-remote-section-map "_" 'magit-branch-rename)
+
+(evil-magit-define-key magit-branch-section-map "R" 'magit-rebase-popup 'magit-branch-rename)
+(evil-magit-define-key magit-branch-section-map "_" 'magit-branch-rename)
+
+(evil-magit-define-key magit-commit-section-map "v" 'set-mark-command 'magit-revert-no-commit)
+(evil-magit-define-key magit-commit-section-map "h" 'magit-revert-no-commit)
+
+(evil-magit-define-key magit-file-section-map "K" 'magit-section-backward-sibling 'magit-file-untrack)
+(evil-magit-define-key magit-file-section-map "X" 'magit-file-untrack) ; was K
+(evil-magit-define-key magit-file-section-map "_" 'magit-file-rename) ; was R
+(evil-magit-define-key magit-file-section-map "v" 'set-mark-command 'magit-reverse)
+(evil-magit-define-key magit-file-section-map "h" 'magit-reverse 'magit-dispatch-popup) ; was v
+
+(evil-magit-define-key magit-hunk-section-map "v" 'set-mark-command 'magit-reverse)
+(evil-magit-define-key magit-hunk-section-map "h" 'magit-reverse) ; was v
+
+(evil-magit-define-key magit-staged-section-map "v" 'set-mark-command 'magit-reverse)
+(evil-magit-define-key magit-staged-section-map "h" 'magit-reverse) ; was v
+
 
 ;; probably not necessary
 ;; (evil-define-key 'motion magit-stash-section-map     "v" 'set-mark-command)
