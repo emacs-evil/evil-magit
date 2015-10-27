@@ -314,8 +314,8 @@
 (evil-define-key 'motion magit-blob-mode-map "k" 'magit-blob-previous)
 (evil-define-key 'motion magit-blob-mode-map "q" 'magit-kill-this-buffer)
 
-(evil-define-key 'motion magit-diff-mode-map "j" nil)
-(evil-define-key 'motion magit-diff-mode-map "J" 'magit-jump-to-diffstat-or-diff)
+(evil-define-key 'motion magit-diff-mode-map "j" 'magit-section-forward)
+(evil-define-key 'motion magit-diff-mode-map "gd" 'magit-jump-to-diffstat-or-diff)
 
 (evil-define-key 'normal magit-blame-mode-map "\r" 'magit-show-commit)
 (evil-define-key 'normal magit-blame-mode-map "\s" 'magit-diff-show-or-scroll-up)
