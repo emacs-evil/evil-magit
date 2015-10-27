@@ -59,6 +59,7 @@
 ;;   prev section | p   | k
 ;;   push         | P   |
 ;;   rebase       | r   | R
+;;   refresh      | g   | r
 ;;   rename       | R   | _
 ;;   stage        | s/S |
 ;;   tag          | t   |
@@ -89,6 +90,8 @@
 ;;   evil-scroll-page-down                                  | C-f
 ;;   magit-section-backward-sibling (if C-u scroll enabled) | gk or C-u (if C-u scroll enabled)
 ;;   evil-emacs-state                                       | C-z
+;;   evil-next-visual-line                                  | C-j
+;;   evil-previous-visual-line                              | C-k
 
 ;; maps changed
 ;;
