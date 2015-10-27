@@ -365,7 +365,7 @@
 (evil-magit-define-key magit-branch-section-map "_" 'magit-branch-rename)
 
 (evil-magit-define-key magit-commit-section-map "v" 'set-mark-command 'magit-revert-no-commit)
-(evil-magit-define-key magit-commit-section-map "h" 'magit-revert-no-commit)
+(evil-magit-define-key magit-commit-section-map "h" 'magit-revert-no-commit 'magit-dispatch-popup)
 
 (evil-magit-define-key magit-file-section-map "K" 'magit-section-backward-sibling 'magit-file-untrack)
 (evil-magit-define-key magit-file-section-map "X" 'magit-file-untrack) ; was K
@@ -374,27 +374,10 @@
 (evil-magit-define-key magit-file-section-map "h" 'magit-reverse 'magit-dispatch-popup) ; was v
 
 (evil-magit-define-key magit-hunk-section-map "v" 'set-mark-command 'magit-reverse)
-(evil-magit-define-key magit-hunk-section-map "h" 'magit-reverse) ; was v
+(evil-magit-define-key magit-hunk-section-map "h" 'magit-reverse 'magit-dispatch-popup) ; was v
 
 (evil-magit-define-key magit-staged-section-map "v" 'set-mark-command 'magit-reverse)
-(evil-magit-define-key magit-staged-section-map "h" 'magit-reverse) ; was v
-
-
-;; probably not necessary
-;; (evil-define-key 'motion magit-stash-section-map     "v" 'set-mark-command)
-;; (evil-define-key 'motion magit-stash-section-map     "V" 'set-mark-command)
-;; (evil-define-key 'motion magit-stashes-section-map   "v" 'set-mark-command)
-;; (evil-define-key 'motion magit-stashes-section-map   "V" 'set-mark-command)
-;; (evil-define-key 'motion magit-tag-section-map       "v" 'set-mark-command)
-;; (evil-define-key 'motion magit-tag-section-map       "V" 'set-mark-command)
-;; (evil-define-key 'motion magit-unpulled-section-map  "v" 'set-mark-command)
-;; (evil-define-key 'motion magit-unpulled-section-map  "V" 'set-mark-command)
-;; (evil-define-key 'motion magit-unpushed-section-map  "v" 'set-mark-command)
-;; (evil-define-key 'motion magit-unpushed-section-map  "V" 'set-mark-command)
-;; (evil-define-key 'motion magit-unstaged-section-map  "v" 'set-mark-command)
-;; (evil-define-key 'motion magit-unstaged-section-map  "V" 'set-mark-command)
-;; (evil-define-key 'motion magit-untracked-section-map "v" 'set-mark-command)
-;; (evil-define-key 'motion magit-untracked-section-map "V" 'set-mark-command)
+(evil-magit-define-key magit-staged-section-map "h" 'magit-reverse 'magit-dispatch-popup) ; was v
 
 ;;; evil-magit.el ends soon
 (provide 'evil-magit)
