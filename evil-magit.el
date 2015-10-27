@@ -311,6 +311,7 @@
 (evil-define-key 'motion git-rebase-mode-map (kbd "SPC") 'magit-diff-show-or-scroll-up)
 (evil-define-key 'motion git-rebase-mode-map (kbd "!")   'git-rebase-exec) ; was x
 (evil-define-key 'motion git-rebase-mode-map (kbd "c")   'git-rebase-pick)
+(evil-define-key 'motion git-rebase-mode-map (kbd "p")   'git-rebase-pick) ; was c
 (evil-define-key 'motion git-rebase-mode-map (kbd "r")   'git-rebase-reword)
 (evil-define-key 'motion git-rebase-mode-map (kbd "w")   'git-rebase-reword)
 (evil-define-key 'motion git-rebase-mode-map (kbd "e")   'git-rebase-edit)
