@@ -166,8 +166,10 @@
 (evil-define-key 'motion magit-mode-map [s-tab] 'magit-section-cycle-global)
 (evil-define-key 'motion magit-mode-map "^"    'magit-section-up)
 (evil-define-key 'motion magit-mode-map "j"    'magit-section-forward) ; was n
+(evil-define-key 'motion magit-mode-map "\C-j" 'evil-next-visual-line)
 (evil-define-key 'motion magit-mode-map "gj"   'magit-section-forward-sibling) ; was M-n
 (evil-define-key 'motion magit-mode-map "k"    'magit-section-backward) ; was p
+(evil-define-key 'motion magit-mode-map "\C-k" 'evil-previous-visual-line)
 (evil-define-key 'motion magit-mode-map "gk"   'magit-section-backward-sibling) ; was M-p
 (evil-define-key 'motion magit-mode-map "+"    'magit-diff-more-context)
 (evil-define-key 'motion magit-mode-map "-"    'magit-diff-less-context)
