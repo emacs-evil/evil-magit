@@ -193,7 +193,7 @@
               ,doc
               (interactive)
               (call-interactively
-               (if (evil-motion-state-p)
+               (if (funcall (intern (format "evil-%s-state-p" evil-magit-state)))
                    ',evil-magit-cmd
                  ',magit-cmd)))
             (define-key ,map ,key ',fun))))
@@ -410,14 +410,16 @@
 (evil-magit-define-key magit-commit-section-map "v" 'set-mark-command 'magit-revert-no-commit)
 (evil-magit-define-key magit-commit-section-map "h" 'magit-revert-no-commit 'magit-dispatch-popup)
 
-(evil-magit-define-key magit-file-section-map "K" 'magit-section-backward-sibling 'magit-file-untrack)
-(evil-magit-define-key magit-file-section-map "X" 'magit-file-untrack) ; was K
-(evil-magit-define-key magit-file-section-map "_" 'magit-file-rename) ; was R
-(evil-magit-define-key magit-file-section-map "v" 'set-mark-command 'magit-reverse)
-(evil-magit-define-key magit-file-section-map "h" 'magit-reverse 'magit-dispatch-popup) ; was v
+(evil-magit-define-key magit-file-section-map "K"    'magit-section-backward-sibling 'magit-file-untrack)
+(evil-magit-define-key magit-file-section-map "X"    'magit-file-untrack) ; was K
+(evil-magit-define-key magit-file-section-map "_"    'magit-file-rename) ; was R
+(evil-magit-define-key magit-file-section-map "v"    'set-mark-command 'magit-reverse)
+(evil-magit-define-key magit-file-section-map "h"    'magit-reverse 'magit-dispatch-popup) ; was v
+(evil-magit-define-key magit-file-section-map "\C-j" 'evil-next-visual-line 'magit-diff-visit-file-worktree)
 
-(evil-magit-define-key magit-hunk-section-map "v" 'set-mark-command 'magit-reverse)
-(evil-magit-define-key magit-hunk-section-map "h" 'magit-reverse 'magit-dispatch-popup) ; was v
+(evil-magit-define-key magit-hunk-section-map "v"    'set-mark-command 'magit-reverse)
+(evil-magit-define-key magit-hunk-section-map "h"    'magit-reverse 'magit-dispatch-popup) ; was v
+(evil-magit-define-key magit-hunk-section-map "\C-j" 'evil-next-visual-line 'magit-diff-visit-file-worktree)
 
 (evil-magit-define-key magit-staged-section-map "v" 'set-mark-command 'magit-reverse)
 (evil-magit-define-key magit-staged-section-map "h" 'magit-reverse 'magit-dispatch-popup) ; was v
