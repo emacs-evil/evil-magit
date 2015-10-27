@@ -317,8 +317,7 @@
 (evil-define-key 'motion magit-blob-mode-map "q" 'magit-kill-this-buffer)
 
 (define-key magit-commit-section-map "v" 'evil-magit-set-mark-or-revert-no-commit)
-(define-key magit-commit-section-map "h" 'magit-revert-no-commit)
-
+(evil-define-key 'motion magit-commit-section-map "h" 'magit-revert-no-commit)
 
 (evil-define-key 'motion magit-diff-mode-map "j" nil)
 (evil-define-key 'motion magit-diff-mode-map "J" 'magit-jump-to-diffstat-or-diff)
@@ -334,7 +333,7 @@
 (evil-define-key 'motion magit-file-section-map "s"  'magit-stage)
 (evil-define-key 'motion magit-file-section-map "u"  'magit-unstage)
 (define-key magit-file-section-map "v" 'evil-magit-set-mark-or-reverse)
-(define-key magit-file-section-map "h"  'magit-reverse) ; was v
+(evil-define-key 'motion magit-file-section-map "h"  'magit-reverse) ; was v
 
 (evil-define-key 'motion magit-hunk-section-map [C-return] 'magit-diff-visit-file-worktree)
 (evil-define-key 'motion magit-hunk-section-map "\C-j"     'magit-diff-visit-file-worktree)
@@ -345,10 +344,10 @@
 (evil-define-key 'motion magit-hunk-section-map "s"  'magit-stage)
 (evil-define-key 'motion magit-hunk-section-map "u"  'magit-unstage)
 (define-key magit-hunk-section-map "v" 'evil-magit-set-mark-or-reverse)
-(define-key magit-hunk-section-map "h"  'magit-reverse) ; was v
+(evil-define-key 'motion magit-hunk-section-map "h"  'magit-reverse) ; was v
 
 (define-key magit-staged-section-map "v" 'evil-magit-set-mark-or-reverse)
-(define-key magit-staged-section-map "h" 'magit-reverse)
+(evil-define-key 'motion magit-staged-section-map "h" 'magit-reverse)
 
 (evil-define-key 'motion magit-blame-mode-map "\r" 'magit-show-commit)
 (evil-define-key 'motion magit-blame-mode-map "\s" 'magit-diff-show-or-scroll-up)
@@ -388,7 +387,7 @@
 (evil-define-key 'motion git-commit-mode-map (kbd "gk") 'git-commit-prev-message)
 (evil-define-key 'motion git-commit-mode-map (kbd "gj") 'git-commit-next-message)
 
-;; probably not necessary 
+;; probably not necessary
 ;; (evil-define-key 'motion magit-stash-section-map     "v" 'set-mark-command)
 ;; (evil-define-key 'motion magit-stash-section-map     "V" 'set-mark-command)
 ;; (evil-define-key 'motion magit-stashes-section-map   "v" 'set-mark-command)
