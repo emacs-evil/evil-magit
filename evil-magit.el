@@ -130,9 +130,9 @@
 
 ;; TODO
 ;; 1. popups
-;; 2. v is not working yet
-;; 3. now that we're using evil-define-key and normal state we're going to have
-;;    to define more keys (the ones that conflict with normal state)
+;;    1. DONE: dispatch
+;; 2. now that we're using evil-define-key and motion state we're going to have
+;;    to define more keys (any that conflict with motion state)
 
 ;;; Code:
 
@@ -155,7 +155,6 @@
 (define-key magit-unpushed-section-map  "v" nil)
 (define-key magit-unstaged-section-map  "v" nil)
 (define-key magit-untracked-section-map "v" nil)
-
 
 (evil-define-key 'motion magit-mode-map "g" nil)
 (evil-define-key 'motion magit-mode-map "\t"    'magit-section-toggle)
