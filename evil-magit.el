@@ -412,6 +412,27 @@
   [M-<down>]   'git-rebase-move-line-down
   "\C-x\C-t"   'git-rebase-move-line-up)
 
+(defun evil-magit-remove-evil-state ()
+  "Remove evil-state annotations from key bindings in Commands
+section of rebase buffer."
+  (let ((inhibit-read-only t))
+    (save-excursion
+      (goto-char (point-min))
+      (save-match-data
+        (when (re-search-forward "^# Commands:\n" nil t)
+          (--each '((" c," . "c,")
+                    (" p"  . "p")
+                    (" r," . "r,")
+                    (" w, " . "")
+                    (" e, " . "")
+                    (" s"  . "s")
+                    (" f, " . "")
+                    (" !, " . ""))
+            (while (re-search-forward
+                    (format "<%s-state>%s" evil-magit-state (car it)) nil t)
+              (replace-match (cdr it)))))))))
+(add-hook 'git-rebase-mode-hook 'evil-magit-remove-evil-state t)
+
 (evil-define-key evil-magit-state git-commit-mode-map
   "gk" 'git-commit-prev-message
   "gj" 'git-commit-next-message)
