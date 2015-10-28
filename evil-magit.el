@@ -142,7 +142,7 @@
 (require 'evil)
 (require 'magit)
 
-(defcustom evil-magit-state 'normal
+(defcustom evil-magit-state 'motion
   "State to use for most magit buffers.")
 
 ;; temporary until popups are fixed
