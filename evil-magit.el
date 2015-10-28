@@ -145,7 +145,9 @@
 (require 'magit)
 
 (defcustom evil-magit-state 'motion
-  "State to use for most magit buffers.")
+  "State to use for most magit buffers."
+  :group 'magit
+  :type  'symbol)
 
 ;; temporary until popups are fixed
 ;; (push '("\\*magit\.+" . motion) evil-buffer-regexps)
@@ -194,115 +196,116 @@
          (magit-cmd (eval magit-cmd))
          (fun (intern (format "evil-magit-%s-or-%s" evil-magit-cmd magit-cmd)))
          (doc (format "Call %s if in evil's motion state and %s otherwise." evil-magit-cmd magit-cmd)))
-    `(progn (defun ,fun ()
-              ,doc
-              (interactive)
-              (call-interactively
-               (if (funcall (intern (format "evil-%s-state-p" evil-magit-state)))
-                   ',evil-magit-cmd
-                 ',magit-cmd)))
-            (define-key ,map ,key ',fun))))
+    `(progn
+       (unless (fboundp ',fun)
+         (defun ,fun ()
+           ,doc
+           (interactive)
+           (call-interactively
+            (if (funcall (intern (format "evil-%s-state-p" evil-magit-state)))
+                ',evil-magit-cmd
+              ',magit-cmd))))
+       (define-key ,map ,key ',fun))))
 
-(evil-define-key evil-magit-state magit-mode-map "g" nil)
-(evil-define-key evil-magit-state magit-mode-map "\t"    'magit-section-toggle)
-(evil-define-key evil-magit-state magit-mode-map [C-tab] 'magit-section-cycle)
-(evil-define-key evil-magit-state magit-mode-map [M-tab] 'magit-section-cycle-diffs)
-(evil-define-key evil-magit-state magit-mode-map [s-tab] 'magit-section-cycle-global)
-(evil-define-key evil-magit-state magit-mode-map "^"    'magit-section-up)
-(evil-define-key evil-magit-state magit-mode-map "j"    'magit-section-forward) ; was n
-(evil-define-key evil-magit-state magit-mode-map "\C-j" 'evil-next-visual-line)
-(evil-define-key evil-magit-state magit-mode-map "gj"   'magit-section-forward-sibling) ; was M-n
-(evil-define-key evil-magit-state magit-mode-map "k"    'magit-section-backward) ; was p
-(evil-define-key evil-magit-state magit-mode-map "\C-k" 'evil-previous-visual-line)
-(evil-define-key evil-magit-state magit-mode-map "gk"   'magit-section-backward-sibling) ; was M-p
-(evil-define-key evil-magit-state magit-mode-map "+"    'magit-diff-more-context)
-(evil-define-key evil-magit-state magit-mode-map "-"    'magit-diff-less-context)
-(evil-define-key evil-magit-state magit-mode-map "0"    'magit-diff-default-context)
-(evil-define-key evil-magit-state magit-mode-map "1"    'magit-section-show-level-1)
-(evil-define-key evil-magit-state magit-mode-map "2"    'magit-section-show-level-2)
-(evil-define-key evil-magit-state magit-mode-map "3"    'magit-section-show-level-3)
-(evil-define-key evil-magit-state magit-mode-map "4"    'magit-section-show-level-4)
-(evil-define-key evil-magit-state magit-mode-map "\M-1" 'magit-section-show-level-1-all)
-(evil-define-key evil-magit-state magit-mode-map "\M-2" 'magit-section-show-level-2-all)
-(evil-define-key evil-magit-state magit-mode-map "\M-3" 'magit-section-show-level-3-all)
-(evil-define-key evil-magit-state magit-mode-map "\M-4" 'magit-section-show-level-4-all)
-(evil-define-key evil-magit-state magit-mode-map "gr"   'magit-refresh) ; was on g
-(evil-define-key evil-magit-state magit-mode-map "gR"   'magit-refresh-all) ; was on G
-(evil-define-key evil-magit-state magit-mode-map "q" 'magit-mode-bury-buffer)
-(evil-define-key evil-magit-state magit-mode-map "$" 'magit-process-buffer)
-(evil-define-key evil-magit-state magit-mode-map "a" 'magit-cherry-apply)
-(evil-define-key evil-magit-state magit-mode-map "A" 'magit-cherry-pick-popup)
-(evil-define-key evil-magit-state magit-mode-map "b" 'magit-branch-popup)
-(evil-define-key evil-magit-state magit-mode-map "B" 'magit-bisect-popup)
-(evil-define-key evil-magit-state magit-mode-map "c" 'magit-commit-popup)
-(evil-define-key evil-magit-state magit-mode-map "d" 'magit-diff-popup)
-(evil-define-key evil-magit-state magit-mode-map "D" 'magit-diff-refresh-popup)
-(evil-define-key evil-magit-state magit-mode-map "h" 'magit-dispatch-popup)
-(evil-define-key evil-magit-state magit-mode-map "?" 'magit-dispatch-popup)
-(evil-define-key evil-magit-state magit-mode-map "\C-c\C-c" 'magit-dispatch-popup)
-(evil-define-key evil-magit-state magit-mode-map "\C-c\C-e" 'magit-dispatch-popup)
-(evil-define-key evil-magit-state magit-mode-map "e" 'magit-ediff-dwim)
-(evil-define-key evil-magit-state magit-mode-map "E" 'magit-ediff-popup)
-(evil-define-key evil-magit-state magit-mode-map "f" 'magit-fetch-popup)
-(evil-define-key evil-magit-state magit-mode-map "F" 'magit-pull-popup)
-(evil-define-key evil-magit-state magit-mode-map "i" 'magit-gitignore)
-(evil-define-key evil-magit-state magit-mode-map "I" 'magit-gitignore-locally)
-(evil-define-key evil-magit-state magit-mode-map "x" 'magit-delete-thing) ; was on k
-(evil-define-key evil-magit-state magit-mode-map "X" 'magit-file-untrack) ; was on K
-(evil-define-key evil-magit-state magit-mode-map "l" 'magit-log-popup)
-(evil-define-key evil-magit-state magit-mode-map "L" 'magit-log-refresh-popup)
-(evil-define-key evil-magit-state magit-mode-map "m" 'magit-merge-popup)
-(evil-define-key evil-magit-state magit-mode-map "M" 'magit-remote-popup)
-(evil-define-key evil-magit-state magit-mode-map "\C-o" 'magit-submodule-popup)
-(evil-define-key evil-magit-state magit-mode-map "P" 'magit-push-popup)
-(evil-define-key evil-magit-state magit-mode-map "r" 'magit-rebase-popup)
-(evil-define-key evil-magit-state magit-mode-map "R" 'magit-file-rename)
-(evil-define-key evil-magit-state magit-mode-map "t" 'magit-tag-popup)
-(evil-define-key evil-magit-state magit-mode-map "T" 'magit-notes-popup)
-(evil-define-key evil-magit-state magit-mode-map "\r"       'magit-visit-thing)
-(evil-define-key evil-magit-state magit-mode-map [C-return] 'magit-visit-thing)
-(evil-define-key evil-magit-state magit-mode-map [M-return] 'magit-dired-jump)
-(evil-define-key evil-magit-state magit-mode-map "\s"       'magit-diff-show-or-scroll-up)
-(evil-define-key evil-magit-state magit-mode-map "\d"       'magit-diff-show-or-scroll-down)
-(evil-define-key evil-magit-state magit-mode-map "s" 'magit-stage-file)
-(evil-define-key evil-magit-state magit-mode-map "S" 'magit-stage-modified)
-(evil-define-key evil-magit-state magit-mode-map "u" 'magit-unstage-file)
-(evil-define-key evil-magit-state magit-mode-map "U" 'magit-unstage-all)
-(evil-define-key evil-magit-state magit-mode-map "o" 'magit-revert-no-commit)   ; was v
-(evil-define-key evil-magit-state magit-mode-map "O" 'magit-revert-popup)       ; was V
-(evil-define-key evil-magit-state magit-mode-map "w" 'magit-am-popup)
-(evil-define-key evil-magit-state magit-mode-map "W" 'magit-patch-popup)
-(evil-define-key evil-magit-state magit-mode-map "#" 'magit-reset) ; was on x
-(evil-define-key evil-magit-state magit-mode-map "y" 'magit-show-refs-popup)
-(evil-define-key evil-magit-state magit-mode-map "Y" 'magit-cherry)
-(evil-define-key evil-magit-state magit-mode-map "z" 'magit-stash-popup)
-(evil-define-key evil-magit-state magit-mode-map "Z" 'magit-stash-popup)
-(evil-define-key evil-magit-state magit-mode-map "|" 'magit-git-command) ; was :
-(evil-define-key evil-magit-state magit-mode-map "!" 'magit-run-popup)
-(evil-define-key evil-magit-state magit-mode-map "\C-xa"  'magit-add-change-log-entry)
-(evil-define-key evil-magit-state magit-mode-map "\C-x4a" 'magit-add-change-log-entry-other-window)
-(evil-define-key evil-magit-state magit-mode-map "\C-w"   'magit-copy-section-value)
-(evil-define-key evil-magit-state magit-mode-map "\M-w"   'magit-copy-buffer-revision)
+(evil-define-key evil-magit-state magit-mode-map
+  "g"        nil
+  "\t"       'magit-section-toggle
+  [C-tab]    'magit-section-cycle
+  [M-tab]    'magit-section-cycle-diffs
+  [s-tab]    'magit-section-cycle-global
+  "^"        'magit-section-up
+  "j"        'magit-section-forward ; was n
+  "\C-j"     'evil-next-visual-line
+  "gj"       'magit-section-forward-sibling ; was M-n
+  "k"        'magit-section-backward ; was p
+  "\C-k"     'evil-previous-visual-line
+  "gk"       'magit-section-backward-sibling ; was M-p
+  "+"        'magit-diff-more-context
+  "-"        'magit-diff-less-context
+  "0"        'magit-diff-default-context
+  "1"        'magit-section-show-level-1
+  "2"        'magit-section-show-level-2
+  "3"        'magit-section-show-level-3
+  "4"        'magit-section-show-level-4
+  "\M-1"     'magit-section-show-level-1-all
+  "\M-2"     'magit-section-show-level-2-all
+  "\M-3"     'magit-section-show-level-3-all
+  "\M-4"     'magit-section-show-level-4-all
+  "gr"       'magit-refresh ; was on g
+  "gR"       'magit-refresh-all ; was on G
+  "q"        'magit-mode-bury-buffer
+  "$"        'magit-process-buffer
+  "a"        'magit-cherry-apply
+  "A"        'magit-cherry-pick-popup
+  "b"        'magit-branch-popup
+  "B"        'magit-bisect-popup
+  "c"        'magit-commit-popup
+  "d"        'magit-diff-popup
+  "D"        'magit-diff-refresh-popup
+  "h"        'magit-dispatch-popup
+  "?"        'magit-dispatch-popup
+  "\C-c\C-c" 'magit-dispatch-popup
+  "\C-c\C-e" 'magit-dispatch-popup
+  "e"        'magit-ediff-dwim
+  "E"        'magit-ediff-popup
+  "f"        'magit-fetch-popup
+  "F"        'magit-pull-popup
+  "i"        'magit-gitignore
+  "I"        'magit-gitignore-locally
+  "x"        'magit-delete-thing ; was on k
+  "X"        'magit-file-untrack ; was on K
+  "l"        'magit-log-popup
+  "L"        'magit-log-refresh-popup
+  "m"        'magit-merge-popup
+  "M"        'magit-remote-popup
+  "\C-o"     'magit-submodule-popup
+  "P"        'magit-push-popup
+  "r"        'magit-rebase-popup
+  "R"        'magit-file-rename
+  "t"        'magit-tag-popup
+  "T"        'magit-notes-popup
+  "\r"       'magit-visit-thing
+  [C-return] 'magit-visit-thing
+  [M-return] 'magit-dired-jump
+  "\s"       'magit-diff-show-or-scroll-up
+  "\d"       'magit-diff-show-or-scroll-down
+  "s"        'magit-stage-file
+  "S"        'magit-stage-modified
+  "u"        'magit-unstage-file
+  "U"        'magit-unstage-all
+  "o"        'magit-revert-no-commit   ; was v
+  "O"        'magit-revert-popup       ; was V
+  "w"        'magit-am-popup
+  "W"        'magit-patch-popup
+  "#"        'magit-reset ; was on x
+  "y"        'magit-show-refs-popup
+  "Y"        'magit-cherry
+  "z"        'magit-stash-popup
+  "Z"        'magit-stash-popup
+  "|"        'magit-git-command ; was :
+  "!"        'magit-run-popup
+  "\C-xa"    'magit-add-change-log-entry
+  "\C-x4a"   'magit-add-change-log-entry-other-window
+  "\C-w"     'magit-copy-section-value
+  "\M-w"     'magit-copy-buffer-revision
+  ;; evil-specific bindings
+  "v"        'set-mark-command
+  "V"        'set-mark-command
+  "gg"       'evil-goto-first-line
+  "G"        'evil-goto-line
+  ;; "\C-d"     'evil-scroll-down
+  "\C-d"     'magit-section-forward-sibling ; was M-n
+  "\C-f"     'evil-scroll-page-down
+  "\C-b"     'evil-scroll-page-up
+  ":"        'evil-ex
+  "/"        'evil-search-forward
+  "n"        'evil-search-next
+  "N"        'evil-search-previous
+  "\C-z"     'evil-emacs-state)
 
-;;evil bindings
-(evil-define-key evil-magit-state magit-mode-map [remap evil-previous-line] 'evil-previous-visual-line)
-(evil-define-key evil-magit-state magit-mode-map [remap evil-next-line] 'evil-next-visual-line)
-(evil-define-key evil-magit-state magit-mode-map "v" 'set-mark-command)
-(evil-define-key evil-magit-state magit-mode-map "V" 'set-mark-command)
-(evil-define-key evil-magit-state magit-mode-map "gg" 'evil-goto-first-line)
-(evil-define-key evil-magit-state magit-mode-map "G" 'evil-goto-line)
-;; (evil-define-key evil-magit-state map "\C-d" 'evil-scroll-down)
-(evil-define-key evil-magit-state magit-mode-map "\C-d" 'magit-section-forward-sibling) ; was M-n
-(evil-define-key evil-magit-state magit-mode-map "\C-f" 'evil-scroll-page-down)
 (when evil-want-C-u-scroll
   ;; (evil-define-key evil-magit-state map "\C-u" 'evil-scroll-up)
   (evil-define-key evil-magit-state magit-mode-map "\C-u" 'magit-section-backward-sibling)) ; was M-p
-(evil-define-key evil-magit-state magit-mode-map "\C-b" 'evil-scroll-page-up)
-(evil-define-key evil-magit-state magit-mode-map ":" 'evil-ex)
-(evil-define-key evil-magit-state magit-mode-map "/" 'evil-search-forward)
-(evil-define-key evil-magit-state magit-mode-map "n" 'evil-search-next)
-(evil-define-key evil-magit-state magit-mode-map "N" 'evil-search-previous)
-(evil-define-key evil-magit-state magit-mode-map "\C-z" 'evil-emacs-state)
 
 ;; dispatch-popup
 (plist-put magit-dispatch-popup
@@ -351,79 +354,88 @@
 (magit-change-popup-key 'magit-revert-popup :actions ?v ?o)
 (magit-change-popup-key 'magit-revert-popup :actions ?V ?O)
 
-(evil-define-key evil-magit-state magit-status-mode-map "gz" 'magit-jump-to-stashes)
-(evil-define-key evil-magit-state magit-status-mode-map "gt" 'magit-jump-to-tracked)
-(evil-define-key evil-magit-state magit-status-mode-map "gn" 'magit-jump-to-untracked)
-(evil-define-key evil-magit-state magit-status-mode-map "gu" 'magit-jump-to-unstaged)
-(evil-define-key evil-magit-state magit-status-mode-map "gs" 'magit-jump-to-staged)
-(evil-define-key evil-magit-state magit-status-mode-map "gf" 'magit-jump-to-unpulled)
-(evil-define-key evil-magit-state magit-status-mode-map "gp" 'magit-jump-to-unpushed)
+(evil-define-key evil-magit-state magit-status-mode-map
+  "gz" 'magit-jump-to-stashes
+  "gt" 'magit-jump-to-tracked
+  "gn" 'magit-jump-to-untracked
+  "gu" 'magit-jump-to-unstaged
+  "gs" 'magit-jump-to-staged
+  "gf" 'magit-jump-to-unpulled
+  "gp" 'magit-jump-to-unpushed)
 
-(evil-define-key evil-magit-state magit-blob-mode-map "j" 'magit-blob-next)
-(evil-define-key evil-magit-state magit-blob-mode-map "k" 'magit-blob-previous)
-(evil-define-key evil-magit-state magit-blob-mode-map "q" 'magit-kill-this-buffer)
+(evil-define-key evil-magit-state magit-blob-mode-map
+  "j" 'magit-blob-next
+  "k" 'magit-blob-previous
+  "q" 'magit-kill-this-buffer)
 
-(evil-define-key evil-magit-state magit-diff-mode-map "j" 'magit-section-forward)
-(evil-define-key evil-magit-state magit-diff-mode-map "gd" 'magit-jump-to-diffstat-or-diff)
+(evil-define-key evil-magit-state magit-diff-mode-map
+  "j"  'magit-section-forward
+  "gd" 'magit-jump-to-diffstat-or-diff)
 
-(evil-define-key 'normal magit-blame-mode-map "\r" 'magit-show-commit)
-(evil-define-key 'normal magit-blame-mode-map "\s" 'magit-diff-show-or-scroll-up)
-(evil-define-key 'normal magit-blame-mode-map "\d" 'magit-diff-show-or-scroll-down)
-(evil-define-key 'normal magit-blame-mode-map "b"  'magit-blame-popup)
-(evil-define-key 'normal magit-blame-mode-map "j"  'magit-blame-next-chunk) ; was n
-(evil-define-key 'normal magit-blame-mode-map "\C-j" 'evil-next-visual-line)
-(evil-define-key 'normal magit-blame-mode-map "J"  'magit-blame-next-chunk-same-commit) ; was N
-(evil-define-key 'normal magit-blame-mode-map "k"  'magit-blame-previous-chunk)
-(evil-define-key 'normal magit-blame-mode-map "\C-k" 'evil-previous-visual-line)
-(evil-define-key 'normal magit-blame-mode-map "K"  'magit-blame-previous-chunk-same-commit)
-(evil-define-key 'normal magit-blame-mode-map "q"  'magit-blame-quit)
-(evil-define-key 'normal magit-blame-mode-map "t"  'magit-blame-toggle-headings)
-(evil-define-key 'normal magit-blame-mode-map "\M-w" 'magit-blame-copy-hash)
+(evil-define-key 'normal magit-blame-mode-map
+  "\r"   'magit-show-commit
+  "\s"   'magit-diff-show-or-scroll-up
+  "\d"   'magit-diff-show-or-scroll-down
+  "b"    'magit-blame-popup
+  "j"    'magit-blame-next-chunk ; was n
+  "\C-j" 'evil-next-visual-line
+  "J"    'magit-blame-next-chunk-same-commit ; was N
+  "k"    'magit-blame-previous-chunk
+  "\C-k" 'evil-previous-visual-line
+  "K"    'magit-blame-previous-chunk-same-commit
+  "q"    'magit-blame-quit
+  "t"    'magit-blame-toggle-headings
+  "\M-w" 'magit-blame-copy-hash)
 (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
 
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "q")    'undefined)
-(evil-define-key evil-magit-state git-rebase-mode-map [remap undo] 'git-rebase-undo)
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "RET") 'git-rebase-show-commit)
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "SPC") 'magit-diff-show-or-scroll-up)
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "!")   'git-rebase-exec) ; was x
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "c")   'git-rebase-pick)
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "p")   'git-rebase-pick) ; was c
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "r")   'git-rebase-reword)
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "w")   'git-rebase-reword)
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "e")   'git-rebase-edit)
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "s")   'git-rebase-squash)
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "f")   'git-rebase-fixup)
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "y")   'git-rebase-insert)
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "x")   'git-rebase-kill-line) ; was k or C-k
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "d")   'git-rebase-kill-line) ; was k or C-k
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "k")   'git-rebase-backward-line) ; was p
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "j")   'forward-line) ; was n
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "gk")      'git-rebase-move-line-up) ; was M-p
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "gj")      'git-rebase-move-line-down) ; was M-n
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "M-<up>")   'git-rebase-move-line-up)
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "M-<down>") 'git-rebase-move-line-down)
-(evil-define-key evil-magit-state git-rebase-mode-map (kbd "C-x C-t")  'git-rebase-move-line-up)
+(evil-define-key evil-magit-state git-rebase-mode-map
+  "q"          'undefined
+  [remap undo] 'git-rebase-undo
+  "\r"         'git-rebase-show-commit
+  "\s"         'magit-diff-show-or-scroll-up
+  "!"          'git-rebase-exec ; was x
+  "c"          'git-rebase-pick
+  "p"          'git-rebase-pick ; was c
+  "r"          'git-rebase-reword
+  "w"          'git-rebase-reword
+  "e"          'git-rebase-edit
+  "s"          'git-rebase-squash
+  "f"          'git-rebase-fixup
+  "y"          'git-rebase-insert
+  "x"          'git-rebase-kill-line ; was k or C-k
+  "d"          'git-rebase-kill-line ; was k or C-k
+  "k"          'git-rebase-backward-line ; was p
+  "j"          'forward-line ; was n
+  "gk"         'git-rebase-move-line-up ; was M-p
+  "gj"         'git-rebase-move-line-down ; was M-n
+  [M-<up>]     'git-rebase-move-line-up
+  [M-<down>]   'git-rebase-move-line-down
+  "\C-x\C-t"   'git-rebase-move-line-up)
 
-(evil-define-key evil-magit-state git-commit-mode-map (kbd "gk") 'git-commit-prev-message)
-(evil-define-key evil-magit-state git-commit-mode-map (kbd "gj") 'git-commit-next-message)
+(evil-define-key evil-magit-state git-commit-mode-map
+  "gk" 'git-commit-prev-message
+  "gj" 'git-commit-next-message)
 
-(evil-define-key evil-magit-state magit-log-mode-map "\C-c\C-b" 'magit-go-backward)
-(evil-define-key evil-magit-state magit-log-mode-map "\C-c\C-f" 'magit-go-forward)
-(evil-define-key evil-magit-state magit-log-mode-map "=" 'magit-log-toggle-commit-limit)
-(evil-define-key evil-magit-state magit-log-mode-map "+" 'magit-log-double-commit-limit)
-(evil-define-key evil-magit-state magit-log-mode-map "-" 'magit-log-half-commit-limit)
-(evil-define-key evil-magit-state magit-log-mode-map "q" 'magit-log-bury-buffer)
+(evil-define-key evil-magit-state magit-log-mode-map
+  "\C-c\C-b" 'magit-go-backward
+  "\C-c\C-f" 'magit-go-forward
+  "="        'magit-log-toggle-commit-limit
+  "+"        'magit-log-double-commit-limit
+  "-"        'magit-log-half-commit-limit
+  "q"        'magit-log-bury-buffer)
 
-(evil-define-key evil-magit-state magit-log-select-mode-map "\C-c\C-b" 'undefined)
-(evil-define-key evil-magit-state magit-log-select-mode-map "\C-c\C-f" 'undefined)
-(evil-define-key evil-magit-state magit-log-select-mode-map "."        'magit-log-select-pick)
-(evil-define-key evil-magit-state magit-log-select-mode-map "e"        'magit-log-select-pick)
-(evil-define-key evil-magit-state magit-log-select-mode-map "\C-c\C-c" 'magit-log-select-pick)
-(evil-define-key evil-magit-state magit-log-select-mode-map "q"        'magit-log-select-quit)
-(evil-define-key evil-magit-state magit-log-select-mode-map "\C-c\C-k" 'magit-log-select-quit)
+(evil-define-key evil-magit-state magit-log-select-mode-map
+  "\C-c\C-b" 'undefined
+  "\C-c\C-f" 'undefined
+  "."        'magit-log-select-pick
+  "e"        'magit-log-select-pick
+  "\C-c\C-c" 'magit-log-select-pick
+  "q"        'magit-log-select-quit
+  "\C-c\C-k" 'magit-log-select-quit)
 
-(evil-define-key evil-magit-state magit-cherry-mode-map "q" 'magit-log-bury-buffer)
-(evil-define-key evil-magit-state magit-cherry-mode-map "L" 'magit-toggle-margin)
+(evil-define-key evil-magit-state magit-cherry-mode-map
+  "q" 'magit-log-bury-buffer
+  "L" 'magit-toggle-margin)
 
 (evil-define-key evil-magit-state magit-reflog-mode-map "L" 'magit-toggle-margin)
 
