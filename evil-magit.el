@@ -95,33 +95,36 @@
 
 ;; maps changed
 ;;
+;; magit-cherry-mode-map
 ;; git-commit-mode-map
 ;; git-rebase-mode-map
 ;; magit-mode-map
 ;; magit-blame-mode-map
 ;; magit-blob-mode-map
+;; magit-diff-mode-map
+;; magit-log-mode-map
+;; magit-log-select-mode-map
+;; magit-reflog-mode-map
+;; magit-status-mode-map
+
 ;; magit-branch-section-map
 ;; magit-commit-section-map
-;; magit-diff-mode-map
 ;; magit-file-sections-map
 ;; magit-hunk-section-map
 ;; magit-remote-section-map
 ;; magit-staged-section-map
-;; magit-status-mode-map
 
 ;; maps unchanged
 ;;
-;; magit-cherry-mode-map
 ;; magit-file-mode-map
-;; magit-log-mode-map
 ;; magit-log-read-revs-map
-;; magit-log-select-mode-map
 ;; magit-minibuffer-local-ns-map
-;; magit-module-commit-section-map
 ;; magit-popup-mode-map
 ;; magit-process-mode-map
-;; magit-reflog-mode-map
 ;; magit-refs-mode-map
+;; with-editor-mode-map
+
+;; magit-module-commit-section-map
 ;; magit-stash-section-map
 ;; magit-stashes-section-map
 ;; magit-tag-section-map
@@ -129,7 +132,6 @@
 ;; magit-unpushed-section-map
 ;; magit-unstaged-section-map
 ;; magit-untracked-section-map
-;; with-editor-mode-map
 
 ;; TODO
 ;; 1. popups
@@ -405,6 +407,26 @@
 (evil-define-key evil-magit-state git-commit-mode-map (kbd "gk") 'git-commit-prev-message)
 (evil-define-key evil-magit-state git-commit-mode-map (kbd "gj") 'git-commit-next-message)
 
+(evil-define-key evil-magit-state magit-log-mode-map "\C-c\C-b" 'magit-go-backward)
+(evil-define-key evil-magit-state magit-log-mode-map "\C-c\C-f" 'magit-go-forward)
+(evil-define-key evil-magit-state magit-log-mode-map "=" 'magit-log-toggle-commit-limit)
+(evil-define-key evil-magit-state magit-log-mode-map "+" 'magit-log-double-commit-limit)
+(evil-define-key evil-magit-state magit-log-mode-map "-" 'magit-log-half-commit-limit)
+(evil-define-key evil-magit-state magit-log-mode-map "q" 'magit-log-bury-buffer)
+
+(evil-define-key evil-magit-state magit-log-select-mode-map "\C-c\C-b" 'undefined)
+(evil-define-key evil-magit-state magit-log-select-mode-map "\C-c\C-f" 'undefined)
+(evil-define-key evil-magit-state magit-log-select-mode-map "."        'magit-log-select-pick)
+(evil-define-key evil-magit-state magit-log-select-mode-map "e"        'magit-log-select-pick)
+(evil-define-key evil-magit-state magit-log-select-mode-map "\C-c\C-c" 'magit-log-select-pick)
+(evil-define-key evil-magit-state magit-log-select-mode-map "q"        'magit-log-select-quit)
+(evil-define-key evil-magit-state magit-log-select-mode-map "\C-c\C-k" 'magit-log-select-quit)
+
+(evil-define-key evil-magit-state magit-cherry-mode-map "q" 'magit-log-bury-buffer)
+(evil-define-key evil-magit-state magit-cherry-mode-map "L" 'magit-toggle-margin)
+
+(evil-define-key evil-magit-state magit-reflog-mode-map "L" 'magit-toggle-margin)
+
 ;; section maps: evil-define-key doesn't work here, because these maps are text overlays
 
 (evil-magit-define-key magit-commit-section-map "v" 'set-mark-command 'magit-revert-no-commit)
@@ -412,7 +434,6 @@
 
 (evil-magit-define-key magit-file-section-map "K"    'magit-section-backward-sibling 'magit-file-untrack)
 (evil-magit-define-key magit-file-section-map "X"    'magit-file-untrack) ; was K
-(evil-magit-define-key magit-file-section-map "R"    'magit-file-rename)
 (evil-magit-define-key magit-file-section-map "v"    'set-mark-command 'magit-reverse)
 (evil-magit-define-key magit-file-section-map "o"    'magit-reverse 'magit-submodule-popup) ; was v
 (evil-magit-define-key magit-file-section-map "\C-j" 'evil-next-visual-line 'magit-diff-visit-file-worktree)
