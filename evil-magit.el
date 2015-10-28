@@ -58,9 +58,9 @@
 ;;   submodule    | o   |
 ;;   prev section | p   | k
 ;;   push         | P   |
-;;   rebase       | r   | R
-;;   refresh      | g   | r
-;;   rename       | R   | _
+;;   rebase       | r   |
+;;   refresh      | g   | gr/gR
+;;   rename       | R   |
 ;;   stage        | s/S |
 ;;   tag          | t   |
 ;;   notes        | T   |
@@ -224,8 +224,8 @@
 (evil-define-key evil-magit-state magit-mode-map "\M-2" 'magit-section-show-level-2-all)
 (evil-define-key evil-magit-state magit-mode-map "\M-3" 'magit-section-show-level-3-all)
 (evil-define-key evil-magit-state magit-mode-map "\M-4" 'magit-section-show-level-4-all)
-(evil-define-key evil-magit-state magit-mode-map "r"    'magit-refresh) ; was on g
-(evil-define-key evil-magit-state magit-mode-map "\C-r" 'magit-refresh-all) ; was on G
+(evil-define-key evil-magit-state magit-mode-map "gr"   'magit-refresh) ; was on g
+(evil-define-key evil-magit-state magit-mode-map "gR"   'magit-refresh-all) ; was on G
 (evil-define-key evil-magit-state magit-mode-map "q" 'magit-mode-bury-buffer)
 (evil-define-key evil-magit-state magit-mode-map "$" 'magit-process-buffer)
 (evil-define-key evil-magit-state magit-mode-map "a" 'magit-cherry-apply)
@@ -253,8 +253,8 @@
 (evil-define-key evil-magit-state magit-mode-map "M" 'magit-remote-popup)
 (evil-define-key evil-magit-state magit-mode-map "o" 'magit-submodule-popup)
 (evil-define-key evil-magit-state magit-mode-map "P" 'magit-push-popup)
-(evil-define-key evil-magit-state magit-mode-map "R" 'magit-rebase-popup) ; was on r
-(evil-define-key evil-magit-state magit-mode-map "_" 'magit-file-rename)  ; was R
+(evil-define-key evil-magit-state magit-mode-map "r" 'magit-rebase-popup)
+(evil-define-key evil-magit-state magit-mode-map "R" 'magit-file-rename)
 (evil-define-key evil-magit-state magit-mode-map "t" 'magit-tag-popup)
 (evil-define-key evil-magit-state magit-mode-map "T" 'magit-notes-popup)
 (evil-define-key evil-magit-state magit-mode-map "\r"       'magit-visit-thing)
@@ -321,7 +321,7 @@
                       (?M "Remoting"        magit-remote-popup)
                       (?o "Submodules"      magit-submodule-popup)
                       (?P "Pushing"         magit-push-popup)
-                      (?R "Rebasing"        magit-rebase-popup)
+                      (?r "Rebasing"        magit-rebase-popup)
                       (?t "Tagging"         magit-tag-popup)
                       (?T "Notes"           magit-notes-popup)
                       (?w "Apply patches"   magit-am-popup)
@@ -346,7 +346,6 @@
 
  C-h m  show all key bindings" nil))
 
-(magit-change-popup-key 'magit-rebase-popup :actions ?r ?R)
 (magit-change-popup-key 'magit-revert-popup :actions ?v ?h)
 (magit-change-popup-key 'magit-revert-popup :actions ?V ?H)
 
@@ -407,12 +406,6 @@
 (evil-define-key evil-magit-state git-commit-mode-map (kbd "gj") 'git-commit-next-message)
 
 ;; section maps: evil-define-key doesn't work here, because these maps are text overlays
-
-(evil-magit-define-key magit-remote-section-map "R" 'magit-rebase-popup 'magit-branch-rename)
-(evil-magit-define-key magit-remote-section-map "_" 'magit-branch-rename)
-
-(evil-magit-define-key magit-branch-section-map "R" 'magit-rebase-popup 'magit-branch-rename)
-(evil-magit-define-key magit-branch-section-map "_" 'magit-branch-rename)
 
 (evil-magit-define-key magit-commit-section-map "v" 'set-mark-command 'magit-revert-no-commit)
 (evil-magit-define-key magit-commit-section-map "h" 'magit-revert-no-commit 'magit-dispatch-popup)
