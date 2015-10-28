@@ -43,7 +43,7 @@
 ;;   bisect       | B   |
 ;;   commit       | c   |
 ;;   diff         | d/D |
-;;   help         | h/? | ?
+;;   help         | h/? |
 ;;   ediff        | e/E |
 ;;   fetch        | f   |
 ;;   pull         | F   |
@@ -55,7 +55,7 @@
 ;;   merge        | m   |
 ;;   remote       | M   |
 ;;   next section | n   | j
-;;   submodule    | o   |
+;;   submodule    | o   | C-o
 ;;   prev section | p   | k
 ;;   push         | P   |
 ;;   rebase       | r   |
@@ -65,7 +65,7 @@
 ;;   tag          | t   |
 ;;   notes        | T   |
 ;;   unstage      | u/U |
-;;   revert       | v/V | h/H
+;;   revert       | v/V | o/O
 ;;   am           | w   |
 ;;   patch        | W   |
 ;;   reset        | x   | #
@@ -251,7 +251,7 @@
 (evil-define-key evil-magit-state magit-mode-map "L" 'magit-log-refresh-popup)
 (evil-define-key evil-magit-state magit-mode-map "m" 'magit-merge-popup)
 (evil-define-key evil-magit-state magit-mode-map "M" 'magit-remote-popup)
-(evil-define-key evil-magit-state magit-mode-map "o" 'magit-submodule-popup)
+(evil-define-key evil-magit-state magit-mode-map "\C-o" 'magit-submodule-popup)
 (evil-define-key evil-magit-state magit-mode-map "P" 'magit-push-popup)
 (evil-define-key evil-magit-state magit-mode-map "r" 'magit-rebase-popup)
 (evil-define-key evil-magit-state magit-mode-map "R" 'magit-file-rename)
@@ -266,8 +266,8 @@
 (evil-define-key evil-magit-state magit-mode-map "S" 'magit-stage-modified)
 (evil-define-key evil-magit-state magit-mode-map "u" 'magit-unstage-file)
 (evil-define-key evil-magit-state magit-mode-map "U" 'magit-unstage-all)
-(evil-define-key evil-magit-state magit-mode-map "h" 'magit-revert-no-commit)   ; was v
-(evil-define-key evil-magit-state magit-mode-map "H" 'magit-revert-popup)       ; was V
+(evil-define-key evil-magit-state magit-mode-map "o" 'magit-revert-no-commit)   ; was v
+(evil-define-key evil-magit-state magit-mode-map "O" 'magit-revert-popup)       ; was V
 (evil-define-key evil-magit-state magit-mode-map "w" 'magit-am-popup)
 (evil-define-key evil-magit-state magit-mode-map "W" 'magit-patch-popup)
 (evil-define-key evil-magit-state magit-mode-map "#" 'magit-reset) ; was on x
@@ -315,11 +315,11 @@
                       (?E "Ediffing"        magit-ediff-popup)
                       (?f "Fetching"        magit-fetch-popup)
                       (?F "Pulling"         magit-pull-popup)
-                      (?H "Reverting"       magit-revert-popup)
                       (?l "Logging"         magit-log-popup)
                       (?m "Merging"         magit-merge-popup)
                       (?M "Remoting"        magit-remote-popup)
-                      (?o "Submodules"      magit-submodule-popup)
+                      (?O "Reverting"       magit-revert-popup)
+                      (?\C-o "Submodules"   magit-submodule-popup)
                       (?P "Pushing"         magit-push-popup)
                       (?r "Rebasing"        magit-rebase-popup)
                       (?t "Tagging"         magit-tag-popup)
@@ -334,20 +334,20 @@
                       (?s "Stage"           magit-stage)
                       (?u "Unstage"         magit-unstage)
                       nil
-                      (?h "Reverse"         magit-reverse)
+                      (?o "Reverse"         magit-reverse)
                       (?S "Stage all"       magit-stage-modified)
                       (?U "Unstage all"     magit-unstage-all)
                       nil
                       (?x "Discard"         magit-discard)
                       "\
- r      refresh current buffer
+ gr     refresh current buffer
  TAB    toggle section at point
  RET    visit thing at point
 
  C-h m  show all key bindings" nil))
 
-(magit-change-popup-key 'magit-revert-popup :actions ?v ?h)
-(magit-change-popup-key 'magit-revert-popup :actions ?V ?H)
+(magit-change-popup-key 'magit-revert-popup :actions ?v ?o)
+(magit-change-popup-key 'magit-revert-popup :actions ?V ?O)
 
 (evil-define-key evil-magit-state magit-status-mode-map "gz" 'magit-jump-to-stashes)
 (evil-define-key evil-magit-state magit-status-mode-map "gt" 'magit-jump-to-tracked)
@@ -408,21 +408,21 @@
 ;; section maps: evil-define-key doesn't work here, because these maps are text overlays
 
 (evil-magit-define-key magit-commit-section-map "v" 'set-mark-command 'magit-revert-no-commit)
-(evil-magit-define-key magit-commit-section-map "h" 'magit-revert-no-commit 'magit-dispatch-popup)
+(evil-magit-define-key magit-commit-section-map "o" 'magit-revert-no-commit 'magit-submodule-popup)
 
 (evil-magit-define-key magit-file-section-map "K"    'magit-section-backward-sibling 'magit-file-untrack)
 (evil-magit-define-key magit-file-section-map "X"    'magit-file-untrack) ; was K
-(evil-magit-define-key magit-file-section-map "_"    'magit-file-rename) ; was R
+(evil-magit-define-key magit-file-section-map "R"    'magit-file-rename)
 (evil-magit-define-key magit-file-section-map "v"    'set-mark-command 'magit-reverse)
-(evil-magit-define-key magit-file-section-map "h"    'magit-reverse 'magit-dispatch-popup) ; was v
+(evil-magit-define-key magit-file-section-map "o"    'magit-reverse 'magit-submodule-popup) ; was v
 (evil-magit-define-key magit-file-section-map "\C-j" 'evil-next-visual-line 'magit-diff-visit-file-worktree)
 
 (evil-magit-define-key magit-hunk-section-map "v"    'set-mark-command 'magit-reverse)
-(evil-magit-define-key magit-hunk-section-map "h"    'magit-reverse 'magit-dispatch-popup) ; was v
+(evil-magit-define-key magit-hunk-section-map "o"    'magit-reverse 'magit-submodule-popup) ; was v
 (evil-magit-define-key magit-hunk-section-map "\C-j" 'evil-next-visual-line 'magit-diff-visit-file-worktree)
 
 (evil-magit-define-key magit-staged-section-map "v" 'set-mark-command 'magit-reverse)
-(evil-magit-define-key magit-staged-section-map "h" 'magit-reverse 'magit-dispatch-popup) ; was v
+(evil-magit-define-key magit-staged-section-map "o" 'magit-reverse 'magit-submodule-popup) ; was v
 
 ;;; evil-magit.el ends soon
 (provide 'evil-magit)
