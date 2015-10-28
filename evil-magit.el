@@ -350,6 +350,7 @@
  RET    visit thing at point
 
  C-h m  show all key bindings" nil))
+(define-key magit-popup-mode-map "gr" 'magit-refresh)
 
 (magit-change-popup-key 'magit-revert-popup :actions ?v ?o)
 (magit-change-popup-key 'magit-revert-popup :actions ?V ?O)
