@@ -149,9 +149,24 @@
   :group 'magit
   :type  'symbol)
 
-;; temporary until popups are fixed
-;; (push '("\\*magit\.+" . motion) evil-buffer-regexps)
-;; (push '("\\*magit-\.+popup\\*" . emacs) evil-buffer-regexps)
+;; evil doesn't override the text property keymaps, so we need special functions
+;; for these commands
+(defmacro evil-magit-define-key (map key evil-magit-cmd &optional magit-cmd)
+  (let* ((evil-magit-cmd (eval evil-magit-cmd))
+         (magit-cmd (eval magit-cmd))
+         (fun (intern (format "evil-magit-%s-or-%s" evil-magit-cmd magit-cmd)))
+         (doc (format "Call %s if in evil's motion state and %s otherwise." evil-magit-cmd magit-cmd)))
+    `(progn
+       (unless (fboundp ',fun)
+         (defun ,fun ()
+           ,doc
+           (interactive)
+           (call-interactively
+            (if (funcall (intern (format "evil-%s-state-p" evil-magit-state)))
+                ',evil-magit-cmd
+              ',magit-cmd))))
+       (define-key ,map ,key ',fun))))
+
 (dolist (mode '(git-commit-mode
                 magit-mode
                 magit-cherry-mode
@@ -168,6 +183,7 @@
                 magit-stashes-mode
                 magit-status-mode))
   (setq evil-emacs-state-modes (delq mode evil-emacs-state-modes)))
+
 (dolist (mode '(magit-mode
                 git-popup-mode
                 git-rebase-mode
@@ -189,112 +205,61 @@
                 magit-status-mode))
   (add-to-list (intern (format "evil-%s-state-modes" evil-magit-state)) mode))
 
-;; evil doesn't override the text property keymaps, so we need special functions
-;; for these commands
-(defmacro evil-magit-define-key (map key evil-magit-cmd &optional magit-cmd)
-  (let* ((evil-magit-cmd (eval evil-magit-cmd))
-         (magit-cmd (eval magit-cmd))
-         (fun (intern (format "evil-magit-%s-or-%s" evil-magit-cmd magit-cmd)))
-         (doc (format "Call %s if in evil's motion state and %s otherwise." evil-magit-cmd magit-cmd)))
-    `(progn
-       (unless (fboundp ',fun)
-         (defun ,fun ()
-           ,doc
-           (interactive)
-           (call-interactively
-            (if (funcall (intern (format "evil-%s-state-p" evil-magit-state)))
-                ',evil-magit-cmd
-              ',magit-cmd))))
-       (define-key ,map ,key ',fun))))
+;; fill up auxiliary keymaps with default bindings so that they override any
+;; default evil bindings. The remaining bindings in this file are then limited
+;; to the ones that change.
+(dolist (map (list magit-mode-map
+                   magit-cherry-mode-map
+                   ;; git-commit-mode-map
+                   magit-mode-map
+                   magit-blob-mode-map
+                   magit-diff-mode-map
+                   magit-log-mode-map
+                   magit-log-select-mode-map
+                   magit-reflog-mode-map
+                   magit-status-mode-map
+                   magit-file-mode-map
+                   magit-log-read-revs-map
+                   ;; magit-minibuffer-local-ns-map
+                   ;; magit-popup-mode-map
+                   magit-process-mode-map
+                   magit-refs-mode-map))
+  ;; (evil-set-auxiliary-keymap map evil-magit-state map)
+  (map-keymap
+   (lambda (e d)
+     (when (characterp e)
+       (evil-define-key evil-magit-state map (char-to-string e) d)))
+   map))
+
+(map-keymap
+ (lambda (e d)
+   (when (characterp e)
+     (evil-define-key 'normal magit-blame-mode-map (char-to-string e) d)))
+ magit-blame-mode-map)
 
 (evil-define-key evil-magit-state magit-mode-map
   "g"        nil
-  "\t"       'magit-section-toggle
-  [C-tab]    'magit-section-cycle
-  [M-tab]    'magit-section-cycle-diffs
-  [s-tab]    'magit-section-cycle-global
-  "^"        'magit-section-up
-  "j"        'magit-section-forward ; was n
+  "j"        'magit-section-forward          ; was n
   "\C-j"     'evil-next-visual-line
-  "gj"       'magit-section-forward-sibling ; was M-n
-  "k"        'magit-section-backward ; was p
+  "gj"       'magit-section-forward-sibling  ; was M-n
+  "k"        'magit-section-backward         ; was p
   "\C-k"     'evil-previous-visual-line
   "gk"       'magit-section-backward-sibling ; was M-p
-  "+"        'magit-diff-more-context
-  "-"        'magit-diff-less-context
-  "0"        'magit-diff-default-context
-  "1"        'magit-section-show-level-1
-  "2"        'magit-section-show-level-2
-  "3"        'magit-section-show-level-3
-  "4"        'magit-section-show-level-4
-  "\M-1"     'magit-section-show-level-1-all
-  "\M-2"     'magit-section-show-level-2-all
-  "\M-3"     'magit-section-show-level-3-all
-  "\M-4"     'magit-section-show-level-4-all
-  "gr"       'magit-refresh ; was on g
-  "gR"       'magit-refresh-all ; was on G
-  "q"        'magit-mode-bury-buffer
-  "$"        'magit-process-buffer
-  "a"        'magit-cherry-apply
-  "A"        'magit-cherry-pick-popup
-  "b"        'magit-branch-popup
-  "B"        'magit-bisect-popup
-  "c"        'magit-commit-popup
-  "d"        'magit-diff-popup
-  "D"        'magit-diff-refresh-popup
-  "h"        'magit-dispatch-popup
-  "?"        'magit-dispatch-popup
-  "\C-c\C-c" 'magit-dispatch-popup
-  "\C-c\C-e" 'magit-dispatch-popup
-  "e"        'magit-ediff-dwim
-  "E"        'magit-ediff-popup
-  "f"        'magit-fetch-popup
-  "F"        'magit-pull-popup
-  "i"        'magit-gitignore
-  "I"        'magit-gitignore-locally
-  "x"        'magit-delete-thing ; was on k
-  "X"        'magit-file-untrack ; was on K
-  "l"        'magit-log-popup
-  "L"        'magit-log-refresh-popup
-  "m"        'magit-merge-popup
-  "M"        'magit-remote-popup
-  "\C-o"     'magit-submodule-popup
-  "P"        'magit-push-popup
-  "r"        'magit-rebase-popup
-  "R"        'magit-file-rename
-  "t"        'magit-tag-popup
-  "T"        'magit-notes-popup
-  "\r"       'magit-visit-thing
-  [C-return] 'magit-visit-thing
-  [M-return] 'magit-dired-jump
-  "\s"       'magit-diff-show-or-scroll-up
-  "\d"       'magit-diff-show-or-scroll-down
-  "s"        'magit-stage-file
-  "S"        'magit-stage-modified
-  "u"        'magit-unstage-file
-  "U"        'magit-unstage-all
-  "o"        'magit-revert-no-commit   ; was v
-  "O"        'magit-revert-popup       ; was V
-  "w"        'magit-am-popup
-  "W"        'magit-patch-popup
-  "#"        'magit-reset ; was on x
-  "y"        'magit-show-refs-popup
-  "Y"        'magit-cherry
-  "z"        'magit-stash-popup
-  "Z"        'magit-stash-popup
-  "|"        'magit-git-command ; was :
-  "!"        'magit-run-popup
-  "\C-xa"    'magit-add-change-log-entry
-  "\C-x4a"   'magit-add-change-log-entry-other-window
-  "\C-w"     'magit-copy-section-value
-  "\M-w"     'magit-copy-buffer-revision
+  "gr"       'magit-refresh                  ; was on g
+  "gR"       'magit-refresh-all              ; was on G
+  "x"        'magit-delete-thing             ; was on k
+  "X"        'magit-file-untrack             ; was on K
+  "o"        'magit-revert-no-commit         ; was v
+  "O"        'magit-revert-popup             ; was V
+  "#"        'magit-reset                    ; was on x
+  "|"        'magit-git-command              ; was :
   ;; evil-specific bindings
   "v"        'set-mark-command
   "V"        'set-mark-command
   "gg"       'evil-goto-first-line
   "G"        'evil-goto-line
   ;; "\C-d"     'evil-scroll-down
-  "\C-d"     'magit-section-forward-sibling ; was M-n
+  "\C-d"     'magit-section-forward-sibling  ; was M-n
   "\C-f"     'evil-scroll-page-down
   "\C-b"     'evil-scroll-page-up
   ":"        'evil-ex
@@ -350,6 +315,7 @@
  RET    visit thing at point
 
  C-h m  show all key bindings" nil))
+
 (define-key magit-popup-mode-map "gr" 'magit-refresh)
 
 (magit-change-popup-key 'magit-revert-popup :actions ?v ?o)
@@ -366,52 +332,35 @@
 
 (evil-define-key evil-magit-state magit-blob-mode-map
   "j" 'magit-blob-next
-  "k" 'magit-blob-previous
-  "q" 'magit-kill-this-buffer)
+  "k" 'magit-blob-previous)
 
 (evil-define-key evil-magit-state magit-diff-mode-map
   "j"  'magit-section-forward
   "gd" 'magit-jump-to-diffstat-or-diff)
 
 (evil-define-key 'normal magit-blame-mode-map
-  "\r"   'magit-show-commit
-  "\s"   'magit-diff-show-or-scroll-up
-  "\d"   'magit-diff-show-or-scroll-down
-  "b"    'magit-blame-popup
-  "j"    'magit-blame-next-chunk ; was n
+  "j"    'magit-blame-next-chunk        ; was n
   "\C-j" 'evil-next-visual-line
   "J"    'magit-blame-next-chunk-same-commit ; was N
-  "k"    'magit-blame-previous-chunk
+  "k"    'magit-blame-previous-chunk         ; was p
   "\C-k" 'evil-previous-visual-line
-  "K"    'magit-blame-previous-chunk-same-commit
-  "q"    'magit-blame-quit
-  "t"    'magit-blame-toggle-headings
-  "\M-w" 'magit-blame-copy-hash)
+  "K"    'magit-blame-previous-chunk-same-commit ; was P
+   )
 (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
 
-(evil-define-key evil-magit-state git-rebase-mode-map
-  "q"          'undefined
-  [remap undo] 'git-rebase-undo
-  "\r"         'git-rebase-show-commit
-  "\s"         'magit-diff-show-or-scroll-up
-  "!"          'git-rebase-exec ; was x
-  "c"          'git-rebase-pick
-  "p"          'git-rebase-pick ; was c
-  "r"          'git-rebase-reword
-  "w"          'git-rebase-reword
-  "e"          'git-rebase-edit
-  "s"          'git-rebase-squash
-  "f"          'git-rebase-fixup
-  "y"          'git-rebase-insert
-  "x"          'git-rebase-kill-line ; was k or C-k
-  "d"          'git-rebase-kill-line ; was k or C-k
-  "k"          'git-rebase-backward-line ; was p
-  "j"          'forward-line ; was n
-  "gk"         'git-rebase-move-line-up ; was M-p
-  "gj"         'git-rebase-move-line-down ; was M-n
-  [M-<up>]     'git-rebase-move-line-up
-  [M-<down>]   'git-rebase-move-line-down
-  "\C-x\C-t"   'git-rebase-move-line-up)
+(eval-after-load 'git-rebase
+  `(progn
+     (evil-set-auxiliary-keymap git-rebase-mode-map evil-magit-state git-rebase-mode-map)
+     (evil-define-key evil-magit-state git-rebase-mode-map
+       "!"  'git-rebase-exec            ; was x
+       "p"  'git-rebase-pick            ; was c
+       "x"  'git-rebase-kill-line       ; was k or C-k
+       "d"  'git-rebase-kill-line       ; was k or C-k
+       "k"  'git-rebase-backward-line   ; was p
+       "j"  'forward-line               ; was n
+       "gk" 'git-rebase-move-line-up    ; was M-p
+       "gj" 'git-rebase-move-line-down  ; was M-n
+       )))
 
 (defun evil-magit-remove-evil-state ()
   "Remove evil-state annotations from key bindings in Commands
@@ -437,29 +386,6 @@ section of rebase buffer."
 (evil-define-key evil-magit-state git-commit-mode-map
   "gk" 'git-commit-prev-message
   "gj" 'git-commit-next-message)
-
-(evil-define-key evil-magit-state magit-log-mode-map
-  "\C-c\C-b" 'magit-go-backward
-  "\C-c\C-f" 'magit-go-forward
-  "="        'magit-log-toggle-commit-limit
-  "+"        'magit-log-double-commit-limit
-  "-"        'magit-log-half-commit-limit
-  "q"        'magit-log-bury-buffer)
-
-(evil-define-key evil-magit-state magit-log-select-mode-map
-  "\C-c\C-b" 'undefined
-  "\C-c\C-f" 'undefined
-  "."        'magit-log-select-pick
-  "e"        'magit-log-select-pick
-  "\C-c\C-c" 'magit-log-select-pick
-  "q"        'magit-log-select-quit
-  "\C-c\C-k" 'magit-log-select-quit)
-
-(evil-define-key evil-magit-state magit-cherry-mode-map
-  "q" 'magit-log-bury-buffer
-  "L" 'magit-toggle-margin)
-
-(evil-define-key evil-magit-state magit-reflog-mode-map "L" 'magit-toggle-margin)
 
 ;; section maps: evil-define-key doesn't work here, because these maps are text overlays
 
