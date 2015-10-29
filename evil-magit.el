@@ -161,10 +161,11 @@
          (defun ,fun ()
            ,doc
            (interactive)
-           (call-interactively
-            (if (or (null evil-state) (evil-emacs-state-p))
-                ',magit-cmd
-              ',evil-magit-cmd))))
+           (let ((cmd (if (or (null evil-state) (evil-emacs-state-p))
+                          ',magit-cmd
+                        ',evil-magit-cmd)))
+             (setq this-command cmd)
+             (call-interactively cmd))))
        (define-key ,map ,key ',fun))))
 
 ;; without this set-mark-command activates visual-state which is just annoying
@@ -173,6 +174,11 @@
   (when (derived-mode-p 'magit-mode)
     (remove-hook 'activate-mark-hook 'evil-visual-activate-hook t)))
 (add-hook 'evil-local-mode-hook 'evil-magit-remove-visual-activate-hook)
+
+(defun evil-magit-maybe-deactivate-mark ()
+  "Deactivate mark if region is active. Used for ESC binding."
+  (interactive)
+  (when (region-active-p) (deactivate-mark)))
 
 (dolist (mode '(git-commit-mode
                 magit-mode
@@ -274,7 +280,8 @@
   "/"        'evil-search-forward
   "n"        'evil-search-next
   "N"        'evil-search-previous
-  "\C-z"     'evil-emacs-state)
+  "\C-z"     'evil-emacs-state
+  [escape]   'evil-magit-maybe-deactivate-mark)
 
 (when evil-want-C-u-scroll
   ;; (evil-define-key evil-magit-state map "\C-u" 'evil-scroll-up)
