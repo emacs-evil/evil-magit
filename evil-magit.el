@@ -167,6 +167,13 @@
               ',evil-magit-cmd))))
        (define-key ,map ,key ',fun))))
 
+;; without this set-mark-command activates visual-state which is just annoying
+;; and introduces possible bugs
+(defun evil-magit-remove-visual-activate-hook ()
+  (when (derived-mode-p 'magit-mode)
+    (remove-hook 'activate-mark-hook 'evil-visual-activate-hook t)))
+(add-hook 'evil-local-mode-hook 'evil-magit-remove-visual-activate-hook)
+
 (dolist (mode '(git-commit-mode
                 magit-mode
                 magit-cherry-mode
