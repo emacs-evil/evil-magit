@@ -155,16 +155,16 @@
   (let* ((evil-magit-cmd (eval evil-magit-cmd))
          (magit-cmd (eval magit-cmd))
          (fun (intern (format "evil-magit-%s-or-%s" evil-magit-cmd magit-cmd)))
-         (doc (format "Call %s if in evil's motion state and %s otherwise." evil-magit-cmd magit-cmd)))
+         (doc (format "Call %s if in an evil state other than emacs-state and %s otherwise." evil-magit-cmd magit-cmd)))
     `(progn
        (unless (fboundp ',fun)
          (defun ,fun ()
            ,doc
            (interactive)
            (call-interactively
-            (if (funcall (intern (format "evil-%s-state-p" evil-magit-state)))
-                ',evil-magit-cmd
-              ',magit-cmd))))
+            (if (or (null evil-state) (evil-emacs-state-p))
+                ',magit-cmd
+              ',evil-magit-cmd))))
        (define-key ,map ,key ',fun))))
 
 (dolist (mode '(git-commit-mode
