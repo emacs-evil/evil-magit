@@ -326,12 +326,15 @@
 
 (define-key magit-popup-mode-map "gr" 'magit-refresh)
 
-(magit-change-popup-key 'magit-branch-popup :actions ?x ?#)
-(magit-change-popup-key 'magit-branch-popup :actions ?k ?x)
-(magit-change-popup-key 'magit-remote-popup :actions ?k ?x)
-(magit-change-popup-key 'magit-revert-popup :actions ?v ?o)
-(magit-change-popup-key 'magit-revert-popup :actions ?V ?O)
-(magit-change-popup-key 'magit-tag-popup    :actions ?k ?x)
+(defvar evil-magit-popup-keys-changed nil)
+(unless evil-magit-popup-keys-changed
+  (magit-change-popup-key 'magit-branch-popup :actions ?x ?#)
+  (magit-change-popup-key 'magit-branch-popup :actions ?k ?x)
+  (magit-change-popup-key 'magit-remote-popup :actions ?k ?x)
+  (magit-change-popup-key 'magit-revert-popup :actions ?v ?o)
+  (magit-change-popup-key 'magit-revert-popup :actions ?V ?O)
+  (magit-change-popup-key 'magit-tag-popup    :actions ?k ?x)
+  (setq evil-magit-popup-keys-changed t))
 
 (evil-define-key evil-magit-state magit-status-mode-map
   "gz" 'magit-jump-to-stashes
@@ -356,8 +359,7 @@
   "J"    'magit-blame-next-chunk-same-commit ; was N
   "k"    'magit-blame-previous-chunk         ; was p
   "\C-k" 'evil-previous-visual-line
-  "K"    'magit-blame-previous-chunk-same-commit ; was P
-   )
+  "K"    'magit-blame-previous-chunk-same-commit) ; was P
 (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
 
 (eval-after-load 'git-rebase
