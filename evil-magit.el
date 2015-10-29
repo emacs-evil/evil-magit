@@ -318,8 +318,12 @@
 
 (define-key magit-popup-mode-map "gr" 'magit-refresh)
 
+(magit-change-popup-key 'magit-branch-popup :actions ?x ?#)
+(magit-change-popup-key 'magit-branch-popup :actions ?k ?x)
+(magit-change-popup-key 'magit-remote-popup :actions ?k ?x)
 (magit-change-popup-key 'magit-revert-popup :actions ?v ?o)
 (magit-change-popup-key 'magit-revert-popup :actions ?V ?O)
+(magit-change-popup-key 'magit-tag-popup    :actions ?k ?x)
 
 (evil-define-key evil-magit-state magit-status-mode-map
   "gz" 'magit-jump-to-stashes
