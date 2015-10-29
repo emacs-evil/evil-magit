@@ -365,6 +365,7 @@
        "j"  'forward-line               ; was n
        "gk" 'git-rebase-move-line-up    ; was M-p
        "gj" 'git-rebase-move-line-down  ; was M-n
+       "u"  'git-rebase-undo
        )))
 
 (defun evil-magit-remove-evil-state ()
