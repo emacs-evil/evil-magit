@@ -253,6 +253,7 @@
   "O"        'magit-revert-popup             ; was V
   "#"        'magit-reset                    ; was on x
   "|"        'magit-git-command              ; was :
+  "\C-o"     'magit-submodule-popup          ; was o
   ;; evil-specific bindings
   "v"        'set-mark-command
   "V"        'set-mark-command
