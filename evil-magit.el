@@ -380,8 +380,8 @@ for STATE."
        "d"  'git-rebase-kill-line       ; was k or C-k
        "k"  'git-rebase-backward-line   ; was p
        "j"  'forward-line               ; was n
-       "gk" 'git-rebase-move-line-up    ; was M-p
-       "gj" 'git-rebase-move-line-down  ; was M-n
+       "K"  'git-rebase-move-line-up    ; was M-p
+       "J"  'git-rebase-move-line-down  ; was M-n
        "u"  'git-rebase-undo)))
 
 (defun evil-magit-remove-evil-state ()
