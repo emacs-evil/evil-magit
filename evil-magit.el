@@ -218,6 +218,15 @@
                 magit-status-mode))
   (add-to-list (intern (format "evil-%s-state-modes" evil-magit-state)) mode))
 
+(defun evil-magit-map-all-char-bindings (map state)
+  "Put all character bindings in MAP into the evil auxiliary map
+for STATE."
+  (map-keymap
+   (lambda (e d)
+     (when (characterp e)
+       (evil-define-key state map (char-to-string e) d)))
+   map))
+
 ;; fill up auxiliary keymaps with default bindings so that they override any
 ;; default evil bindings. The remaining bindings in this file are then limited
 ;; to the ones that change.
@@ -238,17 +247,9 @@
                    magit-process-mode-map
                    magit-refs-mode-map))
   ;; (evil-set-auxiliary-keymap map evil-magit-state map)
-  (map-keymap
-   (lambda (e d)
-     (when (characterp e)
-       (evil-define-key evil-magit-state map (char-to-string e) d)))
-   map))
+  (evil-magit-map-all-char-bindings map evil-magit-state))
 
-(map-keymap
- (lambda (e d)
-   (when (characterp e)
-     (evil-define-key 'normal magit-blame-mode-map (char-to-string e) d)))
- magit-blame-mode-map)
+(evil-magit-map-all-char-bindings magit-blame-mode-map 'normal)
 
 (evil-define-key evil-magit-state magit-mode-map
   "g"        nil
@@ -371,7 +372,7 @@
 
 (eval-after-load 'git-rebase
   `(progn
-     (evil-set-auxiliary-keymap git-rebase-mode-map evil-magit-state git-rebase-mode-map)
+     (evil-magit-map-all-char-bindings git-rebase-mode-map evil-magit-state)
      (evil-define-key evil-magit-state git-rebase-mode-map
        "!"  'git-rebase-exec            ; was x
        "p"  'git-rebase-pick            ; was c
