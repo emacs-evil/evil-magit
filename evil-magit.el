@@ -336,7 +336,7 @@ for STATE."
 
 (defvar evil-magit-popup-keys-changed nil)
 (unless evil-magit-popup-keys-changed
-  (magit-change-popup-key 'magit-branch-popup :actions ?x ?#)
+  (magit-change-popup-key 'magit-branch-popup :actions ?x ?\C-r)
   (magit-change-popup-key 'magit-branch-popup :actions ?k ?x)
   (magit-change-popup-key 'magit-remote-popup :actions ?k ?x)
   (magit-change-popup-key 'magit-revert-popup :actions ?v ?o)
