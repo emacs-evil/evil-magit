@@ -68,7 +68,7 @@
 ;;   revert       | v/V | o/O
 ;;   am           | w   |
 ;;   patch        | W   |
-;;   reset        | x   | #
+;;   reset        | x   | C-r
 ;;   show-refs    | y   |
 ;;   cherry       | Y   |
 ;;   stash        | z/Z |
@@ -265,7 +265,7 @@ for STATE."
   "X"        'magit-file-untrack             ; was on K
   "o"        'magit-revert-no-commit         ; was v
   "O"        'magit-revert-popup             ; was V
-  "#"        'magit-reset                    ; was on x
+  "\C-r"     'magit-reset                    ; was on x
   "|"        'magit-git-command              ; was :
   "\C-o"     'magit-submodule-popup          ; was o
   ;; evil-specific bindings
