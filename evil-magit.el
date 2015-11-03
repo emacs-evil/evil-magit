@@ -86,9 +86,9 @@
 ;;   evil-ex                                                | :
 ;;   evil-search-forward                                    | /
 ;;   evil-scroll-page-up                                    | C-b
-;;   magit-section-forward-sibling                          | gj or C-d
+;;   magit-section-forward-sibling                          | gj, ] or C-d
 ;;   evil-scroll-page-down                                  | C-f
-;;   magit-section-backward-sibling (if C-u scroll enabled) | gk or C-u (if C-u scroll enabled)
+;;   magit-section-backward-sibling (if C-u scroll enabled) | gk, [ or C-u (if C-u scroll enabled)
 ;;   evil-emacs-state                                       | C-z
 ;;   evil-next-visual-line                                  | C-j
 ;;   evil-previous-visual-line                              | C-k
@@ -256,9 +256,11 @@ for STATE."
   "j"        'magit-section-forward          ; was n
   "\C-j"     'evil-next-visual-line
   "gj"       'magit-section-forward-sibling  ; was M-n
+  "]"        'magit-section-forward-sibling  ; was M-n
   "k"        'magit-section-backward         ; was p
   "\C-k"     'evil-previous-visual-line
   "gk"       'magit-section-backward-sibling ; was M-p
+  "["        'magit-section-backward-sibling ; was M-p
   "gr"       'magit-refresh                  ; was on g
   "gR"       'magit-refresh-all              ; was on G
   "x"        'magit-delete-thing             ; was on k
