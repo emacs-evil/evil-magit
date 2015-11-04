@@ -164,6 +164,9 @@
             def (pop bindings)))
     (dolist (key-def (nreverse temp))
       (push (list map key def) evil-magit-evil-bindings)
+      (let ((key-lst (listify-key-sequence (car key-def))))
+        (when (< 1 (length key-lst))
+          (define-key map (char-to-string (car key-lst)) nil)))
       (define-key map (car key-def) (cdr key-def)))))
 (put 'evil-magit-define-key 'lisp-indent-function 'defun)
 
@@ -204,7 +207,6 @@ reverse this operation."
   (interactive)
 
   (evil-magit-define-key magit-mode-map
-    "g"        nil
     "j"        'magit-section-forward          ; was n
     "\C-j"     'evil-next-visual-line
     "gj"       'magit-section-forward-sibling  ; was M-n
