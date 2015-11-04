@@ -175,15 +175,17 @@
   (interactive)
   (dolist (map-key-def (nreverse evil-magit-original-bindings))
     (define-key (car map-key-def) (cadr map-key-def) (caddr map-key-def)))
-  (dolist (popup evil-magit-original-popups)
-    (setf (car popup) (cdr popup)))
+  (dolist (popup-cons evil-magit-original-popups)
+    (let ((symbol (car popup-cons)))
+      (set symbol (cdr popup-cons))))
   (setq evil-magit-evil-bindings nil
         evil-magit-original-bindings nil
-        evil-magit-original-popups nil))
+        evil-magit-original-popups nil
+        evil-magit-popup-keys-changed nil))
 
 (defun evil-magit-backup-popup (popup)
   (let ((popup-name popup)
-        (popup-copy (eval popup)))
+        (popup-copy (copy-tree (eval popup))))
     (push (cons popup-name popup-copy) evil-magit-original-popups)))
 
 ;; without this set-mark-command activates visual-state which is just annoying
