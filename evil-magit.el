@@ -210,9 +210,11 @@ reverse this operation."
     "j"        'magit-section-forward          ; was n
     "\C-j"     'evil-next-visual-line
     "gj"       'magit-section-forward-sibling  ; was M-n
+    "]"       'magit-section-forward-sibling   ; was M-n
     "k"        'magit-section-backward         ; was p
     "\C-k"     'evil-previous-visual-line
     "gk"       'magit-section-backward-sibling ; was M-p
+    "["        'magit-section-backward-sibling ; was M-p
     "gr"       'magit-refresh                  ; was on g
     "gR"       'magit-refresh-all              ; was on G
     "x"        'magit-delete-thing             ; was on k
