@@ -251,6 +251,10 @@ for STATE."
 
 (evil-magit-map-all-char-bindings magit-blame-mode-map 'normal)
 
+;; puts magit-mode-map ahead of default bindings in motion state. Useful for
+;; gitflow and others that bind to magit-mode-map
+(evil-make-overriding-map magit-mode-map evil-magit-state)
+
 (evil-define-key evil-magit-state magit-mode-map
   "g"        nil
   "j"        'magit-section-forward          ; was n
