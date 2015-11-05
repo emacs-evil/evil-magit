@@ -218,20 +218,8 @@
                 magit-status-mode))
   (add-to-list (intern (format "evil-%s-state-modes" evil-magit-state)) mode))
 
-(defun evil-magit-map-all-char-bindings (map state)
-  "Put all character bindings in MAP into the evil auxiliary map
-for STATE."
-  (map-keymap
-   (lambda (e d)
-     (when (characterp e)
-       (evil-define-key state map (char-to-string e) d)))
-   map))
-
-;; fill up auxiliary keymaps with default bindings so that they override any
-;; default evil bindings. The remaining bindings in this file are then limited
-;; to the ones that change.
-;; Also make them into overriding maps so that they shadow the global evil maps
-;; by default
+;; Make relevant maps into overriding maps so that they shadow the global evil
+;; maps by default
 (dolist (map (list magit-mode-map
                    magit-cherry-mode-map
                    ;; git-commit-mode-map
@@ -248,12 +236,9 @@ for STATE."
                    ;; magit-popup-mode-map
                    magit-process-mode-map
                    magit-refs-mode-map))
-  ;; (evil-set-auxiliary-keymap map evil-magit-state map)
-  (evil-make-overriding-map map evil-magit-state)
-  (evil-magit-map-all-char-bindings map evil-magit-state))
+  (evil-make-overriding-map map evil-magit-state))
 
 (evil-make-overriding-map magit-blame-mode-map 'normal)
-(evil-magit-map-all-char-bindings magit-blame-mode-map 'normal)
 
 (evil-define-key evil-magit-state magit-mode-map
   "g"        nil
@@ -383,7 +368,7 @@ for STATE."
 
 (eval-after-load 'git-rebase
   `(progn
-     (evil-magit-map-all-char-bindings git-rebase-mode-map evil-magit-state)
+     (evil-make-overriding-map git-rebase-mode-map evil-magit-state)
      (evil-define-key evil-magit-state git-rebase-mode-map
        "!"  'git-rebase-exec            ; was x
        "p"  'git-rebase-pick            ; was c
@@ -422,6 +407,7 @@ for STATE."
 
 ;; section maps: evil-define-key doesn't work here, because these maps are text overlays
 
+
 (evil-magit-define-key magit-commit-section-map "v" 'set-mark-command 'magit-revert-no-commit)
 (evil-magit-define-key magit-commit-section-map "o" 'magit-revert-no-commit 'magit-submodule-popup)
 
@@ -437,6 +423,8 @@ for STATE."
 
 (evil-magit-define-key magit-staged-section-map "v" 'set-mark-command 'magit-reverse)
 (evil-magit-define-key magit-staged-section-map "o" 'magit-reverse 'magit-submodule-popup) ; was v
+
+(evil-define-key evil-magit-state magit-file-section-map "K" 'magit-section-backward-sibling)
 
 ;;; evil-magit.el ends soon
 (provide 'evil-magit)
