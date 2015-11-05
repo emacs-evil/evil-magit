@@ -54,9 +54,9 @@
 ;;   log          | l/L |
 ;;   merge        | m   |
 ;;   remote       | M   |
-;;   next section | n   |
+;;   next section | n   | C-j
 ;;   submodule    | o   | C-o
-;;   prev section | p   |
+;;   prev section | p   | C-k
 ;;   push         | P   |
 ;;   rebase       | r   |
 ;;   refresh      | g   | gr/gR
@@ -87,53 +87,53 @@
 ;;   evil-search-forward                                    | /
 ;;   evil-scroll-up                                         | C-u (if C-u scroll enabled)
 ;;   evil-scroll-page-up                                    | C-b
-;;   magit-section-forward-sibling                          | ]
+;;   magit-section-forward-sibling                          | ] or gj
 ;;   evil-scroll-down                                       | C-d
 ;;   evil-scroll-page-down                                  | C-f
-;;   magit-section-backward-sibling (if C-u scroll enabled) | [
+;;   magit-section-backward-sibling                         | [ or gk
 ;;   evil-emacs-state                                       | C-z
 ;;   evil-next-visual-line                                  | j
 ;;   evil-previous-visual-line                              | k
 
 ;; maps changed
 ;;
-;; magit-cherry-mode-map
-;; git-commit-mode-map
-;; git-rebase-mode-map
-;; magit-mode-map
-;; magit-blame-mode-map
-;; magit-blob-mode-map
-;; magit-diff-mode-map
-;; magit-log-mode-map
-;; magit-log-select-mode-map
-;; magit-reflog-mode-map
-;; magit-status-mode-map
+;; 1. git-commit-mode-map
+;; 2. git-rebase-mode-map
+;; 3. magit-mode-map
+;; 4. magit-blame-mode-map
+;; 5. magit-blob-mode-map
+;; 6. magit-diff-mode-map
+;; 7. magit-log-mode-map
+;; 8. magit-log-select-mode-map
+;; 9. magit-popup-mode-map
+;; 10. magit-reflog-mode-map
+;; 11. magit-status-mode-map
 
-;; magit-branch-section-map
-;; magit-commit-section-map
-;; magit-file-sections-map
-;; magit-hunk-section-map
-;; magit-remote-section-map
-;; magit-staged-section-map
+;; S1. magit-commit-section-map
+;; S2. magit-file-sections-map
+;; S3. magit-hunk-section-map
+;; S4. magit-staged-section-map
 
 ;; maps unchanged
 ;;
-;; magit-file-mode-map
-;; magit-log-read-revs-map
-;; magit-minibuffer-local-ns-map
-;; magit-popup-mode-map
-;; magit-process-mode-map
-;; magit-refs-mode-map
-;; with-editor-mode-map
+;; 12. magit-cherry-mode-map
+;; 13. magit-file-mode-map
+;; 14. magit-log-read-revs-map
+;; 15. magit-minibuffer-local-ns-map
+;; 16. magit-process-mode-map
+;; 17. magit-refs-mode-map
+;; 18. with-editor-mode-map
 
-;; magit-module-commit-section-map
-;; magit-stash-section-map
-;; magit-stashes-section-map
-;; magit-tag-section-map
-;; magit-unpulled-section-map
-;; magit-unpushed-section-map
-;; magit-unstaged-section-map
-;; magit-untracked-section-map
+;; S5. magit-branch-section-map
+;; S6. magit-module-commit-section-map
+;; S7. magit-remote-section-map
+;; S8. magit-stash-section-map
+;; S9. magit-stashes-section-map
+;; S10. magit-tag-section-map
+;; S11. magit-unpulled-section-map
+;; S12. magit-unpushed-section-map
+;; S13. magit-unstaged-section-map
+;; S14. magit-untracked-section-map
 
 ;; TODO
 ;;
@@ -241,19 +241,19 @@
 
 (evil-define-key evil-magit-state magit-mode-map
   "g"        nil
-  "gj"       'magit-section-forward          ; was n
-  "\C-j"     'evil-next-visual-line
+  "\C-j"     'magit-section-forward          ; was n
+  "gj"       'magit-section-forward-sibling  ; was M-n
   "]"        'magit-section-forward-sibling  ; was M-n
-  "gk"       'magit-section-backward         ; was p
-  "\C-k"     'evil-previous-visual-line
+  "\C-k"     'magit-section-backward         ; was p
+  "gk"       'magit-section-backward-sibling ; was M-p
   "["        'magit-section-backward-sibling ; was M-p
-  "gr"       'magit-refresh                  ; was on g
-  "gR"       'magit-refresh-all              ; was on G
-  "x"        'magit-delete-thing             ; was on k
-  "X"        'magit-file-untrack             ; was on K
+  "gr"       'magit-refresh                  ; was g
+  "gR"       'magit-refresh-all              ; was G
+  "x"        'magit-delete-thing             ; was k
+  "X"        'magit-file-untrack             ; was K
   "o"        'magit-revert-no-commit         ; was v
   "O"        'magit-revert-popup             ; was V
-  "\C-r"     'magit-reset                    ; was on x
+  "\C-r"     'magit-reset                    ; was x
   "|"        'magit-git-command              ; was :
   "\C-o"     'magit-submodule-popup          ; was o
   ;; evil-specific bindings
