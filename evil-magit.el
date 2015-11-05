@@ -136,10 +136,7 @@
 ;; magit-untracked-section-map
 
 ;; TODO
-;; 1. popups
-;;    1. DONE: dispatch
-;; 2. now that we're using evil-define-key and motion state we're going to have
-;;    to define more keys (any that conflict with motion state)
+;;
 
 ;;; Code:
 
@@ -405,7 +402,6 @@
 
 ;; section maps: evil-define-key doesn't work here, because these maps are text overlays
 
-
 (evil-magit-define-key magit-commit-section-map "v" 'set-mark-command 'magit-revert-no-commit)
 (evil-magit-define-key magit-commit-section-map "o" 'magit-revert-no-commit 'magit-submodule-popup)
 
@@ -420,6 +416,7 @@
 
 (evil-magit-define-key magit-staged-section-map "v" 'set-mark-command 'magit-reverse)
 (evil-magit-define-key magit-staged-section-map "o" 'magit-reverse 'magit-submodule-popup) ; was v
+
 
 ;;; evil-magit.el ends soon
 (provide 'evil-magit)
