@@ -85,10 +85,12 @@
 ;;   set-mark-command                                       | v or V
 ;;   evil-ex                                                | :
 ;;   evil-search-forward                                    | /
+;;   evil-scroll-up                                         | C-u (if C-u scroll enabled)
 ;;   evil-scroll-page-up                                    | C-b
-;;   magit-section-forward-sibling                          | gj, ] or C-d
+;;   magit-section-forward-sibling                          | ]
+;;   evil-scroll-down                                       | C-d
 ;;   evil-scroll-page-down                                  | C-f
-;;   magit-section-backward-sibling (if C-u scroll enabled) | gk, [ or C-u (if C-u scroll enabled)
+;;   magit-section-backward-sibling (if C-u scroll enabled) | [
 ;;   evil-emacs-state                                       | C-z
 ;;   evil-next-visual-line                                  | j
 ;;   evil-previous-visual-line                              | k
@@ -244,11 +246,9 @@
   "g"        nil
   "gj"       'magit-section-forward          ; was n
   "\C-j"     'evil-next-visual-line
-  ;; "gj"       'magit-section-forward-sibling  ; was M-n
   "]"        'magit-section-forward-sibling  ; was M-n
   "gk"       'magit-section-backward         ; was p
   "\C-k"     'evil-previous-visual-line
-  ;; "gk"       'magit-section-backward-sibling ; was M-p
   "["        'magit-section-backward-sibling ; was M-p
   "gr"       'magit-refresh                  ; was on g
   "gR"       'magit-refresh-all              ; was on G
@@ -266,8 +266,7 @@
   "V"        'set-mark-command
   "gg"       'evil-goto-first-line
   "G"        'evil-goto-line
-  ;; "\C-d"     'evil-scroll-down
-  "\C-d"     'magit-section-forward-sibling  ; was M-n
+  "\C-d"     'evil-scroll-down
   "\C-f"     'evil-scroll-page-down
   "\C-b"     'evil-scroll-page-up
   ":"        'evil-ex
@@ -278,8 +277,7 @@
   [escape]   'evil-magit-maybe-deactivate-mark)
 
 (when evil-want-C-u-scroll
-  ;; (evil-define-key evil-magit-state map "\C-u" 'evil-scroll-up)
-  (evil-define-key evil-magit-state magit-mode-map "\C-u" 'magit-section-backward-sibling)) ; was M-p
+  (evil-define-key evil-magit-state magit-mode-map "\C-u" 'evil-scroll-up))
 
 ;; dispatch-popup
 (plist-put magit-dispatch-popup
