@@ -230,6 +230,8 @@ for STATE."
 ;; fill up auxiliary keymaps with default bindings so that they override any
 ;; default evil bindings. The remaining bindings in this file are then limited
 ;; to the ones that change.
+;; Also make them into overriding maps so that they shadow the global evil maps
+;; by default
 (dolist (map (list magit-mode-map
                    magit-cherry-mode-map
                    ;; git-commit-mode-map
@@ -247,13 +249,11 @@ for STATE."
                    magit-process-mode-map
                    magit-refs-mode-map))
   ;; (evil-set-auxiliary-keymap map evil-magit-state map)
+  (evil-make-overriding-map map evil-magit-state)
   (evil-magit-map-all-char-bindings map evil-magit-state))
 
+(evil-make-overriding-map magit-blame-mode-map 'normal)
 (evil-magit-map-all-char-bindings magit-blame-mode-map 'normal)
-
-;; puts magit-mode-map ahead of default bindings in motion state. Useful for
-;; gitflow and others that bind to magit-mode-map
-(evil-make-overriding-map magit-mode-map evil-magit-state)
 
 (evil-define-key evil-magit-state magit-mode-map
   "g"        nil
