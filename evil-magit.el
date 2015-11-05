@@ -54,9 +54,9 @@
 ;;   log          | l/L |
 ;;   merge        | m   |
 ;;   remote       | M   |
-;;   next section | n   | j
+;;   next section | n   |
 ;;   submodule    | o   | C-o
-;;   prev section | p   | k
+;;   prev section | p   |
 ;;   push         | P   |
 ;;   rebase       | r   |
 ;;   refresh      | g   | gr/gR
@@ -90,8 +90,8 @@
 ;;   evil-scroll-page-down                                  | C-f
 ;;   magit-section-backward-sibling (if C-u scroll enabled) | gk, [ or C-u (if C-u scroll enabled)
 ;;   evil-emacs-state                                       | C-z
-;;   evil-next-visual-line                                  | C-j
-;;   evil-previous-visual-line                              | C-k
+;;   evil-next-visual-line                                  | j
+;;   evil-previous-visual-line                              | k
 
 ;; maps changed
 ;;
@@ -257,13 +257,13 @@ for STATE."
 
 (evil-define-key evil-magit-state magit-mode-map
   "g"        nil
-  "j"        'magit-section-forward          ; was n
+  "gj"       'magit-section-forward          ; was n
   "\C-j"     'evil-next-visual-line
-  "gj"       'magit-section-forward-sibling  ; was M-n
+  ;; "gj"       'magit-section-forward-sibling  ; was M-n
   "]"        'magit-section-forward-sibling  ; was M-n
-  "k"        'magit-section-backward         ; was p
+  "gk"       'magit-section-backward         ; was p
   "\C-k"     'evil-previous-visual-line
-  "gk"       'magit-section-backward-sibling ; was M-p
+  ;; "gk"       'magit-section-backward-sibling ; was M-p
   "["        'magit-section-backward-sibling ; was M-p
   "gr"       'magit-refresh                  ; was on g
   "gR"       'magit-refresh-all              ; was on G
@@ -275,6 +275,8 @@ for STATE."
   "|"        'magit-git-command              ; was :
   "\C-o"     'magit-submodule-popup          ; was o
   ;; evil-specific bindings
+  "j"        'evil-next-visual-line
+  "k"        'evil-previous-visual-line
   "v"        'set-mark-command
   "V"        'set-mark-command
   "gg"       'evil-goto-first-line
@@ -363,20 +365,20 @@ for STATE."
   "gp" 'magit-jump-to-unpushed)
 
 (evil-define-key evil-magit-state magit-blob-mode-map
-  "j" 'magit-blob-next
-  "k" 'magit-blob-previous)
+  "gj" 'magit-blob-next
+  "gk" 'magit-blob-previous)
 
 (evil-define-key evil-magit-state magit-diff-mode-map
-  "j"  'magit-section-forward
-  "gd" 'magit-jump-to-diffstat-or-diff)
+  "gj"  'magit-section-forward
+  "gd"  'magit-jump-to-diffstat-or-diff)
 
 (evil-define-key 'normal magit-blame-mode-map
-  "j"    'magit-blame-next-chunk        ; was n
-  "\C-j" 'evil-next-visual-line
-  "J"    'magit-blame-next-chunk-same-commit ; was N
-  "k"    'magit-blame-previous-chunk         ; was p
-  "\C-k" 'evil-previous-visual-line
-  "K"    'magit-blame-previous-chunk-same-commit) ; was P
+  "gj"    'magit-blame-next-chunk        ; was n
+  "j"     'evil-next-visual-line
+  "gJ"    'magit-blame-next-chunk-same-commit ; was N
+  "gk"    'magit-blame-previous-chunk         ; was p
+  "k"     'evil-previous-visual-line
+  "gK"    'magit-blame-previous-chunk-same-commit) ; was P
 (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
 
 (eval-after-load 'git-rebase
@@ -387,8 +389,8 @@ for STATE."
        "p"  'git-rebase-pick            ; was c
        "x"  'git-rebase-kill-line       ; was k or C-k
        "d"  'git-rebase-kill-line       ; was k or C-k
-       "k"  'git-rebase-backward-line   ; was p
-       "j"  'forward-line               ; was n
+       "k"  'evil-previous-visual-line  ; was p
+       "j"  'evil-next-visual-line      ; was n
        "K"  'git-rebase-move-line-up    ; was M-p
        "J"  'git-rebase-move-line-down  ; was M-n
        "u"  'git-rebase-undo)))
@@ -423,15 +425,15 @@ for STATE."
 (evil-magit-define-key magit-commit-section-map "v" 'set-mark-command 'magit-revert-no-commit)
 (evil-magit-define-key magit-commit-section-map "o" 'magit-revert-no-commit 'magit-submodule-popup)
 
-(evil-magit-define-key magit-file-section-map "K"    'magit-section-backward-sibling 'magit-file-untrack)
-(evil-magit-define-key magit-file-section-map "X"    'magit-file-untrack) ; was K
-(evil-magit-define-key magit-file-section-map "v"    'set-mark-command 'magit-reverse)
-(evil-magit-define-key magit-file-section-map "o"    'magit-reverse 'magit-submodule-popup) ; was v
-(evil-magit-define-key magit-file-section-map "\C-j" 'evil-next-visual-line 'magit-diff-visit-file-worktree)
+(evil-magit-define-key magit-file-section-map "K"   'magit-section-backward-sibling 'magit-file-untrack)
+(evil-magit-define-key magit-file-section-map "X"   'magit-file-untrack) ; was K
+(evil-magit-define-key magit-file-section-map "v"   'set-mark-command 'magit-reverse)
+(evil-magit-define-key magit-file-section-map "o"   'magit-reverse 'magit-submodule-popup) ; was v
+(evil-magit-define-key magit-file-section-map "j"   'evil-next-visual-line 'magit-diff-visit-file-worktree)
 
-(evil-magit-define-key magit-hunk-section-map "v"    'set-mark-command 'magit-reverse)
-(evil-magit-define-key magit-hunk-section-map "o"    'magit-reverse 'magit-submodule-popup) ; was v
-(evil-magit-define-key magit-hunk-section-map "\C-j" 'evil-next-visual-line 'magit-diff-visit-file-worktree)
+(evil-magit-define-key magit-hunk-section-map "v"   'set-mark-command 'magit-reverse)
+(evil-magit-define-key magit-hunk-section-map "o"   'magit-reverse 'magit-submodule-popup) ; was v
+(evil-magit-define-key magit-hunk-section-map "j"   'evil-next-visual-line 'magit-diff-visit-file-worktree)
 
 (evil-magit-define-key magit-staged-section-map "v" 'set-mark-command 'magit-reverse)
 (evil-magit-define-key magit-staged-section-map "o" 'magit-reverse 'magit-submodule-popup) ; was v
