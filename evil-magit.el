@@ -409,7 +409,6 @@
 (evil-magit-define-key magit-commit-section-map "v" 'set-mark-command 'magit-revert-no-commit)
 (evil-magit-define-key magit-commit-section-map "o" 'magit-revert-no-commit 'magit-submodule-popup)
 
-(evil-magit-define-key magit-file-section-map "K"   'magit-section-backward-sibling 'magit-file-untrack)
 (evil-magit-define-key magit-file-section-map "X"   'magit-file-untrack) ; was K
 (evil-magit-define-key magit-file-section-map "v"   'set-mark-command 'magit-reverse)
 (evil-magit-define-key magit-file-section-map "o"   'magit-reverse 'magit-submodule-popup) ; was v
@@ -421,8 +420,6 @@
 
 (evil-magit-define-key magit-staged-section-map "v" 'set-mark-command 'magit-reverse)
 (evil-magit-define-key magit-staged-section-map "o" 'magit-reverse 'magit-submodule-popup) ; was v
-
-(evil-define-key evil-magit-state magit-file-section-map "K" 'magit-section-backward-sibling)
 
 ;;; evil-magit.el ends soon
 (provide 'evil-magit)
