@@ -198,7 +198,7 @@
   (setq evil-emacs-state-modes (delq mode evil-emacs-state-modes)))
 
 (dolist (mode '(magit-mode
-                git-popup-mode
+                ;; git-popup-mode
                 git-rebase-mode
                 magit-blame-mode
                 magit-blob-mode
@@ -350,6 +350,9 @@ for STATE."
   (magit-change-popup-key 'magit-revert-popup :actions ?v ?o)
   (magit-change-popup-key 'magit-revert-popup :actions ?V ?O)
   (magit-change-popup-key 'magit-tag-popup    :actions ?k ?x)
+  (eval-after-load 'magit-gh-pulls
+    `(progn
+       (magit-change-popup-key 'magit-gh-pulls-popup :actions ?g ?r)))
   (setq evil-magit-popup-keys-changed t))
 
 (evil-define-key evil-magit-state magit-status-mode-map
