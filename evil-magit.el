@@ -136,7 +136,6 @@
 ;; S14. magit-untracked-section-map
 
 ;; TODO
-;; 1. Function to revert evil default modes
 
 ;;; Code:
 
