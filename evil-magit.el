@@ -396,6 +396,7 @@
              (while (re-search-forward state-regexp nil t)
                (replace-match ""))
              (flush-lines "#\.+ = ")
+             (goto-char (point-min))
              (when (and git-rebase-show-instructions
                         (re-search-forward "undo last change\n" nil t))
                (--each evil-magit-new-rebase-command-descriptions
