@@ -365,36 +365,45 @@
   `(progn
      (evil-make-overriding-map git-rebase-mode-map evil-magit-state)
      (evil-define-key evil-magit-state git-rebase-mode-map
-       "!"  'git-rebase-exec            ; was x
-       "p"  'git-rebase-pick            ; was c
-       "x"  'git-rebase-kill-line       ; was k or C-k
-       "d"  'git-rebase-kill-line       ; was k or C-k
-       "k"  'evil-previous-visual-line  ; was p
-       "j"  'evil-next-visual-line      ; was n
-       "K"  'git-rebase-move-line-up    ; was M-p
-       "J"  'git-rebase-move-line-down  ; was M-n
-       "u"  'git-rebase-undo)))
+       "p"     'git-rebase-pick         ; was c
+       "r"     'git-rebase-reword
+       "e"     'git-rebase-edit
+       "s"     'git-rebase-squash
+       "f"     'git-rebase-fixup
+       "x"     'git-rebase-exec
+       "d"     'git-rebase-kill-line      ; was k or C-k
+       "k"     'evil-previous-visual-line ; was p
+       "j"     'evil-next-visual-line     ; was n
+       "\M-k"  'git-rebase-move-line-up   ; was M-p
+       "\M-j"  'git-rebase-move-line-down ; was M-n
+       "u"     'git-rebase-undo)
+     (defvar evil-magit-new-rebase-command-descriptions
+       '((git-rebase-pick      . "pick = use commit")
+         (git-rebase-reword    . "reword = use commit, but edit the commit message")
+         (git-rebase-edit      . "edit = use commit, but stop for amending")
+         (git-rebase-squash    . "squash = use commit, but meld into previous commit")
+         (git-rebase-fixup     . "fixup = like \"squash\", but discard this commit's log message")
+         (git-rebase-exec      . "exec = run command (the rest of the line) using shell")
+         (git-rebase-kill-line . "drop = remove commit")))
 
-;; (defun evil-magit-remove-evil-state ()
-;;   "Remove evil-state annotations from key bindings in Commands
-;; section of rebase buffer."
-;;   (let ((inhibit-read-only t))
-;;     (save-excursion
-;;       (goto-char (point-min))
-;;       (save-match-data
-;;         (when (re-search-forward "^# Commands:\n" nil t)
-;;           (--each '((" c," . "c,")
-;;                     (" p"  . "p")
-;;                     (" r," . "r,")
-;;                     (" w, " . "")
-;;                     (" e, " . "")
-;;                     (" s"  . "s")
-;;                     (" f, " . "")
-;;                     (" !, " . ""))
-;;             (while (re-search-forward
-;;                     (format "<%s-state>%s" evil-magit-state (car it)) nil t)
-;;               (replace-match (cdr it)))))))))
-;; (add-hook 'git-rebase-mode-hook 'evil-magit-remove-evil-state t)
+     (defun evil-magit-remove-default-rebase-messages ()
+       "Remove evil-state annotations and reformat git-rebase buffer."
+       (goto-char (point-min))
+       (let ((inhibit-read-only t)
+             (state-regexp (format "<%s-state> " evil-magit-state)))
+         (save-excursion
+           (save-match-data
+             (while (re-search-forward state-regexp nil t)
+               (replace-match ""))
+             (flush-lines "#\.+ = ")
+             (when (and git-rebase-show-instructions
+                        (re-search-forward "undo last change\n" nil t))
+               (--each evil-magit-new-rebase-command-descriptions
+                 (insert (format "# %-8s %s\n"
+                                 (replace-regexp-in-string state-regexp ""
+                                  (substitute-command-keys (format "\\[%s]" (car it))))
+                                 (cdr it)))))))))
+     (add-hook 'git-rebase-mode-hook 'evil-magit-remove-default-rebase-messages t)))
 
 (evil-define-key evil-magit-state git-commit-mode-map
   "gk" 'git-commit-prev-message
