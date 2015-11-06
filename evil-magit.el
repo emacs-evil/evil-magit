@@ -404,7 +404,7 @@
 (define-key magit-hunk-section-map [remap magit-revert-no-commit] 'magit-reverse)
 (define-key magit-hunk-section-map "\C-j" nil) ; breaking change
 
-(define-key magit-staged-section-map "v" nil ; was magit-reverse
+(define-key magit-staged-section-map "v" nil) ; was magit-reverse
 (define-key magit-staged-section-map [remap magit-revert-no-commit] 'magit-reverse)
 
 ;;;###autoload
