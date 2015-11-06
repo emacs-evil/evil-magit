@@ -2,7 +2,7 @@ Black magic
 ===========
 
 This library configures Magit and Evil to play well with each
-other. For some background see [Issue #1](https://github.com/magit/evil-magit/issues/1).
+other. For some background see [Issue #1](https://github.com/justbur/evil-magit/issues/1).
 
 Installation and Use
 ====================
