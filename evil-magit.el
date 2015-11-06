@@ -183,7 +183,6 @@
 
 (defvar evil-magit-default-to-evil-magit-state-modes
   '(git-rebase-mode
-    magit-blame-mode
     magit-blob-mode
     magit-file-mode
     magit-gitflow-mode)
@@ -191,6 +190,7 @@
 
 (defvar evil-magit-untouched-modes
   '(git-popup-mode
+    magit-blame-mode
     magit-popup-mode
     magit-popup-sequence-mode)
   "Modes whose evil states are unchanged")
