@@ -414,14 +414,16 @@
 (evil-magit-define-key magit-commit-section-map "v" 'set-mark-command 'magit-revert-no-commit)
 (evil-magit-define-key magit-commit-section-map "o" 'magit-revert-no-commit 'magit-submodule-popup)
 
-(evil-magit-define-key magit-file-section-map "X"   'magit-file-untrack) ; was K
-(evil-magit-define-key magit-file-section-map "v"   'set-mark-command 'magit-reverse)
-(evil-magit-define-key magit-file-section-map "o"   'magit-reverse 'magit-submodule-popup) ; was v
-(evil-magit-define-key magit-file-section-map "j"   'evil-next-visual-line 'magit-diff-visit-file-worktree)
+(evil-magit-define-key magit-file-section-map "X"    'magit-file-untrack) ; was K
+(evil-magit-define-key magit-file-section-map "v"    'set-mark-command 'magit-reverse)
+(evil-magit-define-key magit-file-section-map "o"    'magit-reverse 'magit-submodule-popup) ; was v
+(evil-magit-define-key magit-file-section-map "j"    'evil-next-visual-line 'magit-diff-visit-file-worktree)
+(evil-magit-define-key magit-file-section-map "\C-j" 'magit-section-forward 'magit-diff-visit-file-worktree)
 
-(evil-magit-define-key magit-hunk-section-map "v"   'set-mark-command 'magit-reverse)
-(evil-magit-define-key magit-hunk-section-map "o"   'magit-reverse 'magit-submodule-popup) ; was v
-(evil-magit-define-key magit-hunk-section-map "j"   'evil-next-visual-line 'magit-diff-visit-file-worktree)
+(evil-magit-define-key magit-hunk-section-map "v"    'set-mark-command 'magit-reverse)
+(evil-magit-define-key magit-hunk-section-map "o"    'magit-reverse 'magit-submodule-popup) ; was v
+(evil-magit-define-key magit-hunk-section-map "j"    'evil-next-visual-line 'magit-diff-visit-file-worktree)
+(evil-magit-define-key magit-hunk-section-map "\C-j" 'magit-section-forward 'magit-diff-visit-file-worktree)
 
 (evil-magit-define-key magit-staged-section-map "v" 'set-mark-command 'magit-reverse)
 (evil-magit-define-key magit-staged-section-map "o" 'magit-reverse 'magit-submodule-popup) ; was v
