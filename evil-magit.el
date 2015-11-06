@@ -360,11 +360,13 @@ evil-magit."
   "gd"  'magit-jump-to-diffstat-or-diff)
 
 (evil-define-key 'normal magit-blame-mode-map
-  "gj"    'magit-blame-next-chunk        ; was n
   "j"     'evil-next-visual-line
-  "gJ"    'magit-blame-next-chunk-same-commit ; was N
-  "gk"    'magit-blame-previous-chunk         ; was p
+  "\C-j"  'magit-blame-next-chunk                  ; was n
+  "gj"    'magit-blame-next-chunk                  ; was n
+  "gJ"    'magit-blame-next-chunk-same-commit      ; was N
   "k"     'evil-previous-visual-line
+  "\C-k"  'magit-blame-previous-chunk              ; was p
+  "gk"    'magit-blame-previous-chunk              ; was p
   "gK"    'magit-blame-previous-chunk-same-commit) ; was P
 (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
 
