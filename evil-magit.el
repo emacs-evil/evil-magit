@@ -20,80 +20,102 @@
 
 ;;; Commentary:
 
+;; Black magic
+;; ===========
+
 ;; This library configures Magit and Evil to play well with each
-;; other.  Or rather that's what it is supposed to do eventually.
+;; other. For some background see https://github.com/magit/evil-magit/issues/1.
 
-;; Users are encouraged to create a branch and show each other how
-;; they have configured these two packages to play well with each
-;; other.
+;; Installation and Use
+;; ====================
 
-;; I hope that eventually all the black magitians can collectively
-;; come up with a configuration that works for most users, or that
-;; we end up with a collection of reasonable configurations.
+;; Everything is contained in evil-magit.el, so you may download and load that file
+;; directly. The recommended method is to use MELPA via package.el (`M-x
+;; package-install RET evil-magit RET`).
 
-;; For a general discussion see
-;; https://github.com/magit/evil-magit/issues/1.
+;; Evil and Magit are both required. After requiring those packages, the following
+;; will setup the new key bindings for you.
 
-;; The basic scheme is as follows:
+;; ;; optional: this is the evil state that evil-magit will use
+;; ;; (setq evil-magit-state 'motion)
+;; (require 'evil-magit)
 
-;;   Command      | Old | New
-;;  --------------|-----|------
-;;   cherry pick  | a/A |
-;;   branch       | b   |
-;;   bisect       | B   |
-;;   commit       | c   |
-;;   diff         | d/D |
-;;   help         | h/? |
-;;   ediff        | e/E |
-;;   fetch        | f   |
-;;   pull         | F   |
-;;   ignore       | i/I |
-;;   jump         | j   | g
-;;   delete       | k   | x
-;;   untrack      | K   | X
-;;   log          | l/L |
-;;   merge        | m   |
-;;   remote       | M   |
-;;   next section | n   | C-j
-;;   submodule    | o   | C-o
-;;   prev section | p   | C-k
-;;   push         | P   |
-;;   rebase       | r   |
-;;   refresh      | g   | gr/gR
-;;   rename       | R   |
-;;   stage        | s/S |
-;;   tag          | t   |
-;;   notes        | T   |
-;;   unstage      | u/U |
-;;   revert       | v/V | o/O
-;;   am           | w   |
-;;   patch        | W   |
-;;   reset        | x   | C-r
-;;   show-refs    | y   |
-;;   cherry       | Y   |
-;;   stash        | z/Z |
-;;   git-cmd      | :   | \|
-;;   run          | !   |
+;; Use `evil-magit-revert` to revert changes made by evil-magit to the default
+;; evil+magit behavior.
 
-;; Additions
+;; Key Bindings
+;; ============
 
-;;   Command                                                | New
-;;  --------------------------------------------------------|--------
-;;   evil-goto-line                                         | G
-;;   evil-search-next                                       | n
-;;   evil-search-previous                                   | N
-;;   set-mark-command                                       | v or V
-;;   evil-ex                                                | :
-;;   evil-search-forward                                    | /
-;;   evil-scroll-up                                         | C-u (if C-u scroll enabled)
-;;   evil-scroll-page-up                                    | C-b
-;;   magit-section-forward-sibling                          | ] or gj
-;;   evil-scroll-down                                       | C-d
-;;   evil-scroll-page-down                                  | C-f
-;;   magit-section-backward-sibling                         | [ or gk
-;;   evil-emacs-state                                       | C-z
-;;   evil-next-visual-line                                  | j
-;;   evil-previous-visual-line                              | k
+;; The basic key binding scheme is described in the following tables.
+
+;;    Command              | Old  | New
+;;   ----------------------|----- |------
+;;    cherry pick          | a/A  |
+;;    branch               | b    |
+;;    bisect               | B    |
+;;    commit               | c    |
+;;    diff                 | d/D  |
+;;    help                 | h/?  |
+;;    ediff                | e/E  |
+;;    fetch                | f    |
+;;    pull                 | F    |
+;;    ignore               | i/I  |
+;;    jump                 | j    | g
+;;    delete               | k    | x
+;;    untrack              | K    | X
+;;    log                  | l/L  |
+;;    merge                | m    |
+;;    remote               | M    |
+;;    next section         | n    | C-j
+;;    next section sibling | M-n  | gj or ]
+;;    submodule            | o    | C-o
+;;    prev section         | p    | C-k
+;;    prev section sibling | M-p  | gk or [
+;;    push                 | P    |
+;;    rebase               | r    |
+;;    refresh              | g    | gr/gR
+;;    rename               | R    |
+;;    stage                | s/S  |
+;;    tag                  | t    |
+;;    notes                | T    |
+;;    unstage              | u/U  |
+;;    revert               | v/V  | o/O
+;;    am                   | w    |
+;;    patch                | W    |
+;;    reset                | x    | C-r
+;;    show-refs            | y    |
+;;    cherry               | Y    |
+;;    stash                | z/Z  |
+;;    git-cmd              | :    | \ |
+;;    run                  | !    |
+
+;; Evil-specific commands and more
+
+;;    Command                     | New
+;;   -----------------------------|--------
+;;    evil-goto-line              | G
+;;    evil-next-visual-line       | j
+;;    evil-previous-visual-line   | k
+;;    evil-search-next            | n
+;;    evil-search-previous        | N
+;;    set-mark-command            | v or V
+;;    evil-ex                     | :
+;;    evil-search-forward         | /
+;;    evil-scroll-page-up         | C-b
+;;    evil-scroll-down            | C-d
+;;    evil-scroll-page-down       | C-f
+;;    evil-scroll-up              | C-u (if C-u scroll enabled)
+;;    evil-emacs-state            | C-z
+
+;; Any other bindings are meant to be consistent with these.
+
+;; Disclaimer
+;; ==========
+
+;; Given the complexity of magit key bindings combined with the complexity of git
+;; itself, it is possible that there are some rough edges where the current binding
+;; is not the expected one in a buffer. It will be very helpful for you to report
+;; any such instances.
 
 ;; maps changed
 ;;
@@ -442,6 +464,13 @@ evil-magit."
   (define-key magit-commit-section-map "v" 'magit-revert-no-commit)
   (define-key magit-file-section-map "\C-j" 'magit-diff-visit-file-worktree)
   (define-key magit-hunk-section-map "\C-j" 'magit-diff-visit-file-worktree))
+
+;;;###autoload
+(defun evil-magit-revert ()
+  "Revert changes by evil-magit that affect default evil+magit behavior."
+  (interactive)
+  (evil-magit-revert-section-bindings)
+  (evil-magit-revert-states))
 
 ;;; evil-magit.el ends soon
 (provide 'evil-magit)
