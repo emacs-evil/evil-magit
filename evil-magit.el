@@ -160,49 +160,78 @@
   (interactive)
   (when (region-active-p) (deactivate-mark)))
 
-(dolist (mode '(git-commit-mode
-                magit-mode
-                magit-cherry-mode
-                magit-diff-mode
-                magit-log-mode
-                magit-log-select-mode
-                ;; magit-popup-mode
-                ;; magit-popup-sequence-mode
-                magit-process-mode
-                magit-reflog-mode
-                magit-refs-mode
-                magit-revision-mode
-                magit-stash-mode
-                magit-stashes-mode
-                magit-status-mode))
-  (setq evil-emacs-state-modes (delq mode evil-emacs-state-modes)))
+(defvaralias 'evil-magit-evil-state-modes-var
+  (intern (format "evil-%s-state-modes" evil-magit-state)))
 
-(dolist (mode '(magit-mode
-                ;; git-popup-mode
-                git-rebase-mode
-                magit-blame-mode
-                magit-blob-mode
-                magit-cherry-mode
-                magit-diff-mode
-                magit-file-mode
-                magit-gitflow-mode
-                magit-log-mode
-                ;; magit-popup-mode
-                ;; magit-popup-sequence-mode
-                magit-process-mode
-                magit-reflog-mode
-                magit-refs-mode
-                magit-revision-mode
-                magit-stash-mode
-                magit-stashes-mode
-                magit-status-mode))
-  (add-to-list (intern (format "evil-%s-state-modes" evil-magit-state)) mode))
+(defvar evil-magit-emacs-to-default-state-modes
+  '(git-commit-mode)
+  "Modes that should be in the default evil state")
+
+(defvar evil-magit-emacs-to-evil-magit-state-modes
+  '(magit-mode
+    magit-cherry-mode
+    magit-diff-mode
+    magit-log-mode
+    magit-log-select-mode
+    magit-process-mode
+    magit-reflog-mode
+    magit-refs-mode
+    magit-revision-mode
+    magit-stash-mode
+    magit-stashes-mode
+    magit-status-mode)
+  "Modes that switch from emacs state to `evil-magit-state'")
+
+(defvar evil-magit-default-to-evil-magit-state-modes
+  '(git-rebase-mode
+    magit-blame-mode
+    magit-blob-mode
+    magit-file-mode
+    magit-gitflow-mode)
+  "Modes that switch from default state to `evil-magit-state'")
+
+(defvar evil-magit-untouched-modes
+  '(git-popup-mode
+    magit-popup-mode
+    magit-popup-sequence-mode)
+  "Modes whose evil states are unchanged")
+
+;;;###autoload
+(defun evil-magit-setup-states ()
+  "Transfer git/magit modes to correct evil state for
+evil-magit."
+  (interactive)
+  ;; remove from evil-emacs-state-modes
+  (dolist (mode-list (list evil-magit-emacs-to-evil-magit-state-modes
+                           evil-magit-emacs-to-default-state-modes))
+    (dolist (mode mode-list)
+      (setq evil-emacs-state-modes (delq mode evil-emacs-state-modes))))
+  ;; add to evil-magit-evil-state-modes-var
+  (dolist (mode-list (list evil-magit-emacs-to-evil-magit-state-modes
+                           evil-magit-default-to-evil-magit-state-modes))
+    (dolist (mode mode-list)
+      (add-to-list 'evil-magit-evil-state-modes-var mode))))
+
+(evil-magit-setup-states)
+
+;;;###autoload
+(defun evil-magit-revert-states ()
+  "Revert `evil-magit-setup-states'"
+  (interactive)
+  (dolist (mode-list (list evil-magit-emacs-to-evil-magit-state-modes
+                           evil-magit-emacs-to-default-state-modes))
+    (dolist (mode mode-list)
+      (add-to-list 'evil-emacs-state-modes mode)))
+  (dolist (mode-list (list evil-magit-emacs-to-evil-magit-state-modes
+                           evil-magit-default-to-evil-magit-state-modes))
+    (dolist (mode mode-list)
+      (setq evil-magit-evil-state-modes-var
+            (delq mode evil-magit-evil-state-modes-var)))))
 
 ;; Make relevant maps into overriding maps so that they shadow the global evil
 ;; maps by default
 (dolist (map (list magit-mode-map
                    magit-cherry-mode-map
-                   ;; git-commit-mode-map
                    magit-mode-map
                    magit-blob-mode-map
                    magit-diff-mode-map
@@ -212,8 +241,6 @@
                    magit-status-mode-map
                    magit-file-mode-map
                    magit-log-read-revs-map
-                   ;; magit-minibuffer-local-ns-map
-                   ;; magit-popup-mode-map
                    magit-process-mode-map
                    magit-refs-mode-map))
   (evil-make-overriding-map map evil-magit-state))
