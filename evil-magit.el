@@ -394,17 +394,17 @@
 ;; section maps: evil-define-key doesn't work here, because these maps are text overlays
 
 ;; Not sure about this, but it seems unnecessary
-(define-key magit-commit-section-map "v" nil)
+(define-key magit-commit-section-map "v" nil) ; was magit-revert-no-commit
 
-(define-key magit-file-section-map "v" nil)
+(define-key magit-file-section-map "v" nil) ; was magit-reverse
 (define-key magit-file-section-map [remap magit-revert-no-commit] 'magit-reverse)
 (define-key magit-file-section-map "\C-j" nil) ; breaking change
 
-(define-key magit-hunk-section-map "v" nil)
+(define-key magit-hunk-section-map "v" nil) ; was magit-reverse
 (define-key magit-hunk-section-map [remap magit-revert-no-commit] 'magit-reverse)
 (define-key magit-hunk-section-map "\C-j" nil) ; breaking change
 
-(define-key magit-staged-section-map "v" nil)
+(define-key magit-staged-section-map "v" nil ; was magit-reverse
 (define-key magit-staged-section-map [remap magit-revert-no-commit] 'magit-reverse)
 
 ;;;###autoload
