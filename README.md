@@ -28,7 +28,8 @@ evil+magit behavior.
 Key Bindings
 ============
 
-The basic key binding scheme is described in the following tables.
+The basic key binding scheme is described in the following tables. If the
+Evil-Magit column is blank, the default is unchanged.
 
    Category              | Default | Evil-Magit
    ----------------------|---------|------------
