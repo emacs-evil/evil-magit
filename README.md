@@ -1,3 +1,5 @@
+[![MELPA](http://melpa.org/packages/evil-magit-badge.svg)](http://melpa.org/#/evil-magit)
+
 Black magic
 ===========
 
