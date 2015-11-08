@@ -192,10 +192,8 @@ evil-magit."
 
 (evil-magit-setup-states)
 
-;;;###autoload
 (defun evil-magit-revert-states ()
   "Revert `evil-magit-setup-states'"
-  (interactive)
   (dolist (mode-list (list evil-magit-emacs-to-evil-magit-state-modes
                            evil-magit-emacs-to-default-state-modes))
     (dolist (mode mode-list)
@@ -261,65 +259,6 @@ evil-magit."
 
 (when evil-want-C-u-scroll
   (evil-define-key evil-magit-state magit-mode-map "\C-u" 'evil-scroll-up))
-
-;; dispatch-popup
-(plist-put magit-dispatch-popup
-           :actions '("Popup and dwim commands"
-                      (?A "Cherry-picking"  magit-cherry-pick-popup)
-                      (?b "Branching"       magit-branch-popup)
-                      (?B "Bisecting"       magit-bisect-popup)
-                      (?c "Committing"      magit-commit-popup)
-                      (?d "Diffing"         magit-diff-popup)
-                      (?D "Change diffs"    magit-diff-refresh-popup)
-                      (?e "Ediff dwimming"  magit-ediff-dwim)
-                      (?E "Ediffing"        magit-ediff-popup)
-                      (?f "Fetching"        magit-fetch-popup)
-                      (?F "Pulling"         magit-pull-popup)
-                      (?l "Logging"         magit-log-popup)
-                      (?m "Merging"         magit-merge-popup)
-                      (?M "Remoting"        magit-remote-popup)
-                      (?O "Reverting"       magit-revert-popup)
-                      (?\C-o "Submodules"   magit-submodule-popup)
-                      (?P "Pushing"         magit-push-popup)
-                      (?r "Rebasing"        magit-rebase-popup)
-                      (?t "Tagging"         magit-tag-popup)
-                      (?T "Notes"           magit-notes-popup)
-                      (?w "Apply patches"   magit-am-popup)
-                      (?W "Format patches"  magit-patch-popup)
-                      (?y "Show Refs"       magit-show-refs-popup)
-                      (?z "Stashing"        magit-stash-popup)
-                      (?! "Running"         magit-run-popup)
-                      "Applying changes"
-                      (?a "Apply"           magit-apply)
-                      (?s "Stage"           magit-stage)
-                      (?u "Unstage"         magit-unstage)
-                      nil
-                      (?o "Reverse"         magit-reverse)
-                      (?S "Stage all"       magit-stage-modified)
-                      (?U "Unstage all"     magit-unstage-all)
-                      nil
-                      (?x "Discard"         magit-discard)
-                      "\
- gr     refresh current buffer
- TAB    toggle section at point
- RET    visit thing at point
-
- C-h m  show all key bindings" nil))
-
-(define-key magit-popup-mode-map "gr" 'magit-refresh)
-
-(defvar evil-magit-popup-keys-changed nil)
-(unless evil-magit-popup-keys-changed
-  (magit-change-popup-key 'magit-branch-popup :actions ?x ?\C-r)
-  (magit-change-popup-key 'magit-branch-popup :actions ?k ?x)
-  (magit-change-popup-key 'magit-remote-popup :actions ?k ?x)
-  (magit-change-popup-key 'magit-revert-popup :actions ?v ?o)
-  (magit-change-popup-key 'magit-revert-popup :actions ?V ?O)
-  (magit-change-popup-key 'magit-tag-popup    :actions ?k ?x)
-  (eval-after-load 'magit-gh-pulls
-    `(progn
-       (magit-change-popup-key 'magit-gh-pulls-popup :actions ?g ?r)))
-  (setq evil-magit-popup-keys-changed t))
 
 (evil-define-key evil-magit-state magit-status-mode-map
   "gz" 'magit-jump-to-stashes
@@ -422,11 +361,91 @@ evil-magit."
   (define-key magit-file-section-map "\C-j" 'magit-diff-visit-file-worktree)
   (define-key magit-hunk-section-map "\C-j" 'magit-diff-visit-file-worktree))
 
+;; Popups
+(defvar evil-magit-dispatch-popup-backup (copy-sequence magit-dispatch-popup))
+(defvar evil-magit-popup-keys-changed nil)
+
+(plist-put magit-dispatch-popup
+           :actions '("Popup and dwim commands"
+                      (?A "Cherry-picking"  magit-cherry-pick-popup)
+                      (?b "Branching"       magit-branch-popup)
+                      (?B "Bisecting"       magit-bisect-popup)
+                      (?c "Committing"      magit-commit-popup)
+                      (?d "Diffing"         magit-diff-popup)
+                      (?D "Change diffs"    magit-diff-refresh-popup)
+                      (?e "Ediff dwimming"  magit-ediff-dwim)
+                      (?E "Ediffing"        magit-ediff-popup)
+                      (?f "Fetching"        magit-fetch-popup)
+                      (?F "Pulling"         magit-pull-popup)
+                      (?l "Logging"         magit-log-popup)
+                      (?m "Merging"         magit-merge-popup)
+                      (?M "Remoting"        magit-remote-popup)
+                      (?O "Reverting"       magit-revert-popup)
+                      (?\C-o "Submodules"   magit-submodule-popup)
+                      (?P "Pushing"         magit-push-popup)
+                      (?r "Rebasing"        magit-rebase-popup)
+                      (?t "Tagging"         magit-tag-popup)
+                      (?T "Notes"           magit-notes-popup)
+                      (?w "Apply patches"   magit-am-popup)
+                      (?W "Format patches"  magit-patch-popup)
+                      (?y "Show Refs"       magit-show-refs-popup)
+                      (?z "Stashing"        magit-stash-popup)
+                      (?! "Running"         magit-run-popup)
+                      "Applying changes"
+                      (?a "Apply"           magit-apply)
+                      (?s "Stage"           magit-stage)
+                      (?u "Unstage"         magit-unstage)
+                      nil
+                      (?o "Reverse"         magit-reverse)
+                      (?S "Stage all"       magit-stage-modified)
+                      (?U "Unstage all"     magit-unstage-all)
+                      nil
+                      (?x "Discard"         magit-discard)
+                      "\
+ gr     refresh current buffer
+ TAB    toggle section at point
+ RET    visit thing at point
+
+ C-h m  show all key bindings" nil))
+
+(define-key magit-popup-mode-map "gr" 'magit-refresh)
+
+(unless evil-magit-popup-keys-changed
+  (magit-change-popup-key 'magit-branch-popup :actions ?x ?\C-r)
+  (magit-change-popup-key 'magit-branch-popup :actions ?k ?x)
+  (magit-change-popup-key 'magit-remote-popup :actions ?k ?x)
+  (magit-change-popup-key 'magit-revert-popup :actions ?v ?o)
+  (magit-change-popup-key 'magit-revert-popup :actions ?V ?O)
+  (magit-change-popup-key 'magit-tag-popup    :actions ?k ?x)
+  (eval-after-load 'magit-gh-pulls
+    `(progn
+       (magit-change-popup-key 'magit-gh-pulls-popup :actions ?g ?r)))
+  (setq evil-magit-popup-keys-changed t))
+
+(defun evil-magit-revert-popups ()
+  "Revert popup keys changed by evil-magit."
+  (setq magit-dispatch-popup evil-magit-dispatch-popup-backup)
+
+  (define-key magit-popup-mode-map "g" 'magit-refresh)
+
+  (when evil-magit-popup-keys-changed
+    (magit-change-popup-key 'magit-branch-popup :actions ?\C-r ?x)
+    (magit-change-popup-key 'magit-branch-popup :actions ?x ?k)
+    (magit-change-popup-key 'magit-remote-popup :actions ?x ?k)
+    (magit-change-popup-key 'magit-revert-popup :actions ?o ?v)
+    (magit-change-popup-key 'magit-revert-popup :actions ?O ?V)
+    (magit-change-popup-key 'magit-tag-popup    :actions ?x ?k)
+    (eval-after-load 'magit-gh-pulls
+      `(progn
+         (magit-change-popup-key 'magit-gh-pulls-popup :actions ?r ?g)))
+    (setq evil-magit-popup-keys-changed nil)))
+
 ;;;###autoload
 (defun evil-magit-revert ()
   "Revert changes by evil-magit that affect default evil+magit behavior."
   (interactive)
   (evil-magit-revert-section-bindings)
+  (evil-magit-revert-popups)
   (evil-magit-revert-states))
 
 ;; maps changed
