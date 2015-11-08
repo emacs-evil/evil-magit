@@ -46,51 +46,52 @@
 
 ;; The basic key binding scheme is described in the following tables.
 
-;;    Command              | Old  | New
-;;   ----------------------|----- |------
-;;    cherry pick          | a/A  |
-;;    branch               | b    |
-;;    bisect               | B    |
-;;    commit               | c    |
-;;    diff                 | d/D  |
-;;    help                 | h/?  |
-;;    ediff                | e/E  |
-;;    fetch                | f    |
-;;    pull                 | F    |
-;;    ignore               | i/I  |
-;;    jump                 | j    | g
-;;    delete               | k    | x
-;;    untrack              | K    | X
-;;    log                  | l/L  |
-;;    merge                | m    |
-;;    remote               | M    |
-;;    next section         | n    | C-j
-;;    next section sibling | M-n  | gj or ]
-;;    submodule            | o    | C-o
-;;    prev section         | p    | C-k
-;;    prev section sibling | M-p  | gk or [
-;;    push                 | P    |
-;;    rebase               | r    |
-;;    refresh              | g    | gr/gR
-;;    rename               | R    |
-;;    stage                | s/S  |
-;;    tag                  | t    |
-;;    notes                | T    |
-;;    unstage              | u/U  |
-;;    revert               | v/V  | o/O
-;;    am                   | w    |
-;;    patch                | W    |
-;;    reset                | x    | C-r
-;;    show-refs            | y    |
-;;    cherry               | Y    |
-;;    stash                | z/Z  |
-;;    git-cmd              | :    | \ |
-;;    run                  | !    |
+;;    Category             | Default | Evil-Magit
+;;   ----------------------|---------|-----------
+;;    cherry pick          | a/A     |
+;;    branch               | b       |
+;;    bisect               | B       |
+;;    commit               | c       |
+;;    diff                 | d/D     |
+;;    help                 | h/?     |
+;;    ediff                | e/E     |
+;;    fetch                | f       |
+;;    pull                 | F       |
+;;    ignore               | i/I     |
+;;    jump                 | j       | g
+;;    delete               | k       | x
+;;    untrack              | K       | X
+;;    log                  | l/L     |
+;;    merge                | m       |
+;;    remote               | M       |
+;;    next section         | n       | C-j
+;;    next section sibling | M-n     | gj or ]
+;;    submodule            | o       | C-o
+;;    prev section         | p       | C-k
+;;    prev section sibling | M-p     | gk or [
+;;    push                 | P       |
+;;    rebase               | r       |
+;;    refresh              | g       | gr/gR
+;;    rename               | R       |
+;;    stage                | s/S     |
+;;    tag                  | t       |
+;;    notes                | T       |
+;;    unstage              | u/U     |
+;;    revert               | v/V     | o/O
+;;    am                   | w       |
+;;    patch                | W       |
+;;    reset                | x       | C-r
+;;    show-refs            | y       |
+;;    cherry               | Y       |
+;;    stash                | z/Z     |
+;;    git-cmd              | :       | |
+;;    run                  | !       |
 
-;; Evil-specific commands and more
+;; New Commands
+;; ------------
 
-;;    Command                     | New
-;;   -----------------------------|--------
+;;    Command                     | Evil-Magit
+;;   -----------------------------|-----------
 ;;    evil-goto-line              | G
 ;;    evil-next-visual-line       | j
 ;;    evil-previous-visual-line   | k
@@ -102,7 +103,7 @@
 ;;    evil-scroll-page-up         | C-b
 ;;    evil-scroll-down            | C-d
 ;;    evil-scroll-page-down       | C-f
-;;    evil-scroll-up              | C-u (if C-u scroll enabled)
+;;    evil-scroll-up              | C-u (if C-u scrolls)
 ;;    evil-emacs-state            | C-z
 
 ;; Any other bindings are meant to be consistent with these.
@@ -114,48 +115,6 @@
 ;; itself, it is possible that there are some rough edges where the current binding
 ;; is not the expected one in a buffer. It will be very helpful for you to report
 ;; any such instances.
-
-;; maps changed
-;;
-;; 1. git-commit-mode-map
-;; 2. git-rebase-mode-map
-;; 3. magit-mode-map
-;; 4. magit-blame-mode-map
-;; 5. magit-blob-mode-map
-;; 6. magit-diff-mode-map
-;; 7. magit-log-mode-map
-;; 8. magit-log-select-mode-map
-;; 9. magit-popup-mode-map
-;; 10. magit-reflog-mode-map
-;; 11. magit-status-mode-map
-
-;; S1. magit-commit-section-map
-;; S2. magit-file-sections-map
-;; S3. magit-hunk-section-map
-;; S4. magit-staged-section-map
-
-;; maps unchanged
-;;
-;; 12. magit-cherry-mode-map
-;; 13. magit-file-mode-map
-;; 14. magit-log-read-revs-map
-;; 15. magit-minibuffer-local-ns-map
-;; 16. magit-process-mode-map
-;; 17. magit-refs-mode-map
-;; 18. with-editor-mode-map
-
-;; S5. magit-branch-section-map
-;; S6. magit-module-commit-section-map
-;; S7. magit-remote-section-map
-;; S8. magit-stash-section-map
-;; S9. magit-stashes-section-map
-;; S10. magit-tag-section-map
-;; S11. magit-unpulled-section-map
-;; S12. magit-unpushed-section-map
-;; S13. magit-unstaged-section-map
-;; S14. magit-untracked-section-map
-
-;; TODO
 
 ;;; Code:
 
@@ -469,6 +428,47 @@ evil-magit."
   (interactive)
   (evil-magit-revert-section-bindings)
   (evil-magit-revert-states))
+
+;; maps changed
+;;
+;; 1. git-commit-mode-map
+;; 2. git-rebase-mode-map
+;; 3. magit-mode-map
+;; 4. magit-blame-mode-map
+;; 5. magit-blob-mode-map
+;; 6. magit-diff-mode-map
+;; 7. magit-log-mode-map
+;; 8. magit-log-select-mode-map
+;; 9. magit-popup-mode-map
+;; 10. magit-reflog-mode-map
+;; 11. magit-status-mode-map
+
+;; S1. magit-commit-section-map
+;; S2. magit-file-sections-map
+;; S3. magit-hunk-section-map
+;; S4. magit-staged-section-map
+
+;; maps unchanged
+;;
+;; 12. magit-cherry-mode-map
+;; 13. magit-file-mode-map
+;; 14. magit-log-read-revs-map
+;; 15. magit-minibuffer-local-ns-map
+;; 16. magit-process-mode-map
+;; 17. magit-refs-mode-map
+;; 18. with-editor-mode-map
+
+;; S5. magit-branch-section-map
+;; S6. magit-module-commit-section-map
+;; S7. magit-remote-section-map
+;; S8. magit-stash-section-map
+;; S9. magit-stashes-section-map
+;; S10. magit-tag-section-map
+;; S11. magit-unpulled-section-map
+;; S12. magit-unpushed-section-map
+;; S13. magit-unstaged-section-map
+;; S14. magit-untracked-section-map
+
 
 ;;; evil-magit.el ends soon
 (provide 'evil-magit)
