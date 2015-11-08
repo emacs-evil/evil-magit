@@ -89,6 +89,15 @@ Evil-specific commands and more
 
 Any other bindings are meant to be consistent with these.
 
+Known Conflicts
+===============
+
+These are the third-party packages that conflict with these bindings and will
+probably need to be disabled in magit buffers for evil-magit to work properly.
+
+ 1. [evil-snipe](https://github.com/hlissner/evil-snipe)
+ 2. [evil-escape](https://github.com/syl20bnr/evil-escape) with [certain escape sequences](https://github.com/justbur/evil-magit/issues/4)
+
 Disclaimer
 ==========
 
