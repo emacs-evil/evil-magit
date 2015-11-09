@@ -174,26 +174,20 @@
     magit-popup-sequence-mode)
   "Modes whose evil states are unchanged")
 
-;;;###autoload
-(defun evil-magit-setup-states ()
-  "Transfer git/magit modes to correct evil state for
-evil-magit."
-  (interactive)
-  ;; remove from evil-emacs-state-modes
-  (dolist (mode-list (list evil-magit-emacs-to-evil-magit-state-modes
-                           evil-magit-emacs-to-default-state-modes))
-    (dolist (mode mode-list)
-      (setq evil-emacs-state-modes (delq mode evil-emacs-state-modes))))
-  ;; add to evil-magit-evil-state-modes-var
-  (dolist (mode-list (list evil-magit-emacs-to-evil-magit-state-modes
-                           evil-magit-default-to-evil-magit-state-modes))
-    (dolist (mode mode-list)
-      (add-to-list 'evil-magit-evil-state-modes-var mode))))
-
-(evil-magit-setup-states)
+;; remove from evil-emacs-state-modes
+(dolist (mode-list (list evil-magit-emacs-to-evil-magit-state-modes
+                         evil-magit-emacs-to-default-state-modes))
+  (dolist (mode mode-list)
+    (setq evil-emacs-state-modes (delq mode evil-emacs-state-modes))))
+;; add to evil-magit-evil-state-modes-var
+(dolist (mode-list (list evil-magit-emacs-to-evil-magit-state-modes
+                         evil-magit-default-to-evil-magit-state-modes))
+  (dolist (mode mode-list)
+    (add-to-list 'evil-magit-evil-state-modes-var mode)))
 
 (defun evil-magit-revert-states ()
-  "Revert `evil-magit-setup-states'"
+  "Revert git/magit modes to evil state before loading
+evil-magit."
   (dolist (mode-list (list evil-magit-emacs-to-evil-magit-state-modes
                            evil-magit-emacs-to-default-state-modes))
     (dolist (mode mode-list)
