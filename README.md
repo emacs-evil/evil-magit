@@ -51,7 +51,7 @@ Evil-Magit column is blank, the default is unchanged.
    remote                | `M`     |
    next section          | `n`     | `C-j`
    next section sibling  | `M-n`   | `gj` or `]`
-   submodule             | `o`     | `C-o`
+   submodule             | `o`     | `>`
    prev section          | `p`     | `C-k`
    prev section sibling  | `M-p`   | `gk` or `[`
    push                  | `P`     |

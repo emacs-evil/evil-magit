@@ -66,7 +66,7 @@
 ;;    remote               | M       |
 ;;    next section         | n       | C-j
 ;;    next section sibling | M-n     | gj or ]
-;;    submodule            | o       | C-o
+;;    submodule            | o       | >
 ;;    prev section         | p       | C-k
 ;;    prev section sibling | M-p     | gk or [
 ;;    push                 | P       |
@@ -233,7 +233,7 @@ evil-magit."
   "O"        'magit-revert-popup             ; was V
   "\C-r"     'magit-reset                    ; was x
   "|"        'magit-git-command              ; was :
-  "\C-o"     'magit-submodule-popup          ; was o
+  ">"        'magit-submodule-popup          ; was o
   ;; evil-specific bindings
   "j"        'evil-next-visual-line
   "k"        'evil-previous-visual-line
@@ -375,7 +375,6 @@ evil-magit."
                       (?m "Merging"         magit-merge-popup)
                       (?M "Remoting"        magit-remote-popup)
                       (?O "Reverting"       magit-revert-popup)
-                      (?\C-o "Submodules"   magit-submodule-popup)
                       (?P "Pushing"         magit-push-popup)
                       (?r "Rebasing"        magit-rebase-popup)
                       (?t "Tagging"         magit-tag-popup)
@@ -385,6 +384,7 @@ evil-magit."
                       (?y "Show Refs"       magit-show-refs-popup)
                       (?z "Stashing"        magit-stash-popup)
                       (?! "Running"         magit-run-popup)
+                      (?> "Submodules"      magit-submodule-popup)
                       "Applying changes"
                       (?a "Apply"           magit-apply)
                       (?s "Stage"           magit-stage)
