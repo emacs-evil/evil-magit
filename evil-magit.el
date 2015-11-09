@@ -420,7 +420,7 @@ evil-magit."
   "Revert popup keys changed by evil-magit."
   (setq magit-dispatch-popup evil-magit-dispatch-popup-backup)
 
-  (define-key magit-popup-mode-map "g" 'magit-refresh)
+  (define-key magit-popup-mode-map "g" nil)
 
   (when evil-magit-popup-keys-changed
     (magit-change-popup-key 'magit-branch-popup :actions ?\C-r ?x)
