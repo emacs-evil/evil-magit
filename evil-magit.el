@@ -402,8 +402,6 @@ evil-magit."
 
  C-h m  show all key bindings" nil))
 
-(define-key magit-popup-mode-map "gr" 'magit-refresh)
-
 (unless evil-magit-popup-keys-changed
   (magit-change-popup-key 'magit-branch-popup :actions ?x ?\C-r)
   (magit-change-popup-key 'magit-branch-popup :actions ?k ?x)
@@ -419,9 +417,6 @@ evil-magit."
 (defun evil-magit-revert-popups ()
   "Revert popup keys changed by evil-magit."
   (setq magit-dispatch-popup evil-magit-dispatch-popup-backup)
-
-  (define-key magit-popup-mode-map "g" nil)
-
   (when evil-magit-popup-keys-changed
     (magit-change-popup-key 'magit-branch-popup :actions ?\C-r ?x)
     (magit-change-popup-key 'magit-branch-popup :actions ?x ?k)
