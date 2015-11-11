@@ -22,6 +22,12 @@ will setup the new key bindings for you.
 (require 'evil-magit)
 ```
 
+This package assumes that you either use the global variant of evil mode (e.g.,
+through `(evil-mode 1)`), or at least have `evil-local-mode` (the local variant)
+enabled in the magit buffers you want these bindings to take effect in. When
+evil is disabled in a magit buffer, this package will not affect the default key
+bindings (with one minor exception).
+
 Use `evil-magit-revert` to revert changes made by evil-magit to the default
 evil+magit behavior.
 
