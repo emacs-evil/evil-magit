@@ -299,34 +299,42 @@ evil-magit."
        "\M-k"  'git-rebase-move-line-up   ; was M-p
        "\M-j"  'git-rebase-move-line-down ; was M-n
        "u"     'git-rebase-undo)
-     (defvar evil-magit-new-rebase-command-descriptions
-       '((git-rebase-pick      . "pick = use commit")
-         (git-rebase-reword    . "reword = use commit, but edit the commit message")
-         (git-rebase-edit      . "edit = use commit, but stop for amending")
-         (git-rebase-squash    . "squash = use commit, but meld into previous commit")
-         (git-rebase-fixup     . "fixup = like \"squash\", but discard this commit's log message")
-         (git-rebase-exec      . "exec = run command (the rest of the line) using shell")
-         (git-rebase-kill-line . "drop = remove commit")))
+     (defvar evil-magit-rebase-command-descriptions
+       '((git-rebase-pick           . "pick = use commit")
+         (git-rebase-reword         . "reword = use commit, but edit the commit message")
+         (git-rebase-edit           . "edit = use commit, but stop for amending")
+         (git-rebase-squash         . "squash = use commit, but meld into previous commit")
+         (git-rebase-fixup          . "fixup = like \"squash\", but discard this commit's log message")
+         (git-rebase-exec           . "exec = run command (the rest of the line) using shell")
+         (git-rebase-kill-line      . "drop = remove commit")
+         (undo                      . "undo last change")
+         (with-editor-finish        . "tell Git to make it happen")
+         (with-editor-cancel        . "tell Git that you changed your mind, i.e. abort")
+         (evil-previous-visual-line . "move point to previous line")
+         (evil-next-visual-line     . "move point to next line")
+         (git-rebase-move-line-up   . "move the commit at point up")
+         (git-rebase-move-line-down . "move the commit at point down")
+         (git-rebase-show-commit    . "show the commit at point in another buffer")
+         ))
 
-     (defun evil-magit-remove-default-rebase-messages ()
+     (defun evil-magit-add-rebase-messages ()
        "Remove evil-state annotations and reformat git-rebase buffer."
        (goto-char (point-min))
        (let ((inhibit-read-only t)
              (state-regexp (format "<%s-state> " evil-magit-state)))
          (save-excursion
            (save-match-data
-             (while (re-search-forward state-regexp nil t)
-               (replace-match ""))
-             (flush-lines "#\.+ = ")
+             (flush-lines "^#.+ = ")
              (goto-char (point-min))
              (when (and git-rebase-show-instructions
-                        (re-search-forward "undo last change\n" nil t))
-               (--each evil-magit-new-rebase-command-descriptions
+                        (re-search-forward "^# Commands:\n" nil t))
+               (--each evil-magit-rebase-command-descriptions
                  (insert (format "# %-8s %s\n"
                                  (replace-regexp-in-string state-regexp ""
                                   (substitute-command-keys (format "\\[%s]" (car it))))
                                  (cdr it)))))))))
-     (add-hook 'git-rebase-mode-hook 'evil-magit-remove-default-rebase-messages t)))
+     (remove-hook 'git-rebase-mode-hook 'git-rebase-mode-show-keybindings)
+     (add-hook 'git-rebase-mode-hook 'evil-magit-add-rebase-messages t)))
 
 (evil-define-key evil-magit-state git-commit-mode-map
   "gk" 'git-commit-prev-message
