@@ -218,6 +218,9 @@ evil-magit."
 
 (evil-make-overriding-map magit-blame-mode-map 'normal)
 
+(eval-after-load 'magit-gh-pulls
+  `(evil-make-overriding-map magit-gh-pulls-mode-map ',evil-magit-state))
+
 (evil-define-key evil-magit-state magit-mode-map
   "g"        nil
   "\C-j"     'magit-section-forward          ; was n
