@@ -331,11 +331,11 @@ evil-magit."
              (goto-char (point-min))
              (when (and git-rebase-show-instructions
                         (re-search-forward "^# Commands:\n" nil t))
-               (--each evil-magit-rebase-command-descriptions
+               (dolist (desc evil-magit-rebase-command-descriptions)
                  (insert (format "# %-8s %s\n"
                                  (replace-regexp-in-string state-regexp ""
-                                  (substitute-command-keys (format "\\[%s]" (car it))))
-                                 (cdr it)))))))))
+                                  (substitute-command-keys (format "\\[%s]" (car desc))))
+                                 (cdr desc)))))))))
      (remove-hook 'git-rebase-mode-hook 'git-rebase-mode-show-keybindings)
      (add-hook 'git-rebase-mode-hook 'evil-magit-add-rebase-messages t)))
 
@@ -463,47 +463,6 @@ go back to evil-magit behavior."
   (evil-magit-revert-section-bindings)
   (evil-magit-revert-popups)
   (evil-magit-revert-default-states))
-
-;; maps changed
-;;
-;; 1. git-commit-mode-map
-;; 2. git-rebase-mode-map
-;; 3. magit-mode-map
-;; 4. magit-blame-mode-map
-;; 5. magit-blob-mode-map
-;; 6. magit-diff-mode-map
-;; 7. magit-log-mode-map
-;; 8. magit-log-select-mode-map
-;; 9. magit-popup-mode-map
-;; 10. magit-reflog-mode-map
-;; 11. magit-status-mode-map
-
-;; S1. magit-commit-section-map
-;; S2. magit-file-sections-map
-;; S3. magit-hunk-section-map
-;; S4. magit-staged-section-map
-
-;; maps unchanged
-;;
-;; 12. magit-cherry-mode-map
-;; 13. magit-file-mode-map
-;; 14. magit-log-read-revs-map
-;; 15. magit-minibuffer-local-ns-map
-;; 16. magit-process-mode-map
-;; 17. magit-refs-mode-map
-;; 18. with-editor-mode-map
-
-;; S5. magit-branch-section-map
-;; S6. magit-module-commit-section-map
-;; S7. magit-remote-section-map
-;; S8. magit-stash-section-map
-;; S9. magit-stashes-section-map
-;; S10. magit-tag-section-map
-;; S11. magit-unpulled-section-map
-;; S12. magit-unpushed-section-map
-;; S13. magit-unstaged-section-map
-;; S14. magit-untracked-section-map
-
 
 ;;; evil-magit.el ends soon
 (provide 'evil-magit)
