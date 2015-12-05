@@ -289,36 +289,28 @@ evil-magit."
 (eval-after-load 'git-rebase
   `(progn
      (evil-make-overriding-map git-rebase-mode-map evil-magit-state)
-     (evil-define-key evil-magit-state git-rebase-mode-map
-       "p"     'git-rebase-pick         ; was c
-       "r"     'git-rebase-reword
-       "e"     'git-rebase-edit
-       "s"     'git-rebase-squash
-       "f"     'git-rebase-fixup
-       "x"     'git-rebase-exec
-       "d"     'git-rebase-kill-line      ; was k or C-k
-       "k"     'evil-previous-visual-line ; was p
-       "j"     'evil-next-visual-line     ; was n
-       "\M-k"  'git-rebase-move-line-up   ; was M-p
-       "\M-j"  'git-rebase-move-line-down ; was M-n
-       "u"     'git-rebase-undo)
-     (defvar evil-magit-rebase-command-descriptions
-       '((git-rebase-pick           . "pick = use commit")
-         (git-rebase-reword         . "reword = use commit, but edit the commit message")
-         (git-rebase-edit           . "edit = use commit, but stop for amending")
-         (git-rebase-squash         . "squash = use commit, but meld into previous commit")
-         (git-rebase-fixup          . "fixup = like \"squash\", but discard this commit's log message")
-         (git-rebase-exec           . "exec = run command (the rest of the line) using shell")
-         (git-rebase-kill-line      . "drop = remove commit")
-         (undo                      . "undo last change")
-         (with-editor-finish        . "tell Git to make it happen")
-         (with-editor-cancel        . "tell Git that you changed your mind, i.e. abort")
-         (evil-previous-visual-line . "move point to previous line")
-         (evil-next-visual-line     . "move point to next line")
-         (git-rebase-move-line-up   . "move the commit at point up")
-         (git-rebase-move-line-down . "move the commit at point down")
-         (git-rebase-show-commit    . "show the commit at point in another buffer")
-         ))
+     (defvar evil-magit-rebase-commands-w-descriptions
+       ;; nil in the first element means don't bind here
+       '(("p"    git-rebase-pick           "pick = use commit")
+         ("r"    git-rebase-reword         "reword = use commit, but edit the commit message")
+         ("e"    git-rebase-edit           "edit = use commit, but stop for amending")
+         ("s"    git-rebase-squash         "squash = use commit, but meld into previous commit")
+         ("f"    git-rebase-fixup          "fixup = like \"squash\", but discard this commit's log message")
+         ("x"    git-rebase-exec           "exec = run command (the rest of the line) using shell")
+         ("d"    git-rebase-kill-line      "drop = remove commit") ; was k (still can use C-k)
+         ("u"    git-rebase-undo           "undo last change")
+         (nil    with-editor-finish        "tell Git to make it happen")
+         (nil    with-editor-cancel        "tell Git that you changed your mind, i.e. abort")
+         ("k"    evil-previous-visual-line "move point to previous line") ; was p
+         ("j"    evil-next-visual-line     "move point to next line") ; was n
+         ("M-k"  git-rebase-move-line-up   "move the commit at point up") ; was M-p
+         ("M-j"  git-rebase-move-line-down "move the commit at point down") ; was M-n
+         (nil    git-rebase-show-commit    "show the commit at point in another buffer")))
+
+     (dolist (cmd evil-magit-rebase-commands-w-descriptions)
+       (when (car cmd)
+         (evil-define-key evil-magit-state git-rebase-mode-map
+           (kbd (car cmd)) (nth 1 cmd))))
 
      (defun evil-magit-add-rebase-messages ()
        "Remove evil-state annotations and reformat git-rebase buffer."
@@ -331,11 +323,16 @@ evil-magit."
              (goto-char (point-min))
              (when (and git-rebase-show-instructions
                         (re-search-forward "^# Commands:\n" nil t))
-               (dolist (desc evil-magit-rebase-command-descriptions)
-                 (insert (format "# %-8s %s\n"
-                                 (replace-regexp-in-string state-regexp ""
-                                  (substitute-command-keys (format "\\[%s]" (car desc))))
-                                 (cdr desc)))))))))
+               (dolist (cmd evil-magit-rebase-commands-w-descriptions)
+                 (insert
+                  (format "# %-8s %s\n"
+                          (if (car cmd)
+                              (car cmd)
+                            (replace-regexp-in-string
+                             state-regexp ""
+                             (substitute-command-keys
+                              (format "\\[%s]" (nth 1 cmd)))))
+                          (nth 2 cmd)))))))))
      (remove-hook 'git-rebase-mode-hook 'git-rebase-mode-show-keybindings)
      (add-hook 'git-rebase-mode-hook 'evil-magit-add-rebase-messages t)))
 
