@@ -316,7 +316,8 @@ evil-magit."
        "Remove evil-state annotations and reformat git-rebase buffer."
        (goto-char (point-min))
        (let ((inhibit-read-only t)
-             (state-regexp (format "<%s-state> " evil-magit-state)))
+             (state-regexp (format "<%s-state> " evil-magit-state))
+             (aux-map (evil-get-auxiliary-keymap git-rebase-mode-map evil-magit-state)))
          (save-excursion
            (save-match-data
              (flush-lines "^#.+ = ")
@@ -326,7 +327,9 @@ evil-magit."
                (dolist (cmd evil-magit-rebase-commands-w-descriptions)
                  (insert
                   (format "# %-8s %s\n"
-                          (if (car cmd)
+                          (if (and (car cmd)
+                                   (eq (nth 1 cmd)
+                                       (lookup-key aux-map (car cmd))))
                               (car cmd)
                             (replace-regexp-in-string
                              state-regexp ""
