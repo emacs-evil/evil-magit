@@ -355,12 +355,12 @@ denotes the original magit key for this command.")
 ;; section maps: evil-define-key doesn't work here, because these maps are text overlays
 
 (defvar evil-magit-original-section-bindings
-  `((magit-file-section-map   "v"    magit-reverse)
-    (magit-file-section-map   "\C-j" magit-diff-visit-file-worktree)
-    (magit-hunk-section-map   "v"    magit-reverse)
-    (magit-hunk-section-map   "\C-j" magit-diff-visit-file-worktree)
-    (magit-staged-section-map "v"    magit-reverse)
-    (magit-commit-section-map "v"    magit-revert-no-commit))
+  `((,(copy-keymap magit-file-section-map)   "v"    magit-reverse)
+    (,(copy-keymap magit-file-section-map)   "\C-j" magit-diff-visit-file-worktree)
+    (,(copy-keymap magit-hunk-section-map)   "v"    magit-reverse)
+    (,(copy-keymap magit-hunk-section-map)   "\C-j" magit-diff-visit-file-worktree)
+    (,(copy-keymap magit-staged-section-map) "v"    magit-reverse)
+    (,(copy-keymap magit-commit-section-map) "v"    magit-revert-no-commit))
   "For testing purposes only. The original magit keybindings that
 evil-magit affects.")
 

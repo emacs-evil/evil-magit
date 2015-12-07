@@ -32,7 +32,7 @@ are correct."
   "Test that original bindings in
 `evil-magit-original-section-bindings' are correct."
   (dolist (binding evil-magit-original-section-bindings)
-    (should (eq (lookup-key (symbol-value (nth 0 binding)) (nth 1 binding))
+    (should (eq (lookup-key (nth 0 binding) (nth 1 binding))
                 (nth 2 binding)))))
 
 (ert-deftest evil-magit-dispatch-popup-test ()
