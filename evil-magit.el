@@ -442,6 +442,7 @@ evil-magit affects.")
     (magit-change-popup-key 'magit-remote-popup :actions ?k ?x)
     (magit-change-popup-key 'magit-revert-popup :actions ?v ?o)
     (magit-change-popup-key 'magit-revert-popup :actions ?V ?O)
+    (magit-change-popup-key 'magit-revert-popup :sequence-actions ?V ?O)
     (magit-change-popup-key 'magit-tag-popup    :actions ?k ?x)
     (eval-after-load 'magit-gh-pulls
       `(progn
@@ -457,6 +458,7 @@ evil-magit affects.")
     (magit-change-popup-key 'magit-remote-popup :actions ?x ?k)
     (magit-change-popup-key 'magit-revert-popup :actions ?o ?v)
     (magit-change-popup-key 'magit-revert-popup :actions ?O ?V)
+    (magit-change-popup-key 'magit-revert-popup :sequence-actions ?O ?V)
     (magit-change-popup-key 'magit-tag-popup    :actions ?x ?k)
     (eval-after-load 'magit-gh-pulls
       `(progn
