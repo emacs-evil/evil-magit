@@ -391,6 +391,16 @@ evil-magit affects.")
 (defvar evil-magit-dispatch-popup-backup (copy-sequence magit-dispatch-popup))
 (defvar evil-magit-popup-keys-changed nil)
 
+(defvar evil-magit-popup-changes
+  '((magit-branch-popup :actions "x" "X" magit-branch-reset)
+    (magit-branch-popup :actions "k" "x" magit-branch-delete)
+    (magit-remote-popup :actions "k" "x" magit-remote-remove)
+    (magit-revert-popup :actions "v" "o" magit-revert-no-commit)
+    (magit-revert-popup :actions "V" "O" magit-revert)
+    (magit-revert-popup :sequence-actions "V" "O" magit-sequencer-continue)
+    (magit-tag-popup    :actions "k" "x" magit-tag-delete))
+  "Changes to popup keys, excluding `magit-dispatch-popup'.")
+
 (defun evil-magit-adjust-popups ()
   "Adjust popup keys to match evil-magit."
   (plist-put magit-dispatch-popup
@@ -437,13 +447,10 @@ evil-magit affects.")
  C-h m  show all key bindings" nil))
 
   (unless evil-magit-popup-keys-changed
-    (magit-change-popup-key 'magit-branch-popup :actions ?x ?X)
-    (magit-change-popup-key 'magit-branch-popup :actions ?k ?x)
-    (magit-change-popup-key 'magit-remote-popup :actions ?k ?x)
-    (magit-change-popup-key 'magit-revert-popup :actions ?v ?o)
-    (magit-change-popup-key 'magit-revert-popup :actions ?V ?O)
-    (magit-change-popup-key 'magit-revert-popup :sequence-actions ?V ?O)
-    (magit-change-popup-key 'magit-tag-popup    :actions ?k ?x)
+    (dolist (change evil-magit-popup-changes)
+      (magit-change-popup-key
+       (nth 0 change) (nth 1 change)
+       (string-to-char (nth 2 change)) (string-to-char (nth 3 change))))
     (eval-after-load 'magit-gh-pulls
       `(progn
          (magit-change-popup-key 'magit-gh-pulls-popup :actions ?g ?r)))
@@ -453,13 +460,10 @@ evil-magit affects.")
   "Revert popup keys changed by evil-magit."
   (setq magit-dispatch-popup evil-magit-dispatch-popup-backup)
   (when evil-magit-popup-keys-changed
-    (magit-change-popup-key 'magit-branch-popup :actions ?X ?x)
-    (magit-change-popup-key 'magit-branch-popup :actions ?x ?k)
-    (magit-change-popup-key 'magit-remote-popup :actions ?x ?k)
-    (magit-change-popup-key 'magit-revert-popup :actions ?o ?v)
-    (magit-change-popup-key 'magit-revert-popup :actions ?O ?V)
-    (magit-change-popup-key 'magit-revert-popup :sequence-actions ?O ?V)
-    (magit-change-popup-key 'magit-tag-popup    :actions ?x ?k)
+    (dolist (change evil-magit-popup-changes)
+      (magit-change-popup-key
+       (nth 0 change) (nth 1 change)
+       (string-to-char (nth 3 change)) (string-to-char (nth 2 change))))
     (eval-after-load 'magit-gh-pulls
       `(progn
          (magit-change-popup-key 'magit-gh-pulls-popup :actions ?r ?g)))

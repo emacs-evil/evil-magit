@@ -79,3 +79,12 @@ are correct."
  RET    visit thing at point
 
  C-h m  show all key bindings" nil))))
+
+(ert-deftest evil-magit-popup-action-tests ()
+  "Test that bindings are as expected in popups."
+  (when evil-magit-popup-keys-changed
+    (dolist (change evil-magit-popup-changes)
+      (let ((alist (plist-get (symbol-value (nth 0 change)) (nth 1 change))))
+        (should
+         (eq (nth 2 (assoc (string-to-char (nth 3 change)) alist))
+             (nth 4 change)))))))
