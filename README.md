@@ -71,7 +71,7 @@ Evil-Magit column is blank, the default is unchanged.
    revert                | `v`/`V` | `o`/`O`
    am                    | `w`     |
    patch                 | `W`     |
-   reset                 | `x`     | `C-r`
+   reset                 | `x`     | `C-r` (`X` in branch popup)
    show-refs             | `y`     |
    cherry                | `Y`     |
    stash                 | `z`/`Z` |

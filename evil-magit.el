@@ -80,7 +80,7 @@
 ;;    revert               | v/V     | o/O
 ;;    am                   | w       |
 ;;    patch                | W       |
-;;    reset                | x       | C-r
+;;    reset                | x       | C-r (X in popups)
 ;;    show-refs            | y       |
 ;;    cherry               | Y       |
 ;;    stash                | z/Z     |
@@ -437,7 +437,7 @@ evil-magit affects.")
  C-h m  show all key bindings" nil))
 
   (unless evil-magit-popup-keys-changed
-    (magit-change-popup-key 'magit-branch-popup :actions ?x ?\C-r)
+    (magit-change-popup-key 'magit-branch-popup :actions ?x ?X)
     (magit-change-popup-key 'magit-branch-popup :actions ?k ?x)
     (magit-change-popup-key 'magit-remote-popup :actions ?k ?x)
     (magit-change-popup-key 'magit-revert-popup :actions ?v ?o)
@@ -452,7 +452,7 @@ evil-magit affects.")
   "Revert popup keys changed by evil-magit."
   (setq magit-dispatch-popup evil-magit-dispatch-popup-backup)
   (when evil-magit-popup-keys-changed
-    (magit-change-popup-key 'magit-branch-popup :actions ?\C-r ?x)
+    (magit-change-popup-key 'magit-branch-popup :actions ?X ?x)
     (magit-change-popup-key 'magit-branch-popup :actions ?x ?k)
     (magit-change-popup-key 'magit-remote-popup :actions ?x ?k)
     (magit-change-popup-key 'magit-revert-popup :actions ?o ?v)
