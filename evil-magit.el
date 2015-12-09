@@ -314,6 +314,8 @@ denotes the original magit key for this command.")
 
 (eval-after-load 'git-rebase
   `(progn
+     ;; for the compiler
+     (defvar git-rebase-mode-map)
      (evil-make-overriding-map git-rebase-mode-map evil-magit-state)
      (defvar evil-magit-rebase-commands-w-descriptions
        ;; nil in the first element means don't bind here
@@ -348,7 +350,8 @@ denotes the original magit key for this command.")
            (save-match-data
              (flush-lines "^#.+ = ")
              (goto-char (point-min))
-             (when (and git-rebase-show-instructions
+             (when (and (boundp 'git-rebase-show-instructions)
+                        git-rebase-show-instructions
                         (re-search-forward "^# Commands:\n" nil t))
                (dolist (cmd evil-magit-rebase-commands-w-descriptions)
                  (insert
