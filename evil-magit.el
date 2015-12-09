@@ -305,8 +305,9 @@ ORIG-KEY is only used for testing purposes, and
 denotes the original magit key for this command.")
 
 (dolist (binding evil-magit-mode-map-bindings)
-  (evil-magit-define-key
-   (nth 0 binding) (nth 1 binding) (nth 2 binding) (nth 3 binding)))
+  (when binding
+    (evil-magit-define-key
+     (nth 0 binding) (nth 1 binding) (nth 2 binding) (nth 3 binding))))
 
 ;; Need to refresh evil keymaps when blame mode is entered.
 (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
