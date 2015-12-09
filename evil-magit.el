@@ -138,12 +138,18 @@
   (interactive)
   (when (region-active-p) (deactivate-mark)))
 
-(defun evil-magit-define-key (state map key def)
+(defun evil-magit-define-key (state map-sym key def)
   "Version of `evil-define-key' without the `evil-delay' stuff.
 All of the keymaps should be initialized, so there is no reason
-to delay setting the key. Also it's not a macro like
-`evil-define-key'."
-  (define-key (evil-get-auxiliary-keymap map state t) key def))
+to delay setting the key, but we check that MAP-SYM is actually
+keymap anyway. Also it's not a macro like `evil-define-key'."
+  (if (and (boundp map-sym)
+           (keymapp (symbol-value map-sym)))
+      (define-key
+        (evil-get-auxiliary-keymap (symbol-value map-sym) state t)
+        key def)
+    (message "evil-magit: Error the keymap %s is not bound. Note evil-magit assumes\
+ you have the latest version of magit." map-sym)))
 
 (defvaralias 'evil-magit-evil-state-modes-var
   (intern (format "evil-%s-state-modes" evil-magit-state)))
@@ -299,8 +305,8 @@ ORIG-KEY is only used for testing purposes, and
 denotes the original magit key for this command.")
 
 (dolist (binding evil-magit-mode-map-bindings)
-  (evil-magit-define-key (nth 0 binding) (symbol-value (nth 1 binding))
-                         (nth 2 binding) (nth 3 binding)))
+  (evil-magit-define-key
+   (nth 0 binding) (nth 1 binding) (nth 2 binding) (nth 3 binding)))
 
 ;; Need to refresh evil keymaps when blame mode is entered.
 (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
@@ -328,7 +334,7 @@ denotes the original magit key for this command.")
 
      (dolist (cmd evil-magit-rebase-commands-w-descriptions)
        (when (car cmd)
-         (evil-magit-define-key evil-magit-state git-rebase-mode-map
+         (evil-magit-define-key evil-magit-state 'git-rebase-mode-map
                                 (kbd (car cmd)) (nth 1 cmd))))
 
      (defun evil-magit-add-rebase-messages ()
