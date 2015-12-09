@@ -358,7 +358,7 @@ denotes the original magit key for this command.")
                   (format "# %-8s %s\n"
                           (if (and (car cmd)
                                    (eq (nth 1 cmd)
-                                       (lookup-key aux-map (car cmd))))
+                                       (lookup-key aux-map (kbd (car cmd)))))
                               (car cmd)
                             (replace-regexp-in-string
                              state-regexp ""
