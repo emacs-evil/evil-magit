@@ -138,6 +138,13 @@
   (interactive)
   (when (region-active-p) (deactivate-mark)))
 
+(defun evil-magit-define-key (state map key def)
+  "Version of `evil-define-key' without the `evil-delay' stuff.
+All of the keymaps should be initialized, so there is no reason
+to delay setting the key. Also it's not a macro like
+`evil-define-key'."
+  (define-key (evil-get-auxiliary-keymap map state t) key def))
+
 (defvaralias 'evil-magit-evil-state-modes-var
   (intern (format "evil-%s-state-modes" evil-magit-state)))
 
@@ -292,8 +299,8 @@ ORIG-KEY is only used for testing purposes, and
 denotes the original magit key for this command.")
 
 (dolist (binding evil-magit-mode-map-bindings)
-  (evil-define-key (nth 0 binding) (symbol-value (nth 1 binding))
-    (nth 2 binding) (nth 3 binding)))
+  (evil-magit-define-key (nth 0 binding) (symbol-value (nth 1 binding))
+                         (nth 2 binding) (nth 3 binding)))
 
 ;; Need to refresh evil keymaps when blame mode is entered.
 (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
@@ -321,8 +328,8 @@ denotes the original magit key for this command.")
 
      (dolist (cmd evil-magit-rebase-commands-w-descriptions)
        (when (car cmd)
-         (evil-define-key evil-magit-state git-rebase-mode-map
-           (kbd (car cmd)) (nth 1 cmd))))
+         (evil-magit-define-key evil-magit-state git-rebase-mode-map
+                                (kbd (car cmd)) (nth 1 cmd))))
 
      (defun evil-magit-add-rebase-messages ()
        "Remove evil-state annotations and reformat git-rebase buffer."
@@ -352,7 +359,8 @@ denotes the original magit key for this command.")
      (add-hook 'git-rebase-mode-hook 'evil-magit-add-rebase-messages t)))
 
 
-;; section maps: evil-define-key doesn't work here, because these maps are text overlays
+;; section maps: evil-define-key's auxiliary maps don't work here, because these
+;; maps are text overlays
 
 (defvar evil-magit-original-section-bindings
   `((,(copy-keymap magit-file-section-map)   "v"    magit-reverse)
