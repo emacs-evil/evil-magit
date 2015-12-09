@@ -6,6 +6,12 @@ Black magic
 This library configures Magit and Evil to play well with each other. For some
 background see [Issue #1](https://github.com/justbur/evil-magit/issues/1).
 
+*Note*: I intend to track the latest commits to the master branch of the
+ [magit repo](https://github.com/magit/magit), meaning the keybindings here are
+ potentially ahead of the last stable release of magit. Once the code in
+ evil-magit stabilizes, I will switch to primarily tracking the stable release
+ of magit and do my best to track the latest commits to master.
+
 Installation and Use
 ====================
 
