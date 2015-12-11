@@ -127,10 +127,11 @@
   :type  'symbol)
 
 (defcustom evil-magit-use-y-for-yank nil
-  "When non nil, replace \"y\" for `magit-show-refs' with \"yy\"
-for `magit-copy-section-value', \"yb\" for
-`magit-copy-buffer-revision' and \"yr\" for `magit-show-refs'.
-This keeps \"y\" for `magit-show-refs' in the help
+  "When non nil, replace \"y\" for `magit-show-refs-popup' with
+\"yy\" for `magit-copy-section-value', \"yb\" for
+`magit-copy-buffer-revision' and \"yr\" for
+`magit-show-refs-popup'. This keeps \"y\" for
+`magit-show-refs-popup' in the help
 popup (`magit-dispatch-popup')."
   :group 'magit
   :type 'boolean)
@@ -310,7 +311,7 @@ evil-magit."
 
    (when evil-magit-use-y-for-yank
      `((,evil-magit-state magit-mode-map "y")
-       (,evil-magit-state magit-mode-map "yr" magit-show-refs            "y")
+       (,evil-magit-state magit-mode-map "yr" magit-show-refs-popup      "y")
        (,evil-magit-state magit-mode-map "yy" magit-copy-section-value   "\C-w")
        (,evil-magit-state magit-mode-map "yb" magit-copy-buffer-revision "\M-w"))))
   "All evil-magit bindings not in a section map. Each element of
