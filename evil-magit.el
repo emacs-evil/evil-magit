@@ -121,20 +121,20 @@
 (require 'evil)
 (require 'magit)
 
-(defcustom evil-magit-state 'motion
-  "State to use for most magit buffers."
-  :group 'magit
-  :type  'symbol)
-
 (defcustom evil-magit-use-y-for-yank nil
   "When non nil, replace \"y\" for `magit-show-refs-popup' with
-\"yy\" for `magit-copy-section-value', \"yb\" for
-`magit-copy-buffer-revision' and \"yr\" for
+\"yy\" for `evil-yank-line', `ys' `magit-copy-section-value',
+\"yb\" for `magit-copy-buffer-revision' and \"yr\" for
 `magit-show-refs-popup'. This keeps \"y\" for
 `magit-show-refs-popup' in the help
 popup (`magit-dispatch-popup')."
   :group 'magit
   :type 'boolean)
+
+(defcustom evil-magit-state (if evil-magit-use-y-for-yank 'normal 'motion)
+  "State to use for most magit buffers."
+  :group 'magit
+  :type  'symbol)
 
 ;; without this set-mark-command activates visual-state which is just annoying
 ;; and introduces possible bugs
@@ -196,6 +196,29 @@ keymap anyway. Also it's not a macro like `evil-define-key'."
     magit-popup-mode
     magit-popup-sequence-mode)
   "Modes whose evil states are unchanged")
+
+(defvar evil-magit-section-maps
+  '(magit-tag-section-map
+    magit-hunk-section-map
+    magit-file-section-map
+    magit-stash-section-map
+    magit-staged-section-map
+    magit-remote-section-map
+    magit-commit-section-map
+    magit-branch-section-map
+    magit-stashes-section-map
+    magit-unpulled-section-map
+    magit-unstaged-section-map
+    magit-unpushed-section-map
+    magit-untracked-section-map
+    magit-module-commit-section-map)
+  "All magit section maps")
+
+(when evil-magit-use-y-for-yank
+  (dolist (map evil-magit-section-maps)
+    (map-keymap
+     (lambda (_ def) (evil-set-command-property def :exclude-newline t))
+     (symbol-value map))))
 
 (defun evil-magit-adjust-default-states ()
   ;;remove from evil-emacs-state-modes
@@ -264,8 +287,6 @@ evil-magit."
      (,evil-magit-state magit-mode-map ">"      magit-submodule-popup          "o")
      (,evil-magit-state magit-mode-map "j"      evil-next-visual-line)
      (,evil-magit-state magit-mode-map "k"      evil-previous-visual-line)
-     (,evil-magit-state magit-mode-map "v"      set-mark-command)
-     (,evil-magit-state magit-mode-map "V"      set-mark-command)
      (,evil-magit-state magit-mode-map "gg"     evil-goto-first-line)
      (,evil-magit-state magit-mode-map "G"      evil-goto-line)
      (,evil-magit-state magit-mode-map "\C-d"   evil-scroll-down)
@@ -309,10 +330,17 @@ evil-magit."
    (when evil-want-C-u-scroll
      `((,evil-magit-state magit-mode-map "\C-u" evil-scroll-up)))
 
+   (if evil-magit-use-y-for-yank
+       `((,evil-magit-state magit-mode-map "v" evil-visual-line)
+         (,evil-magit-state magit-mode-map "V" evil-visual-line))
+     `((,evil-magit-state magit-mode-map "v" set-mark-command)
+       (,evil-magit-state magit-mode-map "V" set-mark-command)))
+
    (when evil-magit-use-y-for-yank
      `((,evil-magit-state magit-mode-map "y")
+       (,evil-magit-state magit-mode-map "yy" evil-yank-line             "\C-w")
        (,evil-magit-state magit-mode-map "yr" magit-show-refs-popup      "y")
-       (,evil-magit-state magit-mode-map "yy" magit-copy-section-value   "\C-w")
+       (,evil-magit-state magit-mode-map "ys" magit-copy-section-value   "\C-w")
        (,evil-magit-state magit-mode-map "yb" magit-copy-buffer-revision "\M-w"))))
   "All evil-magit bindings not in a section map. Each element of
 this list takes the form
