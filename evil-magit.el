@@ -216,9 +216,12 @@ keymap anyway. Also it's not a macro like `evil-define-key'."
 
 (when evil-magit-use-y-for-yank
   (dolist (map evil-magit-section-maps)
-    (map-keymap
-     (lambda (_ def) (evil-set-command-property def :exclude-newline t))
-     (symbol-value map))))
+    (when (and map (keymapp (symbol-value map)))
+      (map-keymap
+       (lambda (_ def)
+         (when (commandp def)
+           (evil-set-command-property def :exclude-newline t)))
+       (symbol-value map)))))
 
 (defun evil-magit-adjust-default-states ()
   ;;remove from evil-emacs-state-modes
@@ -297,7 +300,6 @@ evil-magit."
      (,evil-magit-state magit-mode-map "n"      evil-search-next)
      (,evil-magit-state magit-mode-map "N"      evil-search-previous)
      (,evil-magit-state magit-mode-map "\C-z"   evil-emacs-state)
-     (,evil-magit-state magit-mode-map [escape] evil-magit-maybe-deactivate-mark)
 
      (,evil-magit-state magit-status-mode-map "gz"  magit-jump-to-stashes                  "jz")
      (,evil-magit-state magit-status-mode-map "gt"  magit-jump-to-tracked                  "jt")
@@ -334,11 +336,12 @@ evil-magit."
        `((,evil-magit-state magit-mode-map "v" evil-visual-line)
          (,evil-magit-state magit-mode-map "V" evil-visual-line))
      `((,evil-magit-state magit-mode-map "v" set-mark-command)
-       (,evil-magit-state magit-mode-map "V" set-mark-command)))
+       (,evil-magit-state magit-mode-map "V" set-mark-command)
+       (,evil-magit-state magit-mode-map [escape] evil-magit-maybe-deactivate-mark)))
 
    (when evil-magit-use-y-for-yank
      `((,evil-magit-state magit-mode-map "y")
-       (,evil-magit-state magit-mode-map "yy" evil-yank-line             "\C-w")
+       (,evil-magit-state magit-mode-map "yy" evil-yank-line)
        (,evil-magit-state magit-mode-map "yr" magit-show-refs-popup      "y")
        (,evil-magit-state magit-mode-map "ys" magit-copy-section-value   "\C-w")
        (,evil-magit-state magit-mode-map "yb" magit-copy-buffer-revision "\M-w"))))

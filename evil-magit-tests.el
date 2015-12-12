@@ -88,3 +88,26 @@ are correct."
         (should
          (eq (nth 2 (assoc (string-to-char (nth 3 change)) alist))
              (nth 4 change)))))))
+
+(defun evil-magit-collect-magit-section-maps ()
+  (let (res)
+    (mapatoms
+     (lambda (sym)
+       (when (string-match-p "^magit-.*-section-map$" (symbol-name sym))
+                     (push sym res))))
+    res))
+
+(ert-deftest evil-magit-section-maps-newline ()
+  "Check that `evil-magit-section-maps' includes all section-maps
+we can find and that all commands in these maps have
+the :exclude-newline property."
+  (let ((sec-maps (evil-magit-collect-magit-section-maps)))
+    (dolist (map sec-maps)
+      (when (and (boundp map) (keymapp (symbol-value map)))
+        (should (memq map evil-magit-section-maps))
+        (map-keymap
+         (lambda (_ def)
+           (when (commandp def)
+             (message "%s" def)
+             (should (evil-get-command-property def :exclude-newline))))
+         (symbol-value map))))))
