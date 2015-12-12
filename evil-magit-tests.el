@@ -123,11 +123,16 @@ the :exclude-newline property."
 
 (ert-deftest evil-magit-all-modes-accounted-for ()
   "Check that mode lists include all modes we can find."
-  (let ((modes (evil-magit-collect-git-magit-modes)))
+  (let ((modes (evil-magit-collect-git-magit-modes))
+        res)
     (dolist (mode modes)
       (when (boundp mode)
-        (should (or (memq mode evil-magit-emacs-to-default-state-modes)
-                    (memq mode evil-magit-emacs-to-evil-magit-state-modes)
-                    (memq mode evil-magit-default-to-evil-magit-state-modes)
-                    (memq mode evil-magit-untouched-modes)
-                    (memq mode evil-magit-ignored-modes)))))))
+        (setq res
+              (mapcar
+               (lambda (lst) (if (memq mode lst) 1 0))
+                      (list evil-magit-emacs-to-default-state-modes
+                            evil-magit-emacs-to-evil-magit-state-modes
+                            evil-magit-default-to-evil-magit-state-modes
+                            evil-magit-untouched-modes
+                            evil-magit-ignored-modes)))
+        (should (= 1 (apply '+ res)))))))
