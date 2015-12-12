@@ -197,6 +197,29 @@ keymap anyway. Also it's not a macro like `evil-define-key'."
     magit-popup-sequence-mode)
   "Modes whose evil states are unchanged")
 
+(defvar evil-magit-ignored-modes
+  '(git-commit-major-mode
+    magit-blame-put-keymap-before-view-mode
+    magit-diff-mode
+    magit-merge-preview-mode
+    magit-popup-help-mode
+    magit-rebase-mode
+    magit-file-mode-major-mode
+    magit-wip-after-save-mode
+    magit-wip-after-save-local-mode-major-mode
+    magit-wip-after-save-local-mode
+    magit-wip-after-apply-mode
+    magit-wip-before-change-mode
+    ;; git-gutter
+    git-gutter-mode
+    git-gutter-mode-major-mode
+    git-gutter+-commit-mode
+    git-gutter+-mode
+    git-gutter+-enable-fringe-display-mode
+    git-gutter+-enable-default-display-mode)
+  "Currently ignored modes. They are collected here for testing
+purposes.")
+
 (defvar evil-magit-section-maps
   '(magit-tag-section-map
     magit-hunk-section-map

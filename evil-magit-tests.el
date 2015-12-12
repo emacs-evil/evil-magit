@@ -108,6 +108,26 @@ the :exclude-newline property."
         (map-keymap
          (lambda (_ def)
            (when (commandp def)
-             (message "%s" def)
              (should (evil-get-command-property def :exclude-newline))))
          (symbol-value map))))))
+
+(defun evil-magit-collect-git-magit-modes ()
+  (let (res)
+    (mapatoms
+     (lambda (sym)
+       (when (and (or (boundp sym)
+                      (fboundp sym))
+                  (string-match-p "^\\(git\\|magit\\)-.*-mode$" (symbol-name sym)))
+         (push sym res))))
+    res))
+
+(ert-deftest evil-magit-all-modes-accounted-for ()
+  "Check that mode lists include all modes we can find."
+  (let ((modes (evil-magit-collect-git-magit-modes)))
+    (dolist (mode modes)
+      (when (boundp mode)
+        (should (or (memq mode evil-magit-emacs-to-default-state-modes)
+                    (memq mode evil-magit-emacs-to-evil-magit-state-modes)
+                    (memq mode evil-magit-default-to-evil-magit-state-modes)
+                    (memq mode evil-magit-untouched-modes)
+                    (memq mode evil-magit-ignored-modes)))))))
