@@ -69,7 +69,7 @@ indicate that the key is carried over from the left.
    | bisect               | =B=     |                             |                     |
    | commit               | =c=     |                             |                     |
    | diff                 | =d/D=   |                             |                     |
-   | help                 | =h/?=   | =h=                         |                     |
+   | help                 | =h/?=   |                             |                     |
    | ediff                | =e/E=   |                             |                     |
    | fetch                | =f=     |                             |                     |
    | pull                 | =F=     |                             |                     |
@@ -118,7 +118,6 @@ indicate that the key is carried over from the left.
  | evil-visual-line          | under =M-x=              | =v= or =V=    |
  | evil-ex                   | =:=                      |               |
  | evil-search-forward       | =/=                      |               |
- | evil-search-backward      | =?=                      |               |
  | evil-scroll-page-up       | =C-b=                    |               |
  | evil-scroll-down          | =C-d=                    |               |
  | evil-scroll-page-down     | =C-f=                    |               |
@@ -131,6 +130,19 @@ Any other bindings are meant to be consistent with these.
 
 Use =evil-magit-revert= to revert changes made by evil-magit to the default
 evil+magit behavior.
+
+** To add other common evil commands
+
+Some may want =?= to search backward instead of launching the popup which is
+also bound to =h=. To get this behavior, add the following line after =(require
+'evil-magit)= in your configuration.
+
+#+BEGIN_SRC emacs-lisp
+(evil-define-key evil-magit-state magit-mode-map "?" 'evil-search-backward)
+#+END_SRC
+
+Most (but not all) magit bindings are in =magit-mode-map=, so other commands can
+be bound in this way too.
 
 * Known Conflicts
 

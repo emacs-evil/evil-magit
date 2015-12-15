@@ -309,7 +309,6 @@ evil-magit was loaded."
      (,evil-magit-state magit-mode-map "\C-b"   evil-scroll-page-up)
      (,evil-magit-state magit-mode-map ":"      evil-ex)
      (,evil-magit-state magit-mode-map "/"      evil-search-forward)
-     (,evil-magit-state magit-mode-map "?"      evil-search-backward)
      (,evil-magit-state magit-mode-map "n"      evil-search-next)
      (,evil-magit-state magit-mode-map "N"      evil-search-previous)
      (,evil-magit-state magit-mode-map "\C-z"   evil-emacs-state)
