@@ -69,7 +69,7 @@ indicate that the key is carried over from the left.
    | bisect               | =B=     |                             |                     |
    | commit               | =c=     |                             |                     |
    | diff                 | =d/D=   |                             |                     |
-   | help                 | =h/?=   |                             |                     |
+   | help                 | =h/?=   | =h=                         |                     |
    | ediff                | =e/E=   |                             |                     |
    | fetch                | =f=     |                             |                     |
    | pull                 | =F=     |                             |                     |
