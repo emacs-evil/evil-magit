@@ -161,9 +161,6 @@ keymap anyway. Also it's not a macro like `evil-define-key'."
     (message "evil-magit: Error the keymap %s is not bound. Note evil-magit assumes\
  you have the latest version of magit." map-sym)))
 
-(defvaralias 'evil-magit-evil-state-modes-var
-  (intern (format "evil-%s-state-modes" evil-magit-state)))
-
 (defvar evil-magit-emacs-to-default-state-modes
   '(git-commit-mode)
   "Modes that should be in the default evil state")
@@ -220,6 +217,23 @@ keymap anyway. Also it's not a macro like `evil-define-key'."
   "Currently ignored modes. They are collected here for testing
 purposes.")
 
+(defun evil-magit-set-initial-states ()
+  "Set the initial state for relevant modes."
+  (dolist (mode (append evil-magit-emacs-to-evil-magit-state-modes
+                        evil-magit-default-to-evil-magit-state-modes))
+    (evil-set-initial-state mode evil-magit-state))
+  (dolist (mode evil-magit-emacs-to-default-state-modes)
+    (evil-set-initial-state mode evil-default-state)))
+
+(defun evil-magit-revert-initial-states ()
+  "Revert the initial state for modes to their values before
+evil-magit was loaded."
+  (dolist (mode (append evil-magit-emacs-to-evil-magit-state-modes
+                        evil-magit-emacs-to-default-state-modes))
+    (evil-set-initial-state mode 'emacs))
+  (dolist (mode evil-magit-default-to-evil-magit-state-modes)
+    (evil-set-initial-state mode evil-default-state)))
+
 (defvar evil-magit-section-maps
   '(magit-tag-section-map
     magit-hunk-section-map
@@ -245,31 +259,6 @@ purposes.")
          (when (commandp def)
            (evil-set-command-property def :exclude-newline t)))
        (symbol-value map)))))
-
-(defun evil-magit-adjust-default-states ()
-  ;;remove from evil-emacs-state-modes
-  (dolist (mode-list (list evil-magit-emacs-to-evil-magit-state-modes
-                           evil-magit-emacs-to-default-state-modes))
-    (dolist (mode mode-list)
-      (setq evil-emacs-state-modes (delq mode evil-emacs-state-modes))))
-  ;;add to evil-magit-evil-state-modes-var
-  (dolist (mode-list (list evil-magit-emacs-to-evil-magit-state-modes
-                           evil-magit-default-to-evil-magit-state-modes))
-    (dolist (mode mode-list)
-      (add-to-list 'evil-magit-evil-state-modes-var mode))))
-
-(defun evil-magit-revert-default-states ()
-  "Revert git/magit modes to evil state before loading
-evil-magit."
-  (dolist (mode-list (list evil-magit-emacs-to-evil-magit-state-modes
-                           evil-magit-emacs-to-default-state-modes))
-    (dolist (mode mode-list)
-      (add-to-list 'evil-emacs-state-modes mode)))
-  (dolist (mode-list (list evil-magit-emacs-to-evil-magit-state-modes
-                           evil-magit-default-to-evil-magit-state-modes))
-    (dolist (mode mode-list)
-      (setq evil-magit-evil-state-modes-var
-            (delq mode evil-magit-evil-state-modes-var)))))
 
 ;; Make relevant maps into overriding maps so that they shadow the global evil
 ;; maps by default
@@ -552,7 +541,8 @@ go back to evil-magit behavior."
   (interactive)
   (evil-magit-adjust-section-bindings)
   (evil-magit-adjust-popups)
-  (evil-magit-adjust-default-states))
+  (evil-magit-set-initial-states)
+  (message "evil-magit initialized"))
 (evil-magit-init)
 
 ;;;###autoload
@@ -561,7 +551,8 @@ go back to evil-magit behavior."
   (interactive)
   (evil-magit-revert-section-bindings)
   (evil-magit-revert-popups)
-  (evil-magit-revert-default-states))
+  (evil-magit-revert-initial-states)
+  (message "evil-magit reverted"))
 
 ;;; evil-magit.el ends soon
 (provide 'evil-magit)
