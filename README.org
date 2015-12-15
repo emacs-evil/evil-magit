@@ -14,8 +14,7 @@ commits to master. Any help is welcomed.
 
 * Recent Changes (most recent first)
 
-1. =?= is now =evil-search-backward=. That leaves =h= for triggering the popup.
-2. Added =evil-use-y-for-yank= option. See tables below for changes.
+1. Added =evil-use-y-for-yank= option. See tables below for changes.
 
 
 * Installation and Use
