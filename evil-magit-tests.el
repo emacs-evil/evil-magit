@@ -118,11 +118,11 @@ we can find."
     (when (and (boundp map) (keymapp (symbol-value map)))
       (should (memq map evil-magit-section-maps)))))
 
-(ert-deftest evil-magit-commands-with-exclude-newline ()
-  "All commands in the section maps should have
-the :exclude-newline property."
-  (dolist (cmd evil-magit-commands-in-section-maps)
-    (should (evil-get-command-property cmd :exclude-newline))))
+;; (ert-deftest evil-magit-commands-with-exclude-newline ()
+;;   "All commands in the section maps should have
+;; the :exclude-newline property."
+;;   (dolist (cmd evil-magit-commands-in-section-maps)
+;;     (should (evil-get-command-property cmd :exclude-newline))))
 
 (defun evil-magit-collect-git-magit-modes ()
   (let (res)
