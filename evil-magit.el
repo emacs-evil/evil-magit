@@ -250,16 +250,29 @@ evil-magit was loaded."
     magit-unpushed-section-map
     magit-untracked-section-map
     magit-module-commit-section-map)
-  "All magit section maps")
+  "All magit section maps. For testing purposes only at the
+moment.")
+
+;; Old way of excluding newlines
+;; (when evil-magit-use-y-for-yank
+;;   (dolist (map evil-magit-section-maps)
+;;     (when (and map (keymapp (symbol-value map)))
+;;       (map-keymap
+;;        (lambda (_ def)
+;;          (when (commandp def)
+;;            (evil-set-command-property def :exclude-newline t)))
+;;        (symbol-value map)))))
+
+(defadvice evil-visual-expand-region (before evil-magit-always-exclude-newline)
+  (let ((arg (ad-get-arg 0)))
+    (when (and (null arg)
+               (eq (evil-visual-type) 'line)
+               (derived-mode-p 'magit-mode))
+      ;; pretend that the command has the :exclude-newline property
+      (ad-set-arg 0 t))))
 
 (when evil-magit-use-y-for-yank
-  (dolist (map evil-magit-section-maps)
-    (when (and map (keymapp (symbol-value map)))
-      (map-keymap
-       (lambda (_ def)
-         (when (commandp def)
-           (evil-set-command-property def :exclude-newline t)))
-       (symbol-value map)))))
+  (ad-activate 'evil-visual-expand-region))
 
 ;; Make relevant maps into overriding maps so that they shadow the global evil
 ;; maps by default
