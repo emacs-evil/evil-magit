@@ -263,16 +263,28 @@ moment.")
 ;;            (evil-set-command-property def :exclude-newline t)))
 ;;        (symbol-value map)))))
 
-(defadvice evil-visual-expand-region (before evil-magit-always-exclude-newline)
-  (let ((arg (ad-get-arg 0)))
-    (when (and (null arg)
-               (eq (evil-visual-type) 'line)
-               (derived-mode-p 'magit-mode))
-      ;; pretend that the command has the :exclude-newline property
-      (ad-set-arg 0 t))))
+(defvar evil-magit-in-visual-pre-command)
 
-(when evil-magit-use-y-for-yank
-  (ad-activate 'evil-visual-expand-region))
+(defun evil-magit--around-visual-pre-command (orig-func &rest args)
+  (let ((evil-magit-in-visual-pre-command t))
+    (apply orig-func args)))
+
+(defun evil-magit--filter-args-visual-expand-region (arglist)
+  ;; pretend that the command has the :exclude-newline property by rewriting the
+  ;; EXCLUDE-NEWLINE arg to this function
+  (cons (and (bound-and-true-p evil-magit-in-visual-pre-command)
+             (null (car arglist))
+             (eq (evil-visual-type) 'line)
+             (derived-mode-p 'magit-mode))
+        ;; shouldn't be necessary, but this will prevent it from failing if an
+        ;; arg is added.
+        (cdr arglist)))
+
+(when (and (fboundp 'advice-add) evil-magit-use-y-for-yank)
+  (advice-add 'evil-visual-pre-command
+              :around #'evil-magit--around-visual-pre-command)
+  (advice-add 'evil-visual-expand-region
+              :filter-args #'evil-magit--filter-args-visual-expand-region))
 
 ;; Make relevant maps into overriding maps so that they shadow the global evil
 ;; maps by default

@@ -98,18 +98,18 @@ are correct."
     res))
 
 (setq evil-magit-section-maps-test (evil-magit-collect-magit-section-maps))
-(setq evil-magit-commands-in-section-maps
-      (let (res)
-        (dolist (map evil-magit-section-maps-test)
-          (when (and (boundp map) (keymapp (symbol-value map)))
-            (map-keymap
-             (lambda (_ def)
-               (when (commandp def)
-                 (if res
-                     (add-to-list 'res def)
-                   (setq res (list def)))))
-             (symbol-value map))))
-        res))
+;; (setq evil-magit-commands-in-section-maps
+;;       (let (res)
+;;         (dolist (map evil-magit-section-maps-test)
+;;           (when (and (boundp map) (keymapp (symbol-value map)))
+;;             (map-keymap
+;;              (lambda (_ def)
+;;                (when (commandp def)
+;;                  (if res
+;;                      (add-to-list 'res def)
+;;                    (setq res (list def)))))
+;;              (symbol-value map))))
+;;         res))
 
 (ert-deftest evil-magit-section-maps-accounted-for ()
   "Check that `evil-magit-section-maps' includes all section-maps
@@ -143,3 +143,11 @@ we can find."
                             evil-magit-untouched-modes
                             evil-magit-ignored-modes)))
         (should (= 1 (apply '+ res)))))))
+
+(ert-deftest evil-magit-expand-region-arg-number ()
+  "Check that the number of args accepted by
+`evil-visual-expand-region' does not change."
+  (should-not (evil-visual-expand-region))
+  (should-not (evil-visual-expand-region t))
+  (should-error (evil-visual-expand-region t t) :type
+                'wrong-number-of-arguments))
