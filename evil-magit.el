@@ -122,13 +122,13 @@
 (require 'evil)
 (require 'magit)
 
-(defcustom evil-magit-use-y-for-yank nil
+(defcustom evil-magit-use-y-for-yank t
   "When non nil, replace \"y\" for `magit-show-refs-popup' with
 \"yy\" for `evil-yank-line', `ys' `magit-copy-section-value',
 \"yb\" for `magit-copy-buffer-revision' and \"yr\" for
 `magit-show-refs-popup'. This keeps \"y\" for
 `magit-show-refs-popup' in the help
-popup (`magit-dispatch-popup')."
+popup (`magit-dispatch-popup'). Default is t."
   :group 'magit
   :type 'boolean)
 

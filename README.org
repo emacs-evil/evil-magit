@@ -13,7 +13,10 @@ commits to master. Any help is welcomed.
 
 * Recent Changes (most recent first)
 
-1. Added =evil-use-y-for-yank= option. See tables below for changes.
+1. =evil-magit-use-y-for-yank= is now the default. It has worked well for me so
+   far, and I've had good feedback, but please let me know if you see issues.
+   You can use the original behavior with =(setq evil-magit-use-y-for-yank
+   nil)=. See the table below for a summary of differences.
 
 
 * Installation and Use
@@ -27,10 +30,9 @@ will setup the new key bindings for you.
 
 #+BEGIN_SRC emacs-lisp
 ;; optional: this is the evil state that evil-magit will use
-;; (setq evil-magit-state 'motion)
-;; optional: enable additional bindings for yanking text (evil-magit-state needs
-;; to be 'normal for this to work properly)
-;; (setq evil-use-y-for-yank t)
+;; (setq evil-magit-state 'normal)
+;; optional: disable additional bindings for yanking text
+;; (setq evil-magit-use-y-for-yank nil)
 (require 'evil-magit)
 #+END_SRC emacs-lisp
 
@@ -43,16 +45,12 @@ bindings (with one minor exception).
 
 ** Note on =evil-use-y-for-yank=
 =evil-use-y-for-yank= enables evil's visual state for linewise selection, and as
-a consequnce =y= will yank text from the buffer. This may become the default in
-the future but was not done initially to avoid issues arising from differing
-concepts of line selection between evil and standard Emacs.
+a consequnce =y= will yank text from the buffer.
 
-Even with this option enabled, evil-magit uses =v= and =V= to select by line. As
-far as I know, selection in magit occurs linewise, so this choice is to avoid
+With this enabled which it is by default evil-magit uses =v= and =V= to select
+by line. Selection in magit occurs linewise, so this choice is to avoid
 confusion that might arise if someone thought they could stage part of a line
 with =v= for example.
-
-This feature is experimental at the moment.
 
 
 * Key Bindings
@@ -60,7 +58,8 @@ This feature is experimental at the moment.
 The basic key binding scheme is described in the following tables. Blank columns
 indicate that the key is carried over from the left.
 
-   | Category             | Default | Evil-Magit                  | With =y= yank       |
+   |                      |         | Evil-Magit without          | Evil-magit default  |
+   | Category             | Default | =y= for yank option         | With =y= yank       |
    |----------------------+---------+-----------------------------+---------------------|
    | cherry pick          | =a=A=   |                             |                     |
    | branch               | =b=     |                             |                     |
@@ -98,30 +97,31 @@ indicate that the key is carried over from the left.
    | show-refs            | =y=     |                             | =yr= (=y= in popup) |
    | cherry               | =Y=     |                             |                     |
    | stash                | =z/Z=   |                             |                     |
-   | git-cmd              | =:=     | =\|=                        |                     |
+   | git-cmd              | =:=     | =¦=                         |                     |
    | run                  | =!=     |                             |                     |
    | copy section info    | =C-w=   |                             | =ys=                |
    | copy buffer info     | =M-w=   |                             | =yb=                |
 
 ** New Commands
 
- | Command                   | Evil-Magit               | With =y= yank |
- |---------------------------+--------------------------+---------------|
- | evil-goto-line            | =G=                      |               |
- | evil-next-visual-line     | =j=                      |               |
- | evil-previous-visual-line | =k=                      |               |
- | evil-search-next          | =n=                      |               |
- | evil-search-previous      | =N=                      |               |
- | set-mark-command          | =v= or =V=               | =C-SPC=       |
- | evil-visual-line          | under =M-x=              | =v= or =V=    |
- | evil-ex                   | =:=                      |               |
- | evil-search-forward       | =/=                      |               |
- | evil-scroll-page-up       | =C-b=                    |               |
- | evil-scroll-down          | =C-d=                    |               |
- | evil-scroll-page-down     | =C-f=                    |               |
- | evil-scroll-up            | =C-u= (if =C-u= scrolls) |               |
- | evil-emacs-state          | =C-z=                    |               |
- | evil-yank-line            | under =M-x=              | =yy=          |
+   |                           | Evil-Magit without       | Evil-magit default |
+   | Command                   | =y= for yank option      | With =y= yank      |
+   |---------------------------+--------------------------+--------------------|
+   | evil-goto-line            | =G=                      |                    |
+   | evil-next-visual-line     | =j=                      |                    |
+   | evil-previous-visual-line | =k=                      |                    |
+   | evil-search-next          | =n=                      |                    |
+   | evil-search-previous      | =N=                      |                    |
+   | set-mark-command          | =v= or =V=               | =C-SPC=            |
+   | evil-visual-line          | under =M-x=              | =v= or =V=         |
+   | evil-ex                   | =:=                      |                    |
+   | evil-search-forward       | =/=                      |                    |
+   | evil-scroll-page-up       | =C-b=                    |                    |
+   | evil-scroll-down          | =C-d=                    |                    |
+   | evil-scroll-page-down     | =C-f=                    |                    |
+   | evil-scroll-up            | =C-u= (if =C-u= scrolls) |                    |
+   | evil-emacs-state          | =C-z=                    |                    |
+   | evil-yank-line            | under =M-x=              | =yy=               |
 
 
 Any other bindings are meant to be consistent with these.
