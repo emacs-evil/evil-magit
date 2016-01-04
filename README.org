@@ -44,8 +44,8 @@ evil is disabled in a magit buffer, this package will not affect the default key
 bindings (with one minor exception).
 
 ** Note on =evil-magit-use-y-for-yank=
-=evil-use-y-for-yank= enables evil's visual state for linewise selection, and as
-a consequnce =y= will yank text from the buffer.
+=evil-magit-use-y-for-yank= enables evil's visual state for linewise selection,
+and as a consequnce =y= will yank text from the buffer.
 
 With this enabled which it is by default evil-magit uses =v= and =V= to select
 by line. Selection in magit occurs linewise, so this choice is to avoid
