@@ -65,10 +65,11 @@ indicate that the key is carried over from the left.
    | bisect               | =B=     |                                |                                       |
    | commit               | =c=     |                                |                                       |
    | diff                 | =d/D=   |                                |                                       |
-   | help                 | =h/?=   |                                |                                       |
    | ediff                | =e/E=   |                                |                                       |
    | fetch                | =f=     |                                |                                       |
    | pull                 | =F=     |                                |                                       |
+   | refresh              | =g=     | =gr/gR=                        |                                       |
+   | help                 | =h/?=   |                                |                                       |
    | ignore               | =i/I=   |                                |                                       |
    | jump                 | =j=     | =g=                            |                                       |
    | delete               | =k=     | =x=                            |                                       |
@@ -81,9 +82,9 @@ indicate that the key is carried over from the left.
    | submodule            | =o=     | =>=                            |                                       |
    | prev section         | =p=     | =C-k=                          |                                       |
    | prev section sibling | =M-p=   | =gk= or =[=                    |                                       |
-   | push                 | =P=     |                                |                                       |
+   | push                 | =P=     | =P= or =p=                     |                                       |
+   | quit                 | =q=     | =q= or =ESC=                   |                                       |
    | rebase               | =r=     |                                |                                       |
-   | refresh              | =g=     | =gr/gR=                        |                                       |
    | rename               | =R=     |                                |                                       |
    | stage                | =s/S=   |                                |                                       |
    | tag                  | =t=     |                                |                                       |
