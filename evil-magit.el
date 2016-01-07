@@ -338,6 +338,11 @@ moment.")
      (,evil-magit-state magit-mode-map "n"      evil-search-next)
      (,evil-magit-state magit-mode-map "N"      evil-search-previous)
      (,evil-magit-state magit-mode-map "\C-z"   evil-emacs-state)
+     (,evil-magit-state magit-mode-map "\C-["   magit-mode-bury-buffer)
+     (,evil-magit-state magit-mode-map [escape] magit-mode-bury-buffer)
+
+     (emacs magit-popup-mode-map "\C-["   "q")
+     (emacs magit-popup-mode-map [escape] "q")
 
      (,evil-magit-state magit-status-mode-map "gz"  magit-jump-to-stashes                  "jz")
      (,evil-magit-state magit-status-mode-map "gt"  magit-jump-to-tracked                  "jt")
