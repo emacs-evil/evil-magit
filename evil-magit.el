@@ -287,6 +287,104 @@ moment.")
   (advice-add 'evil-visual-expand-region
               :filter-args #'evil-magit--filter-args-visual-expand-region))
 
+(defvar evil-magit-mode-map-bindings
+  (let ((states (if evil-magit-use-y-for-yank
+                    `(,evil-magit-state visual)
+                  `(,evil-magit-state))))
+    (append
+     `((,states magit-mode-map "g")
+       (,states magit-mode-map "\C-j"   magit-section-forward          "n")
+       (,states magit-mode-map "gj"     magit-section-forward-sibling  "\M-n")
+       (,states magit-mode-map "]"      magit-section-forward-sibling  "\M-n")
+       (,states magit-mode-map "\C-k"   magit-section-backward         "p")
+       (,states magit-mode-map "gk"     magit-section-backward-sibling "\M-p")
+       (,states magit-mode-map "["      magit-section-backward-sibling "\M-p")
+       (,states magit-mode-map "gr"     magit-refresh                  "g")
+       (,states magit-mode-map "gR"     magit-refresh-all              "G")
+       (,states magit-mode-map "x"      magit-delete-thing             "k")
+       (,states magit-mode-map "X"      magit-file-untrack             "K")
+       (,states magit-mode-map "o"      magit-revert-no-commit         "v")
+       (,states magit-mode-map "O"      magit-revert-popup             "V")
+       (,states magit-mode-map "p"      magit-push-popup               "P")
+       (,states magit-mode-map "\C-r"   magit-reset                    "x")
+       (,states magit-mode-map "|"      magit-git-command              ":")
+       (,states magit-mode-map ">"      magit-submodule-popup          "o")
+       (,states magit-mode-map "j"      evil-next-visual-line)
+       (,states magit-mode-map "k"      evil-previous-visual-line)
+       (,states magit-mode-map "gg"     evil-goto-first-line)
+       (,states magit-mode-map "G"      evil-goto-line)
+       (,states magit-mode-map "\C-d"   evil-scroll-down)
+       (,states magit-mode-map "\C-f"   evil-scroll-page-down)
+       (,states magit-mode-map "\C-b"   evil-scroll-page-up)
+       (,states magit-mode-map ":"      evil-ex)
+       (,states magit-mode-map "/"      evil-search-forward)
+       (,states magit-mode-map "n"      evil-search-next)
+       (,states magit-mode-map "N"      evil-search-previous)
+
+       ((,evil-magit-state) magit-mode-map "\C-z"   evil-emacs-state)
+       ((,evil-magit-state) magit-mode-map "\C-["   magit-mode-bury-buffer)
+       ((,evil-magit-state) magit-mode-map [escape] magit-mode-bury-buffer))
+
+     `((,states magit-status-mode-map "gz"  magit-jump-to-stashes                  "jz")
+       (,states magit-status-mode-map "gt"  magit-jump-to-tracked                  "jt")
+       (,states magit-status-mode-map "gn"  magit-jump-to-untracked                "jn")
+       (,states magit-status-mode-map "gu"  magit-jump-to-unstaged                 "ju")
+       (,states magit-status-mode-map "gs"  magit-jump-to-staged                   "js")
+       (,states magit-status-mode-map "gfu" magit-jump-to-unpulled-from-upstream   "jfu")
+       (,states magit-status-mode-map "gfp" magit-jump-to-unpulled-from-pushremote "jfp")
+       (,states magit-status-mode-map "gpu" magit-jump-to-unpushed-to-upstream     "jpu")
+       (,states magit-status-mode-map "gpp" magit-jump-to-unpushed-to-pushremote   "jpp")
+
+       (,states magit-blob-mode-map "gj" magit-blob-next     "n")
+       (,states magit-blob-mode-map "gk" magit-blob-previous "p")
+
+       (,states magit-diff-mode-map "gj" magit-section-forward)
+       (,states magit-diff-mode-map "gd" magit-jump-to-diffstat-or-diff "j")
+
+       (,states git-commit-mode-map "gk" git-commit-prev-message "\M-p")
+       (,states git-commit-mode-map "gj" git-commit-next-message "\M-n")
+
+       ((emacs) magit-popup-mode-map "\C-["   "q")
+       ((emacs) magit-popup-mode-map [escape] "q")
+
+       ((normal) magit-blame-mode-map "j"    evil-next-visual-line)
+       ((normal) magit-blame-mode-map "\C-j" magit-blame-next-chunk                 "n")
+       ((normal) magit-blame-mode-map "gj"   magit-blame-next-chunk                 "n")
+       ((normal) magit-blame-mode-map "gJ"   magit-blame-next-chunk-same-commit     "N")
+       ((normal) magit-blame-mode-map "k"    evil-previous-visual-line)
+       ((normal) magit-blame-mode-map "\C-k" magit-blame-previous-chunk             "p")
+       ((normal) magit-blame-mode-map "gk"   magit-blame-previous-chunk             "p")
+       ((normal) magit-blame-mode-map "gK"   magit-blame-previous-chunk-same-commit "P"))
+
+     (when evil-want-C-u-scroll
+       `((,states magit-mode-map "\C-u" evil-scroll-up)))
+
+     (if evil-magit-use-y-for-yank
+         `((,states magit-mode-map "v" evil-visual-line)
+           (,states magit-mode-map "V" evil-visual-line)
+           (,states magit-mode-map "y")
+           (,states magit-mode-map "yy" evil-yank-line)
+           (,states magit-mode-map "yr" magit-show-refs-popup      "y")
+           (,states magit-mode-map "ys" magit-copy-section-value   "\C-w")
+           (,states magit-mode-map "yb" magit-copy-buffer-revision "\M-w")
+           ((visual) magit-mode-map "y"      evil-yank))
+       `((,states magit-mode-map "v" set-mark-command)
+         (,states magit-mode-map "V" set-mark-command)
+         (,states magit-mode-map [escape] evil-magit-maybe-deactivate-mark)))))
+  "All evil-magit bindings not in a section map. Each element of
+this list takes the form
+
+\(EVIL-STATE MAGIT-MAP NEW-KEY DEF ORIG-KEY)\.
+
+ORIG-KEY is only used for testing purposes, and
+denotes the original magit key for this command.")
+
+(dolist (binding evil-magit-mode-map-bindings)
+  (when binding
+    (dolist (state (nth 0 binding))
+      (evil-magit-define-key
+       state (nth 1 binding) (nth 2 binding) (nth 3 binding)))))
+
 ;; Make relevant maps into overriding maps so that they shadow the global evil
 ;; maps by default
 (dolist (map (list magit-mode-map
@@ -302,106 +400,14 @@ moment.")
                    magit-log-read-revs-map
                    magit-process-mode-map
                    magit-refs-mode-map))
-  (evil-make-overriding-map map evil-magit-state))
+  (evil-make-overriding-map map (if evil-magit-use-y-for-yank
+                                    'all
+                                  evil-magit-state)))
 
 (evil-make-overriding-map magit-blame-mode-map 'normal)
 
 (eval-after-load 'magit-gh-pulls
   `(evil-make-overriding-map magit-gh-pulls-mode-map ',evil-magit-state))
-
-(defvar evil-magit-mode-map-bindings
-  (append
-   `((,evil-magit-state magit-mode-map "g")
-     (,evil-magit-state magit-mode-map "\C-j"   magit-section-forward          "n")
-     (,evil-magit-state magit-mode-map "gj"     magit-section-forward-sibling  "\M-n")
-     (,evil-magit-state magit-mode-map "]"      magit-section-forward-sibling  "\M-n")
-     (,evil-magit-state magit-mode-map "\C-k"   magit-section-backward         "p")
-     (,evil-magit-state magit-mode-map "gk"     magit-section-backward-sibling "\M-p")
-     (,evil-magit-state magit-mode-map "["      magit-section-backward-sibling "\M-p")
-     (,evil-magit-state magit-mode-map "gr"     magit-refresh                  "g")
-     (,evil-magit-state magit-mode-map "gR"     magit-refresh-all              "G")
-     (,evil-magit-state magit-mode-map "x"      magit-delete-thing             "k")
-     (,evil-magit-state magit-mode-map "X"      magit-file-untrack             "K")
-     (,evil-magit-state magit-mode-map "o"      magit-revert-no-commit         "v")
-     (,evil-magit-state magit-mode-map "O"      magit-revert-popup             "V")
-     (,evil-magit-state magit-mode-map "p"      magit-push-popup               "P")
-     (,evil-magit-state magit-mode-map "\C-r"   magit-reset                    "x")
-     (,evil-magit-state magit-mode-map "|"      magit-git-command              ":")
-     (,evil-magit-state magit-mode-map ">"      magit-submodule-popup          "o")
-     (,evil-magit-state magit-mode-map "j"      evil-next-visual-line)
-     (,evil-magit-state magit-mode-map "k"      evil-previous-visual-line)
-     (,evil-magit-state magit-mode-map "gg"     evil-goto-first-line)
-     (,evil-magit-state magit-mode-map "G"      evil-goto-line)
-     (,evil-magit-state magit-mode-map "\C-d"   evil-scroll-down)
-     (,evil-magit-state magit-mode-map "\C-f"   evil-scroll-page-down)
-     (,evil-magit-state magit-mode-map "\C-b"   evil-scroll-page-up)
-     (,evil-magit-state magit-mode-map ":"      evil-ex)
-     (,evil-magit-state magit-mode-map "/"      evil-search-forward)
-     (,evil-magit-state magit-mode-map "n"      evil-search-next)
-     (,evil-magit-state magit-mode-map "N"      evil-search-previous)
-     (,evil-magit-state magit-mode-map "\C-z"   evil-emacs-state)
-     (,evil-magit-state magit-mode-map "\C-["   magit-mode-bury-buffer)
-     (,evil-magit-state magit-mode-map [escape] magit-mode-bury-buffer)
-
-     (emacs magit-popup-mode-map "\C-["   "q")
-     (emacs magit-popup-mode-map [escape] "q")
-
-     (,evil-magit-state magit-status-mode-map "gz"  magit-jump-to-stashes                  "jz")
-     (,evil-magit-state magit-status-mode-map "gt"  magit-jump-to-tracked                  "jt")
-     (,evil-magit-state magit-status-mode-map "gn"  magit-jump-to-untracked                "jn")
-     (,evil-magit-state magit-status-mode-map "gu"  magit-jump-to-unstaged                 "ju")
-     (,evil-magit-state magit-status-mode-map "gs"  magit-jump-to-staged                   "js")
-     (,evil-magit-state magit-status-mode-map "gfu" magit-jump-to-unpulled-from-upstream   "jfu")
-     (,evil-magit-state magit-status-mode-map "gfp" magit-jump-to-unpulled-from-pushremote "jfp")
-     (,evil-magit-state magit-status-mode-map "gpu" magit-jump-to-unpushed-to-upstream     "jpu")
-     (,evil-magit-state magit-status-mode-map "gpp" magit-jump-to-unpushed-to-pushremote   "jpp")
-
-     (,evil-magit-state magit-blob-mode-map "gj" magit-blob-next     "n")
-     (,evil-magit-state magit-blob-mode-map "gk" magit-blob-previous "p")
-
-     (,evil-magit-state magit-diff-mode-map "gj" magit-section-forward)
-     (,evil-magit-state magit-diff-mode-map "gd" magit-jump-to-diffstat-or-diff "j")
-
-     (normal magit-blame-mode-map "j"    evil-next-visual-line)
-     (normal magit-blame-mode-map "\C-j" magit-blame-next-chunk                 "n")
-     (normal magit-blame-mode-map "gj"   magit-blame-next-chunk                 "n")
-     (normal magit-blame-mode-map "gJ"   magit-blame-next-chunk-same-commit     "N")
-     (normal magit-blame-mode-map "k"    evil-previous-visual-line)
-     (normal magit-blame-mode-map "\C-k" magit-blame-previous-chunk             "p")
-     (normal magit-blame-mode-map "gk"   magit-blame-previous-chunk             "p")
-     (normal magit-blame-mode-map "gK"   magit-blame-previous-chunk-same-commit "P")
-
-     (,evil-magit-state git-commit-mode-map "gk" git-commit-prev-message "\M-p")
-     (,evil-magit-state git-commit-mode-map "gj" git-commit-next-message "\M-n"))
-
-   (when evil-want-C-u-scroll
-     `((,evil-magit-state magit-mode-map "\C-u" evil-scroll-up)))
-
-   (if evil-magit-use-y-for-yank
-       `((,evil-magit-state magit-mode-map "v" evil-visual-line)
-         (,evil-magit-state magit-mode-map "V" evil-visual-line))
-     `((,evil-magit-state magit-mode-map "v" set-mark-command)
-       (,evil-magit-state magit-mode-map "V" set-mark-command)
-       (,evil-magit-state magit-mode-map [escape] evil-magit-maybe-deactivate-mark)))
-
-   (when evil-magit-use-y-for-yank
-     `((,evil-magit-state magit-mode-map "y")
-       (,evil-magit-state magit-mode-map "yy" evil-yank-line)
-       (,evil-magit-state magit-mode-map "yr" magit-show-refs-popup      "y")
-       (,evil-magit-state magit-mode-map "ys" magit-copy-section-value   "\C-w")
-       (,evil-magit-state magit-mode-map "yb" magit-copy-buffer-revision "\M-w"))))
-  "All evil-magit bindings not in a section map. Each element of
-this list takes the form
-
-\(EVIL-STATE MAGIT-MAP NEW-KEY DEF ORIG-KEY)\.
-
-ORIG-KEY is only used for testing purposes, and
-denotes the original magit key for this command.")
-
-(dolist (binding evil-magit-mode-map-bindings)
-  (when binding
-    (evil-magit-define-key
-     (nth 0 binding) (nth 1 binding) (nth 2 binding) (nth 3 binding))))
 
 ;; Need to refresh evil keymaps when blame mode is entered.
 (add-hook 'magit-blame-mode-hook 'evil-normalize-keymaps)
@@ -410,7 +416,6 @@ denotes the original magit key for this command.")
   `(progn
      ;; for the compiler
      (defvar git-rebase-mode-map)
-     (evil-make-overriding-map git-rebase-mode-map evil-magit-state)
      (defvar evil-magit-rebase-commands-w-descriptions
        ;; nil in the first element means don't bind here
        '(("p"    git-rebase-pick           "pick = use commit")
@@ -433,6 +438,8 @@ denotes the original magit key for this command.")
        (when (car cmd)
          (evil-magit-define-key evil-magit-state 'git-rebase-mode-map
                                 (kbd (car cmd)) (nth 1 cmd))))
+
+     (evil-make-overriding-map git-rebase-mode-map evil-magit-state)
 
      (defun evil-magit-add-rebase-messages ()
        "Remove evil-state annotations and reformat git-rebase buffer."
