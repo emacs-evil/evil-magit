@@ -198,6 +198,7 @@ keymap anyway. Also it's not a macro like `evil-define-key'."
 
 (defvar evil-magit-ignored-modes
   '(git-commit-major-mode
+    magit-auto-revert-mode
     magit-blame-put-keymap-before-view-mode
     magit-diff-mode
     magit-merge-preview-mode
