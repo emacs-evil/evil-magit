@@ -335,27 +335,10 @@ moment.")
        (,states magit-status-mode-map "gfp" magit-jump-to-unpulled-from-pushremote "jfp")
        (,states magit-status-mode-map "gpu" magit-jump-to-unpushed-to-upstream     "jpu")
        (,states magit-status-mode-map "gpp" magit-jump-to-unpushed-to-pushremote   "jpp")
-
-       (,states magit-blob-mode-map "gj" magit-blob-next     "n")
-       (,states magit-blob-mode-map "gk" magit-blob-previous "p")
-
        (,states magit-diff-mode-map "gj" magit-section-forward)
        (,states magit-diff-mode-map "gd" magit-jump-to-diffstat-or-diff "j")
-
-       (,states git-commit-mode-map "gk" git-commit-prev-message "\M-p")
-       (,states git-commit-mode-map "gj" git-commit-next-message "\M-n")
-
        ((emacs) magit-popup-mode-map "\C-["   "q")
-       ((emacs) magit-popup-mode-map [escape] "q")
-
-       ((normal) magit-blame-mode-map "j"    evil-next-visual-line)
-       ((normal) magit-blame-mode-map "\C-j" magit-blame-next-chunk                 "n")
-       ((normal) magit-blame-mode-map "gj"   magit-blame-next-chunk                 "n")
-       ((normal) magit-blame-mode-map "gJ"   magit-blame-next-chunk-same-commit     "N")
-       ((normal) magit-blame-mode-map "k"    evil-previous-visual-line)
-       ((normal) magit-blame-mode-map "\C-k" magit-blame-previous-chunk             "p")
-       ((normal) magit-blame-mode-map "gk"   magit-blame-previous-chunk             "p")
-       ((normal) magit-blame-mode-map "gK"   magit-blame-previous-chunk-same-commit "P"))
+       ((emacs) magit-popup-mode-map [escape] "q"))
 
      (when evil-want-C-u-scroll
        `((,states magit-mode-map "\C-u" evil-scroll-up)))
@@ -372,10 +355,10 @@ moment.")
        `((,states magit-mode-map "v" set-mark-command)
          (,states magit-mode-map "V" set-mark-command)
          (,states magit-mode-map [escape] evil-magit-maybe-deactivate-mark)))))
-  "All evil-magit bindings not in a section map. Each element of
-this list takes the form
+  "Evil-magit bindings for major modes. Each element of this list
+takes the form
 
-\(EVIL-STATE MAGIT-MAP NEW-KEY DEF ORIG-KEY)\.
+\(EVIL-STATE MAGIT-MAP NEW-KEY DEF ORIG-KEY\).
 
 ORIG-KEY is only used for testing purposes, and
 denotes the original magit key for this command.")
@@ -383,6 +366,34 @@ denotes the original magit key for this command.")
 (dolist (binding evil-magit-mode-map-bindings)
   (when binding
     (dolist (state (nth 0 binding))
+      (evil-magit-define-key
+       state (nth 1 binding) (nth 2 binding) (nth 3 binding)))))
+
+(defvar evil-magit-minor-mode-map-bindings
+  `(((,evil-magit-state visual) magit-blob-mode-map "gj" magit-blob-next     "n")
+    ((,evil-magit-state visual) magit-blob-mode-map "gk" magit-blob-previous "p")
+    ((,evil-magit-state visual) git-commit-mode-map "gk" git-commit-prev-message "\M-p")
+    ((,evil-magit-state visual) git-commit-mode-map "gj" git-commit-next-message "\M-n")
+    ((normal) magit-blame-mode-map "j"    evil-next-visual-line)
+    ((normal) magit-blame-mode-map "\C-j" magit-blame-next-chunk                 "n")
+    ((normal) magit-blame-mode-map "gj"   magit-blame-next-chunk                 "n")
+    ((normal) magit-blame-mode-map "gJ"   magit-blame-next-chunk-same-commit     "N")
+    ((normal) magit-blame-mode-map "k"    evil-previous-visual-line)
+    ((normal) magit-blame-mode-map "\C-k" magit-blame-previous-chunk             "p")
+    ((normal) magit-blame-mode-map "gk"   magit-blame-previous-chunk             "p")
+    ((normal) magit-blame-mode-map "gK"   magit-blame-previous-chunk-same-commit "P"))
+  "Evil-magit bindings for minor modes. Each element of
+this list takes the form
+
+\(EVIL-STATE MAGIT-MAP NEW-KEY DEF ORIG-KEY)\.
+
+ORIG-KEY is only used for testing purposes, and
+denotes the original magit key for this command.")
+
+(dolist (binding evil-magit-minor-mode-map-bindings)
+  (when binding
+    (dolist (state (nth 0 binding))
+      ;; TODO: Maybe switch to `evil-define-minor-mode-key'
       (evil-magit-define-key
        state (nth 1 binding) (nth 2 binding) (nth 3 binding)))))
 

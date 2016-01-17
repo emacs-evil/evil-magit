@@ -26,6 +26,10 @@ are correct."
   (dolist (binding evil-magit-mode-map-bindings)
     (when (nth 4 binding)
       (should (eq (lookup-key (symbol-value (nth 1 binding)) (nth 4 binding))
+                  (nth 3 binding)))))
+  (dolist (binding evil-magit-minor-mode-map-bindings)
+    (when (nth 4 binding)
+      (should (eq (lookup-key (symbol-value (nth 1 binding)) (nth 4 binding))
                   (nth 3 binding))))))
 
 (ert-deftest evil-magit-section-map-tests ()
@@ -134,15 +138,13 @@ we can find."
         res)
     (dolist (mode modes)
       (when (boundp mode)
-        (setq res
-              (mapcar
-               (lambda (lst) (if (memq mode lst) 1 0))
-                      (list evil-magit-emacs-to-default-state-modes
-                            evil-magit-emacs-to-evil-magit-state-modes
-                            evil-magit-default-to-evil-magit-state-modes
-                            evil-magit-untouched-modes
-                            evil-magit-ignored-modes)))
-        (should (= 1 (apply '+ res)))))))
+        (should (memq mode
+                      (append
+                       evil-magit-emacs-to-default-state-modes
+                       evil-magit-emacs-to-evil-magit-state-modes
+                       evil-magit-default-to-evil-magit-state-modes
+                       evil-magit-untouched-modes
+                       evil-magit-ignored-modes)))))))
 
 (ert-deftest evil-magit-expand-region-arg-number ()
   "Check that the number of args accepted by
