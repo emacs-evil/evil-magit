@@ -323,7 +323,6 @@ moment.")
        (,states magit-mode-map "N"      evil-search-previous)
 
        ((,evil-magit-state) magit-mode-map "\C-z"   evil-emacs-state)
-       ((,evil-magit-state) magit-mode-map "\C-["   magit-mode-bury-buffer)
        ((,evil-magit-state) magit-mode-map [escape] magit-mode-bury-buffer))
 
      `((,states magit-status-mode-map "gz"  magit-jump-to-stashes                  "jz")
@@ -337,7 +336,6 @@ moment.")
        (,states magit-status-mode-map "gpp" magit-jump-to-unpushed-to-pushremote   "jpp")
        (,states magit-diff-mode-map "gj" magit-section-forward)
        (,states magit-diff-mode-map "gd" magit-jump-to-diffstat-or-diff "j")
-       ((emacs) magit-popup-mode-map "\C-["   "q")
        ((emacs) magit-popup-mode-map [escape] "q"))
 
      (when evil-want-C-u-scroll
