@@ -1,6 +1,6 @@
 ;;; evil-magit-tests.el --- evil-based key bindings for magit
 
-;; Copyright (C) 2015 Justin Burkett
+;; Copyright (C) 2015-2016 Justin Burkett
 
 ;; Author: Justin Burkett <justin@burkett.cc>
 ;; Homepage: https://github.com/justbur/evil-magit
