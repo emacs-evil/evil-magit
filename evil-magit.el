@@ -603,6 +603,40 @@ go back to evil-magit behavior."
   (evil-magit-revert-initial-states)
   (message "evil-magit reverted"))
 
+(define-minor-mode evil-magit-toggle-text-minor-mode
+  "Minor mode used to enabled toggle key in `text-mode' after
+using `evil-magit-toggle-text-mode'"
+  :keymap (make-sparse-keymap))
+
+(evil-define-key 'normal evil-magit-toggle-text-minor-mode-map
+  "\C-t" 'evil-magit-toggle-text-mode)
+(evil-define-key evil-magit-state magit-mode-map
+  "\C-t" 'evil-magit-toggle-text-mode)
+
+(defvar evil-magit-last-mode nil
+  "Used to store last magit mode before entering text mode using
+`evil-magit-toggle-text-mode'.")
+
+(defun evil-magit-toggle-text-mode ()
+  "Switch to `text-mode' and back from magit buffers."
+  (interactive)
+  (cond ((derived-mode-p 'magit-mode)
+         (setq evil-magit-last-mode major-mode)
+         (message "Switching to text-mode")
+         (text-mode)
+         (evil-magit-toggle-text-minor-mode 1)
+         (evil-normalize-keymaps))
+        ((and (eq major-mode 'text-mode)
+              (functionp evil-magit-last-mode))
+         (message "Switching to %s" evil-magit-last-mode)
+         (evil-magit-toggle-text-minor-mode -1)
+         (evil-normalize-keymaps)
+         (funcall evil-magit-last-mode)
+         (magit-refresh)
+         (evil-change-state evil-magit-state))
+        (t
+         (user-error "evil-magit-toggle-text-mode unexpected state"))))
+
 ;;; evil-magit.el ends soon
 (provide 'evil-magit)
 ;; Local Variables:
