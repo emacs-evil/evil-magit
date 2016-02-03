@@ -107,6 +107,7 @@
 ;;    | evil-scroll-up            | =C-u= (if =C-u= scrolls) |                            |
 ;;    | evil-emacs-state          | =C-z=                    |                            |
 ;;    | evil-yank-line            | under =M-x=              | =yy=                       |
+;;    | evil-window-map           | under =M-x=              | =C-w=                      |
 
 ;; Any other bindings are meant to be consistent with these.
 
@@ -342,8 +343,9 @@ moment.")
        `((,states magit-mode-map "\C-u" evil-scroll-up)))
 
      (if evil-magit-use-y-for-yank
-         `((,states magit-mode-map "v" evil-visual-line)
-           (,states magit-mode-map "V" evil-visual-line)
+         `((,states magit-mode-map "v"    evil-visual-line)
+           (,states magit-mode-map "V"    evil-visual-line)
+           (,states magit-mode-map "\C-w" evil-window-map)
            (,states magit-mode-map "y")
            (,states magit-mode-map "yy" evil-yank-line)
            (,states magit-mode-map "yr" magit-show-refs-popup      "y")

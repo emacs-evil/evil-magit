@@ -13,7 +13,9 @@ commits to master. Any help is welcomed.
 
 * Recent Changes (most recent first)
 
-1. =evil-magit-use-y-for-yank= is now the default. It has worked well for me so
+1. When =evil-magit-use-y-for-yank= is non nil, =C-w= will prefix the evil
+   window switching functions from magit buffers.
+2. =evil-magit-use-y-for-yank= is now the default. It has worked well for me so
    far, and I've had good feedback, but please let me know if you see issues.
    You can use the original behavior with =(setq evil-magit-use-y-for-yank
    nil)=. See the table below for a summary of differences.
@@ -121,6 +123,7 @@ indicate that the key is carried over from the left.
    | evil-scroll-up            | =C-u= (if =C-u= scrolls)       |                                       |
    | evil-emacs-state          | =C-z=                          |                                       |
    | evil-yank-line            | under =M-x=                    | =yy=                                  |
+   | evil-window-map           | under =M-x=                    | =C-w=                                 |
 
 
 Any other bindings are meant to be consistent with these.
