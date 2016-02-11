@@ -13,9 +13,14 @@ commits to master. Any help is welcomed.
 
 * Recent Changes (most recent first)
 
-1. When =evil-magit-use-y-for-yank= is non nil, =C-w= will prefix the evil
+1. Added =evil-magit-want-horizontal-movement=. Use =h= and =l= for movement
+   like vim, moving =h= to =H=, =l= to =L=, and =L= to =C-l=.
+2. Added =evil-magit-toggle-text-mode= on =C-t=. This is a quick way to enter
+   text mode in a magit buffer, which allows arbitrary movement, copying, etc.
+   Use =C-t= to return to the previous magit mode.
+3. When =evil-magit-use-y-for-yank= is non nil, =C-w= will prefix the evil
    window switching functions from magit buffers.
-2. =evil-magit-use-y-for-yank= is now the default. It has worked well for me so
+4. =evil-magit-use-y-for-yank= is now the default. It has worked well for me so
    far, and I've had good feedback, but please let me know if you see issues.
    You can use the original behavior with =(setq evil-magit-use-y-for-yank
    nil)=. See the table below for a summary of differences.
@@ -57,73 +62,76 @@ with =v= for example.
 
 * Key Bindings
 
-The basic key binding scheme is described in the following tables. Blank columns
-indicate that the key is carried over from the left.
+The basic key binding scheme for evil-magit (EM) is described in the following
+tables. Blank columns indicate that the key is carried over from the left.
 
-   | Category             | Default | Evil-magit without yank option | Evil-magit with yank option (default) |
-   |----------------------+---------+--------------------------------+---------------------------------------|
-   | cherry pick          | =a=A=   |                                |                                       |
-   | branch               | =b=     |                                |                                       |
-   | bisect               | =B=     |                                |                                       |
-   | commit               | =c=     |                                |                                       |
-   | diff                 | =d/D=   |                                |                                       |
-   | ediff                | =e/E=   |                                |                                       |
-   | fetch                | =f=     |                                |                                       |
-   | pull                 | =F=     |                                |                                       |
-   | refresh              | =g=     | =gr/gR=                        |                                       |
-   | help                 | =h/?=   |                                |                                       |
-   | ignore               | =i/I=   |                                |                                       |
-   | jump                 | =j=     | =g=                            |                                       |
-   | delete               | =k=     | =x=                            |                                       |
-   | untrack              | =K=     | =X=                            |                                       |
-   | log                  | =l/L=   |                                |                                       |
-   | merge                | =m=     |                                |                                       |
-   | remote               | =M=     |                                |                                       |
-   | next section         | =n=     | =C-j=                          |                                       |
-   | next section sibling | =M-n=   | =gj= or =]=                    |                                       |
-   | submodule            | =o=     | =>=                            |                                       |
-   | prev section         | =p=     | =C-k=                          |                                       |
-   | prev section sibling | =M-p=   | =gk= or =[=                    |                                       |
-   | push                 | =P=     | =P= or =p=                     |                                       |
-   | quit                 | =q=     | =q= or =ESC=                   |                                       |
-   | rebase               | =r=     |                                |                                       |
-   | rename               | =R=     |                                |                                       |
-   | stage                | =s/S=   |                                |                                       |
-   | tag                  | =t=     |                                |                                       |
-   | notes                | =T=     |                                |                                       |
-   | unstage              | =u/U=   |                                |                                       |
-   | revert               | =v/V=   | =o/O=                          |                                       |
-   | am                   | =w=     |                                |                                       |
-   | patch                | =W=     |                                |                                       |
-   | reset                | =x=     | =C-r= (=X= in branch popup)    |                                       |
-   | show-refs            | =y=     |                                | =yr= (=y= in popup)                   |
-   | cherry               | =Y=     |                                |                                       |
-   | stash                | =z/Z=   |                                |                                       |
-   | git-cmd              | =:=     | =¦=                            |                                       |
-   | run                  | =!=     |                                |                                       |
-   | copy section info    | =C-w=   |                                | =ys=                                  |
-   | copy buffer info     | =M-w=   |                                | =yb=                                  |
+   | Category             | Default | EM w/o yank opt      | w/ yank opt (default) | w/ horiz move |
+   |----------------------+---------+----------------------+-----------------------+---------------|
+   | cherry pick          | =a=A=   |                      |                       |               |
+   | branch               | =b=     |                      |                       |               |
+   | bisect               | =B=     |                      |                       |               |
+   | commit               | =c=     |                      |                       |               |
+   | diff                 | =d/D=   |                      |                       |               |
+   | ediff                | =e/E=   |                      |                       |               |
+   | fetch                | =f=     |                      |                       |               |
+   | pull                 | =F=     |                      |                       |               |
+   | refresh              | =g=     | =gr/gR=              |                       |               |
+   | help                 | =h/?=   |                      |                       | =H/?=         |
+   | ignore               | =i/I=   |                      |                       |               |
+   | jump                 | =j=     | =g=                  |                       |               |
+   | delete               | =k=     | =x=                  |                       |               |
+   | untrack              | =K=     | =X=                  |                       |               |
+   | log                  | =l/L=   |                      |                       | =L/C-l=       |
+   | merge                | =m=     |                      |                       |               |
+   | remote               | =M=     |                      |                       |               |
+   | next section         | =n=     | =C-j=                |                       |               |
+   | next section sibling | =M-n=   | =gj= or =]=          |                       |               |
+   | submodule            | =o=     | =>=                  |                       |               |
+   | prev section         | =p=     | =C-k=                |                       |               |
+   | prev section sibling | =M-p=   | =gk= or =[=          |                       |               |
+   | push                 | =P=     | =P= or =p=           |                       |               |
+   | quit                 | =q=     | =q= or =ESC=         |                       |               |
+   | rebase               | =r=     |                      |                       |               |
+   | rename               | =R=     |                      |                       |               |
+   | stage                | =s/S=   |                      |                       |               |
+   | tag                  | =t=     |                      |                       |               |
+   | notes                | =T=     |                      |                       |               |
+   | unstage              | =u/U=   |                      |                       |               |
+   | revert               | =v/V=   | =o/O=                |                       |               |
+   | am                   | =w=     |                      |                       |               |
+   | patch                | =W=     |                      |                       |               |
+   | reset                | =x=     | =C-r= (=X= in popup) |                       |               |
+   | show-refs            | =y=     |                      | =yr= (=y= in popup)   |               |
+   | cherry               | =Y=     |                      |                       |               |
+   | stash                | =z/Z=   |                      |                       |               |
+   | git-cmd              | =:=     | =¦=                  |                       |               |
+   | run                  | =!=     |                      |                       |               |
+   | copy section info    | =C-w=   |                      | =ys=                  |               |
+   | copy buffer info     | =M-w=   |                      | =yb=                  |               |
 
 ** New Commands
 
-   | Command                   | Evil-magit without yank option | Evil-magit with yank option (default) |
-   |---------------------------+--------------------------------+---------------------------------------|
-   | evil-goto-line            | =G=                            |                                       |
-   | evil-next-visual-line     | =j=                            |                                       |
-   | evil-previous-visual-line | =k=                            |                                       |
-   | evil-search-next          | =n=                            |                                       |
-   | evil-search-previous      | =N=                            |                                       |
-   | set-mark-command          | =v= or =V=                     | =C-SPC=                               |
-   | evil-visual-line          | under =M-x=                    | =v= or =V=                            |
-   | evil-ex                   | =:=                            |                                       |
-   | evil-search-forward       | =/=                            |                                       |
-   | evil-scroll-page-up       | =C-b=                          |                                       |
-   | evil-scroll-down          | =C-d=                          |                                       |
-   | evil-scroll-page-down     | =C-f=                          |                                       |
-   | evil-scroll-up            | =C-u= (if =C-u= scrolls)       |                                       |
-   | evil-emacs-state          | =C-z=                          |                                       |
-   | evil-yank-line            | under =M-x=                    | =yy=                                  |
-   | evil-window-map           | under =M-x=                    | =C-w=                                 |
+   | Command                     | EM w/o yank opt          | EM w/ yank opt (default) | w/ horiz move |
+   |-----------------------------+--------------------------+--------------------------+---------------|
+   | evil-goto-line              | =G=                      |                          |               |
+   | evil-next-visual-line       | =j=                      |                          |               |
+   | evil-previous-visual-line   | =k=                      |                          |               |
+   | evil-backward-char          | under =M-x=              |                          | =h=           |
+   | evil-forward-char           | under =M-x=              |                          | =l=           |
+   | evil-search-next            | =n=                      |                          |               |
+   | evil-search-previous        | =N=                      |                          |               |
+   | set-mark-command            | =v= or =V=               | =C-SPC=                  |               |
+   | evil-visual-line            | under =M-x=              | =v= or =V=               |               |
+   | evil-ex                     | =:=                      |                          |               |
+   | evil-search-forward         | =/=                      |                          |               |
+   | evil-scroll-page-up         | =C-b=                    |                          |               |
+   | evil-scroll-down            | =C-d=                    |                          |               |
+   | evil-scroll-page-down       | =C-f=                    |                          |               |
+   | evil-scroll-up              | =C-u= (if =C-u= scrolls) |                          |               |
+   | evil-emacs-state            | =C-z=                    |                          |               |
+   | evil-yank-line              | under =M-x=              | =yy=                     |               |
+   | evil-window-map             | under =M-x=              | =C-w=                    |               |
+   | evil-magit-toggle-text-mode | =C-t=                    |                          |               |
 
 
 Any other bindings are meant to be consistent with these.
