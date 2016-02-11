@@ -134,6 +134,14 @@ popup (`magit-dispatch-popup'). Default is t."
   :group 'magit
   :type 'boolean)
 
+(defcustom evil-magit-want-horizontal-movement nil
+  "When non nil, use \"h\" and \"l\" for horizontal movement in
+most magit buffers. The old \"h\" for help is moved to \"H\" and
+similarly for the old \"l\" for the log popup. The old \"L\" is
+then put on \"C-l\"."
+  :group 'magit
+  :type  'boolean)
+
 (defcustom evil-magit-state (if evil-magit-use-y-for-yank 'normal 'motion)
   "State to use for most magit buffers."
   :group 'magit
@@ -339,6 +347,13 @@ moment.")
        (,states magit-diff-mode-map "gd" magit-jump-to-diffstat-or-diff "j")
        ((emacs) magit-popup-mode-map [escape] "q"))
 
+     (when evil-magit-want-horizontal-movement
+       `((,states magit-mode-map "H"    magit-dispatch-popup    "h")
+         (,states magit-mode-map "L"    magit-log-popup         "l")
+         (,states magit-mode-map "\C-l" magit-log-refresh-popup "L")
+         (,states magit-mode-map "h"    evil-backward-char)
+         (,states magit-mode-map "l"    evil-forward-char)))
+
      (when evil-want-C-u-scroll
        `((,states magit-mode-map "\C-u" evil-scroll-up)))
 
@@ -506,13 +521,16 @@ evil-magit affects.")
 (defvar evil-magit-popup-keys-changed nil)
 
 (defvar evil-magit-popup-changes
-  '((magit-branch-popup :actions "x" "X" magit-branch-reset)
-    (magit-branch-popup :actions "k" "x" magit-branch-delete)
-    (magit-remote-popup :actions "k" "x" magit-remote-remove)
-    (magit-revert-popup :actions "v" "o" magit-revert-no-commit)
-    (magit-revert-popup :actions "V" "O" magit-revert)
-    (magit-revert-popup :sequence-actions "V" "O" magit-sequencer-continue)
-    (magit-tag-popup    :actions "k" "x" magit-tag-delete))
+  (append
+   (when evil-magit-want-horizontal-movement
+     '((magit-dispatch-popup :actions "l" "L" magit-log-popup)))
+   '((magit-branch-popup :actions "x" "X" magit-branch-reset)
+     (magit-branch-popup :actions "k" "x" magit-branch-delete)
+     (magit-remote-popup :actions "k" "x" magit-remote-remove)
+     (magit-revert-popup :actions "v" "o" magit-revert-no-commit)
+     (magit-revert-popup :actions "V" "O" magit-revert)
+     (magit-revert-popup :sequence-actions "V" "O" magit-sequencer-continue)
+     (magit-tag-popup    :actions "k" "x" magit-tag-delete)))
   "Changes to popup keys, excluding `magit-dispatch-popup'.")
 
 (defun evil-magit-adjust-popups ()
