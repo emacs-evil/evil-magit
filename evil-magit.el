@@ -358,6 +358,7 @@ denotes the original magit key for this command.")
                                   evil-magit-state)))
 
 (evil-make-overriding-map magit-blame-mode-map 'normal)
+(evil-make-overriding-map with-editor-mode-map)
 
 (eval-after-load 'magit-gh-pulls
   `(evil-make-overriding-map magit-gh-pulls-mode-map ',evil-magit-state))
@@ -537,6 +538,11 @@ go back to evil-magit behavior."
   (evil-magit-adjust-section-bindings)
   (evil-magit-adjust-popups)
   (evil-magit-set-initial-states)
+  ;; FIXME: Make these work for ex commands
+  (define-key with-editor-mode-map
+    [remap evil-quit] 'with-editor-cancel)
+  (define-key with-editor-mode-map
+    [remap evil-save-modified-and-close] 'with-editor-finish)
   (message "evil-magit initialized"))
 (evil-magit-init)
 
@@ -547,6 +553,10 @@ go back to evil-magit behavior."
   (evil-magit-revert-section-bindings)
   (evil-magit-revert-popups)
   (evil-magit-revert-initial-states)
+  (define-key with-editor-mode-map
+    [remap evil-quit] nil)
+  (define-key with-editor-mode-map
+    [remap evil-save-modified-and-close] nil)
   (message "evil-magit reverted"))
 
 (define-minor-mode evil-magit-toggle-text-minor-mode
