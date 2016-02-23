@@ -358,7 +358,6 @@ denotes the original magit key for this command.")
                                   evil-magit-state)))
 
 (evil-make-overriding-map magit-blame-mode-map 'normal)
-(evil-make-overriding-map with-editor-mode-map)
 
 (eval-after-load 'magit-gh-pulls
   `(evil-make-overriding-map magit-gh-pulls-mode-map ',evil-magit-state))
