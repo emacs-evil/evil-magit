@@ -103,7 +103,8 @@ keymap anyway. Also it's not a macro like `evil-define-key'."
   "Modes that should be in the default evil state")
 
 (defvar evil-magit-emacs-to-evil-magit-state-modes
-  '(magit-mode
+  '(git-rebase-mode
+    magit-mode
     magit-cherry-mode
     magit-diff-mode
     magit-log-mode
@@ -118,8 +119,7 @@ keymap anyway. Also it's not a macro like `evil-define-key'."
   "Modes that switch from emacs state to `evil-magit-state'")
 
 (defvar evil-magit-default-to-evil-magit-state-modes
-  '(git-rebase-mode
-    magit-blob-mode
+  '(magit-blob-mode
     magit-file-mode
     magit-gitflow-mode)
   "Modes that switch from default state to `evil-magit-state'")
