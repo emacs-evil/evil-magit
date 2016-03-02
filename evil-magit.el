@@ -258,6 +258,9 @@ moment.")
        (,states magit-mode-map "n"     evil-search-next)
        (,states magit-mode-map "N"     evil-search-previous)
 
+       (,states magit-mode-map "S-SPC" magit-diff-show-or-scroll-up   "SPC")
+       (,states magit-mode-map "S-DEL" magit-diff-show-or-scroll-down "DEL")
+
        ((,evil-magit-state) magit-mode-map "C-z"      evil-emacs-state)
        ((,evil-magit-state) magit-mode-map "<escape>" magit-mode-bury-buffer))
 
