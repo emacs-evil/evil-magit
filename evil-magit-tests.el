@@ -25,11 +25,11 @@
 are correct."
   (dolist (binding evil-magit-mode-map-bindings)
     (when (nth 4 binding)
-      (should (eq (lookup-key (symbol-value (nth 1 binding)) (nth 4 binding))
+      (should (eq (lookup-key (symbol-value (nth 1 binding)) (kbd (nth 4 binding)))
                   (nth 3 binding)))))
   (dolist (binding evil-magit-minor-mode-map-bindings)
     (when (nth 4 binding)
-      (should (eq (lookup-key (symbol-value (nth 1 binding)) (nth 4 binding))
+      (should (eq (lookup-key (symbol-value (nth 1 binding)) (kbd (nth 4 binding)))
                   (nth 3 binding))))))
 
 (ert-deftest evil-magit-section-map-tests ()
