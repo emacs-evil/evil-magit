@@ -3,9 +3,9 @@
 ;; Copyright (C) 2015-2016 Justin Burkett
 
 ;; Author: Justin Burkett <justin@burkett.cc>
-;; Package-Requires: ((evil "1.2.3") (magit "2.2.2"))
+;; Package-Requires: ((evil "1.2.3") (magit "2.6.0"))
 ;; Homepage: https://github.com/justbur/evil-magit
-;; Version: 0.1
+;; Version: 0.2
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published
