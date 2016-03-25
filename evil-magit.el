@@ -260,6 +260,10 @@ moment.")
        (,states magit-mode-map "n"     evil-search-next)
        (,states magit-mode-map "N"     evil-search-previous)
 
+       ;; these are to fix the priority of the log mode map and the magit mode map
+       (,states magit-log-mode-map "-" magit-log-half-commit-limit    "-")
+       (,states magit-log-mode-map "=" magit-log-toggle-commit-limit  "=")
+
        (,states magit-mode-map "S-SPC" magit-diff-show-or-scroll-up   "SPC")
        (,states magit-mode-map "S-DEL" magit-diff-show-or-scroll-down "DEL")
 
