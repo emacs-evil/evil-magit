@@ -94,7 +94,10 @@ should be a string suitable for `kbd'."
   (if (and (boundp map-sym)
            (keymapp (symbol-value map-sym)))
       (define-key
-        (evil-get-auxiliary-keymap (symbol-value map-sym) state t)
+        (condition-case err
+            (evil-get-auxiliary-keymap (symbol-value map-sym) state t t)
+          (wrong-number-of-arguments
+           (evil-get-auxiliary-keymap (symbol-value map-sym) state t)))
         (kbd key) def)
     (message "evil-magit: Error the keymap %s is not bound. Note evil-magit assumes\
  you have the latest version of magit." map-sym)))
