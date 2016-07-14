@@ -525,9 +525,6 @@ evil-magit affects.")
       (magit-change-popup-key
        (nth 0 change) (nth 1 change)
        (string-to-char (nth 2 change)) (string-to-char (nth 3 change))))
-    (eval-after-load 'magit-gh-pulls
-      `(progn
-         (magit-change-popup-key 'magit-gh-pulls-popup :actions ?g ?r)))
     (setq evil-magit-popup-keys-changed t)))
 
 (defun evil-magit-revert-popups ()
@@ -538,9 +535,6 @@ evil-magit affects.")
       (magit-change-popup-key
        (nth 0 change) (nth 1 change)
        (string-to-char (nth 3 change)) (string-to-char (nth 2 change))))
-    (eval-after-load 'magit-gh-pulls
-      `(progn
-         (magit-change-popup-key 'magit-gh-pulls-popup :actions ?r ?g)))
     (setq evil-magit-popup-keys-changed nil)))
 
 ;;;###autoload
