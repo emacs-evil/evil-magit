@@ -43,7 +43,7 @@
 ;; evil+magit behavior.
 
 ;; See the README at https://github.com/justbur/evil-magit for a table
-;; describing the key binding changes. 
+;; describing the key binding changes.
 
 ;;; Code:
 
@@ -501,7 +501,8 @@ evil-magit affects.")
                         (?y "Show Refs"       magit-show-refs-popup)
                         (?z "Stashing"        magit-stash-popup)
                         (?! "Running"         magit-run-popup)
-                        (?> "Submodules"      magit-submodule-popup)
+                        (?' "Submodules"      magit-submodule-popup)
+                        (?\" "Subtrees"       magit-subtree-popup)
                         (?_ "Reverting"       magit-revert-popup)
                         "Applying changes"
                         (?a "Apply"           magit-apply)

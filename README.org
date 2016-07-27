@@ -13,6 +13,9 @@ commits to master. Any help is welcomed.
 
 * Recent Changes (most recent first)
 
+  1. [2016-07-27] Moved submodules popup to ='= and added the new subtree popup
+     at ="=. This is not mnemonic in any way but easy to reach and keeps the
+     two keys together.
   1. [2016-03-24] Moved =magit-diff-less-context= to = to fix conflict with
      moved revert.
   1. [2016-03-21] Moved revert commands from =o= and =O= to =-= and
@@ -92,7 +95,8 @@ tables. Blank columns indicate that the key is carried over from the left.
    | remote                 | =M=     |                 |                       |               |
    | next section           | =n=     | =C-j=           |                       |               |
    | next section sibling   | =M-n=   | =gj= or =]=     |                       |               |
-   | submodule              | =o=     | =>=             |                       |               |
+   | submodule              | =o=     | ='=             |                       |               |
+   | subtree                | =O=     | ="=             |                       |               |
    | prev section           | =p=     | =C-k=           |                       |               |
    | prev section sibling   | =M-p=   | =gk= or =[=     |                       |               |
    | push                   | =P=     | =P= or =p=      |                       |               |

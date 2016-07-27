@@ -58,6 +58,7 @@ are correct."
                    (?m "Merging"         magit-merge-popup)
                    (?M "Remoting"        magit-remote-popup)
                    (?o "Submodules"      magit-submodule-popup)
+                   (?O "Subtrees"        magit-subtree-popup)
                    (?P "Pushing"         magit-push-popup)
                    (?r "Rebasing"        magit-rebase-popup)
                    (?t "Tagging"         magit-tag-popup)
