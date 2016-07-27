@@ -149,6 +149,8 @@ should be a string suitable for `kbd'."
     magit-wip-after-save-local-mode
     magit-wip-after-apply-mode
     magit-wip-before-change-mode
+    ;; gh
+    magit-gh-pulls-mode
     ;; git-gutter
     git-gutter-mode
     git-gutter-mode-major-mode
@@ -177,20 +179,33 @@ evil-magit was loaded."
     (evil-set-initial-state mode evil-default-state)))
 
 (defvar evil-magit-section-maps
-  '(magit-tag-section-map
-    magit-hunk-section-map
-    magit-file-section-map
-    magit-stash-section-map
-    magit-staged-section-map
-    magit-remote-section-map
+  '(magit-branch-section-map
     magit-commit-section-map
-    magit-branch-section-map
+    magit-file-section-map
+    magit-hunk-section-map
+    magit-module-commit-section-map
+    magit-remote-section-map
+    magit-staged-section-map
+    magit-stash-section-map
     magit-stashes-section-map
+    magit-tag-section-map
     magit-unpulled-section-map
-    magit-unstaged-section-map
     magit-unpushed-section-map
+    magit-unstaged-section-map
     magit-untracked-section-map
-    magit-module-commit-section-map)
+
+    ;; new ones that I haven't looked at yet
+    magit-button-section-map
+    magit-commitbuf-section-map
+    magit-diffbuf-section-map
+    magit-diffstat-section-map
+    magit-headers-section-map
+    magit-message-section-map
+    magit-processbuf-section-map
+    magit-process-section-map
+    magit-pulls-section-map
+    magit-status-section-map
+    magit-worktree-section-map)
   "All magit section maps. For testing purposes only at the
 moment.")
 
