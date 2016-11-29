@@ -74,51 +74,51 @@ with =v= for example.
 The basic key binding scheme for evil-magit (EM) is described in the following
 tables. Blank columns indicate that the key is carried over from the left.
 
-   | Category               | Default | EM w/o yank opt | w/ yank opt (default) | w/ horiz move |
-   |------------------------+---------+-----------------+-----------------------+---------------|
-   | cherry pick            | =a=A=   |                 |                       |               |
-   | branch                 | =b=     |                 |                       |               |
-   | bisect                 | =B=     |                 |                       |               |
-   | commit                 | =c=     |                 |                       |               |
-   | diff                   | =d/D=   |                 |                       |               |
-   | ediff                  | =e/E=   |                 |                       |               |
-   | fetch                  | =f=     |                 |                       |               |
-   | pull                   | =F=     |                 |                       |               |
-   | refresh                | =g=     | =gr/gR=         |                       |               |
-   | help                   | =h/?=   |                 |                       | =H/?=         |
-   | ignore                 | =i/I=   |                 |                       |               |
-   | jump                   | =j=     | =g=             |                       |               |
-   | delete                 | =k=     | =x=             |                       |               |
-   | untrack                | =K=     | =X=             |                       |               |
-   | log                    | =l/L=   |                 |                       | =L/C-l=       |
-   | merge                  | =m=     |                 |                       |               |
-   | remote                 | =M=     |                 |                       |               |
-   | next section           | =n=     | =C-j=           |                       |               |
-   | next section sibling   | =M-n=   | =gj= or =]=     |                       |               |
-   | submodule              | =o=     | '               |                       |               |
-   | subtree                | =O=     | "               |                       |               |
-   | prev section           | =p=     | =C-k=           |                       |               |
-   | prev section sibling   | =M-p=   | =gk= or =[=     |                       |               |
-   | push                   | =P=     | =P= or =p=      |                       |               |
-   | quit                   | =q=     | =q= or =ESC=    |                       |               |
-   | rebase                 | =r=     |                 |                       |               |
-   | rename                 | =R=     |                 |                       |               |
-   | stage                  | =s/S=   |                 |                       |               |
-   | tag                    | =t=     |                 |                       |               |
-   | notes                  | =T=     |                 |                       |               |
-   | unstage                | =u/U=   |                 |                       |               |
-   | revert                 | =v/V=   | =-/_=           |                       |               |
-   | am                     | =w=     |                 |                       |               |
-   | patch                  | =W=     |                 |                       |               |
-   | reset                  | =x/X=   | =o/O=           |                       |               |
-   | show-refs              | =y=     |                 | =yr= (=y= in popup)   |               |
-   | cherry                 | =Y=     |                 |                       |               |
-   | stash                  | =z/Z=   |                 |                       |               |
-   | git-cmd                | =:=     | =¦=             |                       |               |
-   | run                    | =!=     |                 |                       |               |
-   | diff less/more context | =-/+=   | = / +           |                       |               |
-   | copy section info      | =C-w=   |                 | =ys=                  |               |
-   | copy buffer info       | =M-w=   |                 | =yb=                  |               |
+   | Category               | Default | EM w/o yank opt        | w/ yank opt (default) | w/ horiz move |
+   |------------------------+---------+------------------------+-----------------------+---------------|
+   | cherry pick            | =a=A=   |                        |                       |               |
+   | branch                 | =b=     |                        |                       |               |
+   | bisect                 | =B=     |                        |                       |               |
+   | commit                 | =c=     |                        |                       |               |
+   | diff                   | =d/D=   |                        |                       |               |
+   | ediff                  | =e/E=   |                        |                       |               |
+   | fetch                  | =f=     |                        |                       |               |
+   | pull                   | =F=     |                        |                       |               |
+   | refresh                | =g=     | =gr/gR= (=g= in popup) |                       |               |
+   | help                   | =h/?=   |                        |                       | =H/?=         |
+   | ignore                 | =i/I=   |                        |                       |               |
+   | jump                   | =j=     | =g=                    |                       |               |
+   | delete                 | =k=     | =x=                    |                       |               |
+   | untrack                | =K=     | =X=                    |                       |               |
+   | log                    | =l/L=   |                        |                       | =L/C-l=       |
+   | merge                  | =m=     |                        |                       |               |
+   | remote                 | =M=     |                        |                       |               |
+   | next section           | =n=     | =C-j=                  |                       |               |
+   | next section sibling   | =M-n=   | =gj= or =]=            |                       |               |
+   | submodule              | =o=     | '                      |                       |               |
+   | subtree                | =O=     | "                      |                       |               |
+   | prev section           | =p=     | =C-k=                  |                       |               |
+   | prev section sibling   | =M-p=   | =gk= or =[=            |                       |               |
+   | push                   | =P=     | =P= or =p=             |                       |               |
+   | quit                   | =q=     | =q= or =ESC=           |                       |               |
+   | rebase                 | =r=     |                        |                       |               |
+   | rename                 | =R=     |                        |                       |               |
+   | stage                  | =s/S=   |                        |                       |               |
+   | tag                    | =t=     |                        |                       |               |
+   | notes                  | =T=     |                        |                       |               |
+   | unstage                | =u/U=   |                        |                       |               |
+   | revert                 | =v/V=   | =-/_=                  |                       |               |
+   | am                     | =w=     |                        |                       |               |
+   | patch                  | =W=     |                        |                       |               |
+   | reset                  | =x/X=   | =o/O=                  |                       |               |
+   | show-refs              | =y=     |                        | =yr= (=y= in popup)   |               |
+   | cherry                 | =Y=     |                        |                       |               |
+   | stash                  | =z/Z=   |                        |                       |               |
+   | git-cmd                | =:=     | =¦=                    |                       |               |
+   | run                    | =!=     |                        |                       |               |
+   | diff less/more context | =-/+=   | = / +                  |                       |               |
+   | copy section info      | =C-w=   |                        | =ys=                  |               |
+   | copy buffer info       | =M-w=   |                        | =yb=                  |               |
 
 ** New Commands
 
