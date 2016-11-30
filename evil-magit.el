@@ -542,9 +542,11 @@ using `evil-magit-toggle-text-mode'"
   :keymap (make-sparse-keymap))
 
 (evil-define-key 'normal evil-magit-toggle-text-minor-mode-map
-  "\C-t" 'evil-magit-toggle-text-mode)
+  "\C-t" 'evil-magit-toggle-text-mode
+  "\\"   'evil-magit-toggle-text-mode)
 (evil-define-key evil-magit-state magit-mode-map
-  "\C-t" 'evil-magit-toggle-text-mode)
+  "\C-t" 'evil-magit-toggle-text-mode
+  "\\"   'evil-magit-toggle-text-mode)
 
 (defvar evil-magit-last-mode nil
   "Used to store last magit mode before entering text mode using

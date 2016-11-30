@@ -68,6 +68,22 @@ by line. Selection in magit occurs linewise, so this choice is to avoid
 confusion that might arise if someone thought they could stage part of a line
 with =v= for example.
 
+** Text mode
+
+Text mode can be toggled with =evil-magit-toggle-text-mode= (triggered with
+=C-t= or =\=). This takes nearly any magit buffer out of the related magit mode
+and puts it into =text-mode=. This allows free movement in the buffer using the
+standard evil movement and selection commands, making it easy to for example
+copy arbitrary text in the buffer. It also effectively prevents magit keys from
+shadowing evil ones, so =f= runs =evil-find-char= instead of
+=magit-fetch-popup=, allowing all vim related movement commands to be used in
+magit buffers. You can think of this if you like as another state for evil-magit
+to be in.
+
+Several requests have been made to allow selecting and copying arbitrary text in
+the magit buffers, but there are many conflicts between evil bindings and magit
+bindings and there is no elegant solution to this problem in my opinion. Text
+mode is the best that I have come up with.
 
 * Key Bindings
 
@@ -142,7 +158,7 @@ tables. Blank columns indicate that the key is carried over from the left.
    | evil-emacs-state            | =C-z=                    |                          |               |
    | evil-yank-line              | under =M-x=              | =yy=                     |               |
    | evil-window-map             | under =M-x=              | =C-w=                    |               |
-   | evil-magit-toggle-text-mode | =C-t=                    |                          |               |
+   | evil-magit-toggle-text-mode | =C-t/\=                  |                          |               |
 
 
 Any other bindings are meant to be consistent with these.
