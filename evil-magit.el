@@ -499,8 +499,9 @@ evil-magit affects.")
 (defun evil-magit-change-popup-key (popup type from to _)
   "Wrap `magit-change-popup-key'."
   (magit-change-popup-key popup type (string-to-char from) (string-to-char to))
-  (unless (eq (lookup-key magit-popup-mode-map to)
-              'magit-invoke-popup-action)
+  ;; Support C-a -- C-z
+  (when (and (>= (string-to-char to) 1)
+             (<= (string-to-char to) 26))
     (define-key magit-popup-mode-map to #'magit-invoke-popup-action)))
 
 (defun evil-magit-adjust-popups ()
