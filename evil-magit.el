@@ -275,9 +275,6 @@ moment.")
        (,states magit-mode-map "C-f"   evil-scroll-page-down)
        (,states magit-mode-map "C-b"   evil-scroll-page-up)
        (,states magit-mode-map ":"     evil-ex)
-       (,states magit-mode-map "/"     evil-search-forward)
-       (,states magit-mode-map "n"     evil-search-next)
-       (,states magit-mode-map "N"     evil-search-previous)
 
        ;; these are to fix the priority of the log mode map and the magit mode map
        ;; FIXME: Conflict between this and revert. Revert seems more important here
@@ -289,6 +286,14 @@ moment.")
 
        ((,evil-magit-state) magit-mode-map "C-z"      evil-emacs-state)
        ((,evil-magit-state) magit-mode-map "<escape>" magit-mode-bury-buffer))
+
+     (if (eq evil-search-module 'evil-search)
+         `((,states magit-mode-map "/" evil-ex-search-forward)
+           (,states magit-mode-map "n" evil-ex-search-next)
+           (,states magit-mode-map "N" evil-ex-search-previous))
+       `((,states magit-mode-map "/" evil-search-forward)
+         (,states magit-mode-map "n" evil-search-next)
+         (,states magit-mode-map "N" evil-search-previous)))
 
      `((,states magit-status-mode-map "gz"  magit-jump-to-stashes                  "jz")
        (,states magit-status-mode-map "gt"  magit-jump-to-tracked                  "jt")
