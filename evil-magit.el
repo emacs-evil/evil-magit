@@ -181,6 +181,7 @@ evil-magit was loaded."
 (defvar evil-magit-section-maps
   '(magit-branch-section-map
     magit-commit-section-map
+    magit-commit-message-section-map
     magit-file-section-map
     magit-hunk-section-map
     magit-module-commit-section-map
