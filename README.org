@@ -1,4 +1,4 @@
-[[https://travis-ci.org/justbur/evil-magit][file:https://travis-ci.org/justbur/evil-magit.svg?branch=master]] [[http://melpa.org/#/evil-magit][file:http://melpa.org/packages/evil-magit-badge.svg]] [[http://stable.melpa.org/#/evil-magit][file:http://stable.melpa.org/packages/evil-magit-badge.svg]]
+[[https://travis-ci.org/justbur/evil-magit][file:https://travis-ci.org/emacs-evil/evil-magit.svg?branch=master]] [[http://melpa.org/#/evil-magit][file:http://melpa.org/packages/evil-magit-badge.svg]] [[http://stable.melpa.org/#/evil-magit][file:http://stable.melpa.org/packages/evil-magit-badge.svg]]
 
 * Black magic
 
