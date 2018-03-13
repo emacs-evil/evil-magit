@@ -205,6 +205,7 @@ evil-magit was loaded."
     magit-processbuf-section-map
     magit-process-section-map
     magit-pulls-section-map
+    magit-unmerged-section-map
     magit-status-section-map
     magit-worktree-section-map)
   "All magit section maps. For testing purposes only at the
