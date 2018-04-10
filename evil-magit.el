@@ -183,6 +183,7 @@ evil-magit was loaded."
   '(magit-branch-section-map
     magit-commit-section-map
     magit-commit-message-section-map
+    magit-error-section-map
     magit-file-section-map
     magit-hunk-section-map
     magit-module-commit-section-map
