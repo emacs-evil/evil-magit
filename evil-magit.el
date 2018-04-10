@@ -352,14 +352,14 @@ denotes the original magit key for this command.")
     ((,evil-magit-state visual) magit-blob-mode-map "gk" magit-blob-previous "p")
     ((,evil-magit-state visual) git-commit-mode-map "gk" git-commit-prev-message "M-p")
     ((,evil-magit-state visual) git-commit-mode-map "gj" git-commit-next-message "M-n")
-    ((normal) magit-blame-mode-map "j"    evil-next-visual-line)
-    ((normal) magit-blame-mode-map "C-j"  magit-blame-next-chunk                 "n")
-    ((normal) magit-blame-mode-map "gj"   magit-blame-next-chunk                 "n")
-    ((normal) magit-blame-mode-map "gJ"   magit-blame-next-chunk-same-commit     "N")
-    ((normal) magit-blame-mode-map "k"    evil-previous-visual-line)
-    ((normal) magit-blame-mode-map "C-k"  magit-blame-previous-chunk             "p")
-    ((normal) magit-blame-mode-map "gk"   magit-blame-previous-chunk             "p")
-    ((normal) magit-blame-mode-map "gK"   magit-blame-previous-chunk-same-commit "P"))
+    ((normal) magit-blame-read-only-mode-map "j"    evil-next-visual-line)
+    ((normal) magit-blame-read-only-mode-map "C-j"  magit-blame-next-chunk                 "n")
+    ((normal) magit-blame-read-only-mode-map "gj"   magit-blame-next-chunk                 "n")
+    ((normal) magit-blame-read-only-mode-map "gJ"   magit-blame-next-chunk-same-commit     "N")
+    ((normal) magit-blame-read-only-mode-map "k"    evil-previous-visual-line)
+    ((normal) magit-blame-read-only-mode-map "C-k"  magit-blame-previous-chunk             "p")
+    ((normal) magit-blame-read-only-mode-map "gk"   magit-blame-previous-chunk             "p")
+    ((normal) magit-blame-read-only-mode-map "gK"   magit-blame-previous-chunk-same-commit "P"))
   "Evil-magit bindings for minor modes. Each element of
 this list takes the form
 
@@ -394,7 +394,7 @@ denotes the original magit key for this command.")
                                     'all
                                   evil-magit-state)))
 
-(evil-make-overriding-map magit-blame-mode-map 'normal)
+(evil-make-overriding-map magit-blame-read-only-mode-map 'normal)
 
 (eval-after-load 'magit-gh-pulls
   `(evil-make-overriding-map magit-gh-pulls-mode-map ',evil-magit-state))
