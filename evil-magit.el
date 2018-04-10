@@ -130,7 +130,7 @@ should be a string suitable for `kbd'."
 
 (defvar evil-magit-untouched-modes
   '(git-popup-mode
-    magit-blame-mode
+    magit-blame-read-only-mode
     magit-popup-mode
     magit-popup-sequence-mode)
   "Modes whose evil states are unchanged")
