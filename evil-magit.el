@@ -141,7 +141,6 @@ should be a string suitable for `kbd'."
 
 (defvar evil-magit-default-to-evil-magit-state-modes
   '(magit-blob-mode
-    magit-file-mode
     magit-gitflow-mode)
   "Modes that switch from default state to `evil-magit-state'")
 
@@ -149,6 +148,7 @@ should be a string suitable for `kbd'."
   '(git-popup-mode
     magit-blame-mode
     magit-blame-read-only-mode
+    magit-file-mode
     magit-popup-mode
     magit-popup-sequence-mode)
   "Modes whose evil states are unchanged")
