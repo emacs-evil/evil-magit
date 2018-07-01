@@ -524,7 +524,7 @@ evil-magit affects.")
 (defvar evil-magit-popup-changes
   (append
    (when evil-magit-use-z-for-folds
-     '((magit-dispatch-popup :actions "z" "Z" magit-stash)))
+     '((magit-dispatch-popup :actions "z" "Z" magit-stash-popup)))
    (when evil-magit-want-horizontal-movement
      '((magit-dispatch-popup :actions "L" "\C-l" magit-log-refresh-popup)
        (magit-dispatch-popup :actions "l" "L" magit-log-popup)))
