@@ -577,8 +577,7 @@ go back to evil-magit behavior."
   (interactive)
   (evil-magit-adjust-section-bindings)
   (evil-magit-adjust-popups)
-  (evil-magit-set-initial-states)
-  (message "evil-magit initialized"))
+  (evil-magit-set-initial-states))
 (evil-magit-init)
 
 ;;;###autoload
