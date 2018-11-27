@@ -167,6 +167,8 @@ should be a string suitable for `kbd'."
     magit-wip-after-save-local-mode
     magit-wip-after-apply-mode
     magit-wip-before-change-mode
+    magit-wip-initial-backup-mode
+    magit-wip-mode
     ;; gh
     magit-gh-pulls-mode
     ;; git-gutter
@@ -221,6 +223,9 @@ evil-magit was loaded."
     magit-diffstat-section-map
     magit-headers-section-map
     magit-message-section-map
+    ;; FIXME: deal with new bindings in this one
+    magit-module-section-map
+    magit-modules-section-map
     magit-processbuf-section-map
     magit-process-section-map
     magit-pulls-section-map
