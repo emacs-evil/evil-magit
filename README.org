@@ -13,7 +13,7 @@ commits to master. Any help is welcomed.
 
 * Recent Changes (most recent first)
 
-  1. [2019-01-16] Add support for [[https://github.com/magit/forge][forge]] commands.
+  1. [2019-01-16] Add support for forge commands.
   2. [2018-05-22] Added =evil-magit-use-z-for-folds=. See docstring for more
      information.
   3. [2018-03-13] Added basic evil support for =magit-list-repositories=.
