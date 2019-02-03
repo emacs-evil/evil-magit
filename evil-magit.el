@@ -631,16 +631,6 @@ using `evil-magit-toggle-text-mode'"
         (t
          (user-error "evil-magit-toggle-text-mode unexpected state"))))
 
-;; Make room for forge popup when loaded
-(eval-after-load 'forge
-  '(progn
-     (evil-magit-define-key evil-magit-state 'magit-mode-map "p" 'magit-pull-popup)
-     (evil-magit-define-key evil-magit-state 'magit-mode-map "P" 'magit-push-popup)
-     (evil-magit-define-key evil-magit-state 'magit-mode-map "F" 'forge-dispatch)
-     (magit-change-popup-key 'magit-dispatch-popup :actions ?p ?P)
-     (magit-change-popup-key 'magit-dispatch-popup :actions ?F ?p)
-     (magit-define-popup-action 'magit-dispatch-popup ?F "Forge" 'forge-dispatch ?f)))
-
 ;;; evil-magit.el ends soon
 (provide 'evil-magit)
 ;; Local Variables:
