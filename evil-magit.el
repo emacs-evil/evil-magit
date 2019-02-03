@@ -638,8 +638,7 @@ using `evil-magit-toggle-text-mode'"
      (evil-magit-define-key evil-magit-state 'magit-mode-map "P" 'magit-push-popup)
      (evil-magit-define-key evil-magit-state 'magit-mode-map "F" 'forge-dispatch)
      (magit-change-popup-key 'magit-dispatch-popup :actions ?p ?P)
-     (magit-remove-popup-key 'magit-dispatch-popup :actions ?F)
-     (magit-define-popup-action 'magit-dispatch-popup ?p "Pulling" 'magit-pull-popup ?P t)
+     (magit-change-popup-key 'magit-dispatch-popup :actions ?F ?p)
      (magit-define-popup-action 'magit-dispatch-popup ?F "Forge" 'forge-dispatch ?f)))
 
 ;;; evil-magit.el ends soon
