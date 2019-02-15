@@ -528,38 +528,42 @@ evil-magit affects.")
 
 ;; Popups
 
-;; (defvar evil-magit-dispatch-popup-backup (copy-sequence magit-dispatch-popup))
+(defvar evil-magit-dispatch-popup-backup
+  (copy-tree (get 'magit-dispatch 'transient--layout) t))
 (defvar evil-magit-popup-keys-changed nil)
 
 (defvar evil-magit-popup-changes
   (append
    (when evil-magit-use-z-for-folds
-     '((magit-dispatch-popup :actions "z" "Z" magit-stash-popup)))
+     '((magit-dispatch :actions "z" "Z" magit-stash)))
    (when evil-magit-want-horizontal-movement
-     '((magit-dispatch-popup :actions "L" "\C-l" magit-log-refresh-popup)
-       (magit-dispatch-popup :actions "l" "L" magit-log-popup)))
-   '((magit-branch-popup :actions "x" "X" magit-branch-reset)
-     (magit-branch-popup :actions "k" "x" magit-branch-delete)
-     (magit-dispatch-popup :actions "o" "'" magit-submodule-popup)
-     (magit-dispatch-popup :actions "O" "\"" magit-subtree-popup)
-     (magit-dispatch-popup :actions "V" "_" magit-revert-popup)
-     (magit-dispatch-popup :actions "X" "O" magit-reset-popup)
-     (magit-dispatch-popup :actions "v" "-" magit-reverse)
-     (magit-dispatch-popup :actions "k" "x" magit-discard)
-     (magit-remote-popup :actions "k" "x" magit-remote-remove)
-     (magit-revert-popup :actions "v" "o" magit-revert-no-commit)
-     (magit-revert-popup :actions "V" "O" magit-revert-and-commit)
-     (magit-revert-popup :sequence-actions "V" "O" magit-sequencer-continue)
-     (magit-tag-popup    :actions "k" "x" magit-tag-delete)))
+     '((magit-dispatch :actions "L" "\C-l" magit-log-refresh)
+       (magit-dispatch :actions "l" "L" magit-log)))
+   '((magit-branch :actions "x" "X" magit-branch-reset)
+     (magit-branch :actions "k" "x" magit-branch-delete)
+     (magit-dispatch :actions "o" "'" magit-submodule)
+     (magit-dispatch :actions "O" "\"" magit-subtree)
+     (magit-dispatch :actions "V" "_" magit-revert)
+     (magit-dispatch :actions "X" "O" magit-reset)
+     (magit-dispatch :actions "v" "-" magit-reverse)
+     (magit-dispatch :actions "k" "x" magit-discard)
+     (magit-remote :actions "k" "x" magit-remote-remove)
+     (magit-revert :actions "v" "o" magit-revert-no-commit)
+     ;; FIXME: how to properly handle a popup with a key that appears twice (in
+     ;; `define-transient-command' definition)? Currently we rely on:
+     ;; 1. first call to `evil-magit-change-popup-key' changes the first "V"
+     ;;    entry of `magit-revert' (the first entry in `define-transient-command'
+     ;;    definition of `magit-revert'), second call changes the second "V".
+     ;; 2. the remapping here are in the same order as in `magit-revert'
+     ;;    definition
+     (magit-revert :actions "V" "O" magit-revert-and-commit)
+     (magit-revert :sequence-actions "V" "O" magit-sequencer-continue)
+     (magit-tag    :actions "k" "x" magit-tag-delete)))
   "Changes to popup keys")
 
-(defun evil-magit-change-popup-key (popup type from to _)
+(defun evil-magit-change-popup-key (popup _type from to &rest _args)
   "Wrap `magit-change-popup-key'."
-  (magit-change-popup-key popup type (string-to-char from) (string-to-char to))
-  ;; Support C-a -- C-z
-  (when (and (>= (string-to-char to) 1)
-             (<= (string-to-char to) 26))
-    (define-key magit-popup-mode-map to #'magit-invoke-popup-action)))
+  (transient-suffix-put popup from :key to))
 
 (defun evil-magit-adjust-popups ()
   "Adjust popup keys to match evil-magit."
@@ -570,12 +574,11 @@ evil-magit affects.")
 
 (defun evil-magit-revert-popups ()
   "Revert popup keys changed by evil-magit."
-  ;; (setq magit-dispatch-popup evil-magit-dispatch-popup-backup)
+  (put 'magit-dispatch 'transient--layout evil-magit-dispatch-popup-backup)
   (when evil-magit-popup-keys-changed
     (dolist (change evil-magit-popup-changes)
-      (magit-change-popup-key
-       (nth 0 change) (nth 1 change)
-       (string-to-char (nth 3 change)) (string-to-char (nth 2 change))))
+      (evil-magit-change-popup-key (nth 0 change) (nth 1 change)
+                                   (nth 3 change) (nth 2 change)))
     (setq evil-magit-popup-keys-changed nil)))
 
 ;;;###autoload
@@ -586,7 +589,7 @@ this function is if you've called `evil-magit-revert' and wish to
 go back to evil-magit behavior."
   (interactive)
   (evil-magit-adjust-section-bindings)
-  ;; TODO (evil-magit-adjust-popups)
+  (evil-magit-adjust-popups)
   (evil-magit-set-initial-states))
 (evil-magit-init)
 
@@ -595,7 +598,7 @@ go back to evil-magit behavior."
   "Revert changes by evil-magit that affect default evil+magit behavior."
   (interactive)
   (evil-magit-revert-section-bindings)
-  ;; TODO (evil-magit-revert-popups)
+  (evil-magit-revert-popups)
   (evil-magit-revert-initial-states)
   (message "evil-magit reverted"))
 
