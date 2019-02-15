@@ -528,7 +528,7 @@ evil-magit affects.")
 
 ;; Popups
 
-(defvar evil-magit-dispatch-popup-backup (copy-sequence magit-dispatch-popup))
+;; (defvar evil-magit-dispatch-popup-backup (copy-sequence magit-dispatch-popup))
 (defvar evil-magit-popup-keys-changed nil)
 
 (defvar evil-magit-popup-changes
@@ -570,7 +570,7 @@ evil-magit affects.")
 
 (defun evil-magit-revert-popups ()
   "Revert popup keys changed by evil-magit."
-  (setq magit-dispatch-popup evil-magit-dispatch-popup-backup)
+  ;; (setq magit-dispatch-popup evil-magit-dispatch-popup-backup)
   (when evil-magit-popup-keys-changed
     (dolist (change evil-magit-popup-changes)
       (magit-change-popup-key
