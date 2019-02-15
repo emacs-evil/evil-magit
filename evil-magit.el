@@ -535,20 +535,20 @@ evil-magit affects.")
 (defvar evil-magit-popup-changes
   (append
    (when evil-magit-use-z-for-folds
-     '((magit-dispatch :actions "z" "Z" magit-stash)))
+     '((magit-dispatch "z" "Z" magit-stash)))
    (when evil-magit-want-horizontal-movement
-     '((magit-dispatch :actions "L" "\C-l" magit-log-refresh)
-       (magit-dispatch :actions "l" "L" magit-log)))
-   '((magit-branch :actions "x" "X" magit-branch-reset)
-     (magit-branch :actions "k" "x" magit-branch-delete)
-     (magit-dispatch :actions "o" "'" magit-submodule)
-     (magit-dispatch :actions "O" "\"" magit-subtree)
-     (magit-dispatch :actions "V" "_" magit-revert)
-     (magit-dispatch :actions "X" "O" magit-reset)
-     (magit-dispatch :actions "v" "-" magit-reverse)
-     (magit-dispatch :actions "k" "x" magit-discard)
-     (magit-remote :actions "k" "x" magit-remote-remove)
-     (magit-revert :actions "v" "o" magit-revert-no-commit)
+     '((magit-dispatch "L" "\C-l" magit-log-refresh)
+       (magit-dispatch "l" "L" magit-log)))
+   '((magit-branch "x" "X" magit-branch-reset)
+     (magit-branch "k" "x" magit-branch-delete)
+     (magit-dispatch "o" "'" magit-submodule)
+     (magit-dispatch "O" "\"" magit-subtree)
+     (magit-dispatch "V" "_" magit-revert)
+     (magit-dispatch "X" "O" magit-reset)
+     (magit-dispatch "v" "-" magit-reverse)
+     (magit-dispatch "k" "x" magit-discard)
+     (magit-remote "k" "x" magit-remote-remove)
+     (magit-revert "v" "o" magit-revert-no-commit)
      ;; FIXME: how to properly handle a popup with a key that appears twice (in
      ;; `define-transient-command' definition)? Currently we rely on:
      ;; 1. first call to `evil-magit-change-popup-key' changes the first "V"
@@ -556,12 +556,12 @@ evil-magit affects.")
      ;;    definition of `magit-revert'), second call changes the second "V".
      ;; 2. the remapping here are in the same order as in `magit-revert'
      ;;    definition
-     (magit-revert :actions "V" "O" magit-revert-and-commit)
-     (magit-revert :sequence-actions "V" "O" magit-sequencer-continue)
-     (magit-tag    :actions "k" "x" magit-tag-delete)))
+     (magit-revert "V" "O" magit-revert-and-commit)
+     (magit-revert "V" "O" magit-sequencer-continue)
+     (magit-tag    "k" "x" magit-tag-delete)))
   "Changes to popup keys")
 
-(defun evil-magit-change-popup-key (popup _type from to &rest _args)
+(defun evil-magit-change-popup-key (popup from to &rest _args)
   "Wrap `magit-change-popup-key'."
   (transient-suffix-put popup from :key to))
 
