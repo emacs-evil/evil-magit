@@ -39,14 +39,14 @@ are correct."
     (should (eq (lookup-key (nth 0 binding) (nth 1 binding))
                 (nth 2 binding)))))
 
-(ert-deftest evil-magit-popup-action-tests ()
-  "Test that bindings are as expected in popups."
-  (when evil-magit-popup-keys-changed
-    (dolist (change evil-magit-popup-changes)
-      (let ((alist (plist-get (symbol-value (nth 0 change)) (nth 1 change))))
-        (should
-         (eq (nth 2 (assoc (string-to-char (nth 3 change)) alist))
-             (nth 4 change)))))))
+;; (ert-deftest evil-magit-popup-action-tests ()
+;;   "Test that bindings are as expected in popups."
+;;   (when evil-magit-popup-keys-changed
+;;     (dolist (change evil-magit-popup-changes)
+;;       (let ((alist (plist-get (symbol-value (nth 0 change)) (nth 1 change))))
+;;         (should
+;;          (eq (nth 2 (assoc (string-to-char (nth 3 change)) alist))
+;;              (nth 4 change)))))))
 
 (defun evil-magit-collect-magit-section-maps ()
   (let (res)
@@ -108,3 +108,5 @@ we can find."
   (should-not (evil-visual-expand-region t))
   (should-error (evil-visual-expand-region t t) :type
                 'wrong-number-of-arguments))
+
+;;; evil-magit-tests.el ends here
