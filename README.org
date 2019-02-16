@@ -13,6 +13,7 @@ commits to master. Any help is welcomed.
 
 * Recent Changes (most recent first)
 
+  1. [2019-02-15] Added =forge-dispatch= at =@=.
   1. [2018-05-22] Added =evil-magit-use-z-for-folds=. See docstring for more
      information.
   2. [2018-03-13] Added basic evil support for =magit-list-repositories=.
@@ -137,6 +138,7 @@ tables. Blank columns indicate that the key is carried over from the left.
    | stash                  | =z/Z=   |                        |                       |               |   =Z=    |
    | git-cmd                | =:=     | =¦=                    |                       |               |          |
    | run                    | =!=     |                        |                       |               |          |
+   | forge                  | =@=     |                        |                       |               |          |
    | diff less/more context | =-/+=   | = / +                  |                       |               |          |
    | copy section info      | =C-w=   |                        | =ys=                  |               |          |
    | copy buffer info       | =M-w=   |                        | =yb=                  |               |          |
