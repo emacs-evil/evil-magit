@@ -49,7 +49,6 @@
 
 (require 'evil)
 (require 'magit)
-(require 'magit-popup) ; FIXME only temporary
 
 (defcustom evil-magit-use-y-for-yank t
   "When non nil, replace \"y\" for `magit-show-refs-popup' with
@@ -150,9 +149,7 @@ should be a string suitable for `kbd'."
   '(git-popup-mode
     magit-blame-mode
     magit-blame-read-only-mode
-    magit-file-mode
-    magit-popup-mode
-    magit-popup-sequence-mode)
+    magit-file-mode)
   "Modes whose evil states are unchanged")
 
 (defvar evil-magit-ignored-modes
