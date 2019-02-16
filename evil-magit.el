@@ -577,8 +577,8 @@ evil-magit affects.")
   (put 'magit-dispatch 'transient--layout evil-magit-dispatch-popup-backup)
   (when evil-magit-popup-keys-changed
     (dolist (change evil-magit-popup-changes)
-      (evil-magit-change-popup-key (nth 0 change) (nth 1 change)
-                                   (nth 3 change) (nth 2 change)))
+      (evil-magit-change-popup-key
+       (nth 0 change) (nth 2 change) (nth 1 change)))
     (setq evil-magit-popup-keys-changed nil)))
 
 ;;;###autoload
