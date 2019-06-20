@@ -13,30 +13,32 @@ commits to master. Any help is welcomed.
 
 * Recent Changes (most recent first)
 
-  1. [2019-02-15] Added =forge-dispatch= at =@=.
-  1. [2018-05-22] Added =evil-magit-use-z-for-folds=. See docstring for more
+  1. [2019-06-16] Added =evil-magit-stage-untracked-file-with-intent= at
+     =I=. See [[https://github.com/emacs-evil/evil-magit/issues/67][Issue #67]].
+  2. [2019-02-15] Added =forge-dispatch= at =@=.
+  3. [2018-05-22] Added =evil-magit-use-z-for-folds=. See docstring for more
      information.
-  2. [2018-03-13] Added basic evil support for =magit-list-repositories=.
-  3. [2016-07-27] Moved submodules popup to ' and added the new subtree popup at
+  4. [2018-03-13] Added basic evil support for =magit-list-repositories=.
+  5. [2016-07-27] Moved submodules popup to ' and added the new subtree popup at
      ". This is not mnemonic in any way but easy to reach and keeps the two keys
      together.
-  4. [2016-03-24] Moved =magit-diff-less-context= to = to fix conflict with
+  6. [2016-03-24] Moved =magit-diff-less-context= to = to fix conflict with
      moved revert.
-  5. [2016-03-21] Moved revert commands from =o= and =O= to =-= and
+  7. [2016-03-21] Moved revert commands from =o= and =O= to =-= and
      =_=. Rationale is that you are subtracting a commit. This makes room for
      =o= and =O= to be reset and the new reset popup command. Think of resetting
      to an "old" state. =¯\_(ツ)_/¯=
-  6. Added =evil-magit-want-horizontal-movement=. Use =h= and =l= for movement
+  8. Added =evil-magit-want-horizontal-movement=. Use =h= and =l= for movement
      like vim, moving =h= to =H=, =l= to =L=, and =L= to =C-l=.
-  7. Added =evil-magit-toggle-text-mode= on =C-t=. This is a quick way to enter
+  9. Added =evil-magit-toggle-text-mode= on =C-t=. This is a quick way to enter
      text mode in a magit buffer, which allows arbitrary movement, copying, etc.
      Use =C-t= to return to the previous magit mode.
-  8. When =evil-magit-use-y-for-yank= is non nil, =C-w= will prefix the evil
-     window switching functions from magit buffers.
-  9. =evil-magit-use-y-for-yank= is now the default. It has worked well for me so
-     far, and I've had good feedback, but please let me know if you see issues.
-     You can use the original behavior with =(setq evil-magit-use-y-for-yank
-     nil)=. See the table below for a summary of differences.
+  10. When =evil-magit-use-y-for-yank= is non nil, =C-w= will prefix the evil
+      window switching functions from magit buffers.
+  11. =evil-magit-use-y-for-yank= is now the default. It has worked well for me so
+      far, and I've had good feedback, but please let me know if you see issues.
+      You can use the original behavior with =(setq evil-magit-use-y-for-yank
+      nil)=. See the table below for a summary of differences.
 
 
 * Installation and Use
@@ -109,6 +111,7 @@ tables. Blank columns indicate that the key is carried over from the left.
    | refresh                | =g=     | =gr/gR= (=g= in popup) |                       |               |          |
    | help                   | =h/?=   |                        |                       | =H/?=         |          |
    | ignore                 | =i/I=   |                        |                       |               |          |
+   | intent to stage        | =I=     |                        |                       |               |          |
    | jump                   | =j=     | =g=                    |                       |               |          |
    | delete                 | =k=     | =x=                    |                       |               |          |
    | untrack                | =K=     | =X=                    |                       |               |          |
@@ -135,7 +138,7 @@ tables. Blank columns indicate that the key is carried over from the left.
    | reset                  | =x/X=   | =o/O=                  |                       |               |          |
    | show-refs              | =y=     |                        | =yr= (=y= in popup)   |               |          |
    | cherry                 | =Y=     |                        |                       |               |          |
-   | stash                  | =z/Z=   |                        |                       |               |   =Z=    |
+   | stash                  | =z/Z=   |                        |                       |               | =Z=      |
    | git-cmd                | =:=     | =¦=                    |                       |               |          |
    | run                    | =!=     |                        |                       |               |          |
    | forge                  | =@=     |                        |                       |               |          |
