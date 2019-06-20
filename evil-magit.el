@@ -517,9 +517,7 @@ denotes the original magit key for this command.")
     (magit-stage-untracked t)))
 
 (defvar evil-magit-original-section-bindings
-  `((,(copy-keymap magit-file-section-map)
-     "I" evil-magit-stage-untracked-file-with-intent)
-    (,(copy-keymap magit-file-section-map) "\C-j" magit-diff-visit-file-worktree)
+  `((,(copy-keymap magit-file-section-map) "\C-j" magit-diff-visit-file-worktree)
     (,(copy-keymap magit-hunk-section-map) "\C-j" magit-diff-visit-file-worktree))
   "For testing purposes only. The original magit keybindings that
 evil-magit affects.")
