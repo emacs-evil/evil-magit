@@ -189,6 +189,16 @@ also bound to =h=. To get this behavior, add the following line after =(require
 Most (but not all) magit bindings are in =magit-mode-map=, so other commands can
 be bound in this way too.
 
+** To remove commands
+
+Typically, to prevent evil-magit from overriding the default behavior with evil
+and magit loaded, you should bind the respective key to =nil= after loading
+evil-magit. For example, to make =escape= behave as default
+
+#+BEGIN_SRC emacs-lisp
+(evil-define-key* evil-magit-state magit-mode-map [escape] nil)
+#+END_SRC
+
 * Known Conflicts
 
 These are the third-party packages that conflict with these bindings and will
