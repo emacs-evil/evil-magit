@@ -13,6 +13,8 @@ commits to master. Any help is welcomed.
 
 * Recent Changes (most recent first)
 
+  1. [2019-09-04] Don't use =evil-next-visual-line= and
+     =evil=previous-visual-line=. See [[https://github.com/emacs-evil/evil-magit/issues/70][Issue #70]].
   1. [2019-06-16] Added =evil-magit-stage-untracked-file-with-intent= at
      =I=. See [[https://github.com/emacs-evil/evil-magit/issues/67][Issue #67]].
   2. [2019-02-15] Added =forge-dispatch= at =@=.
