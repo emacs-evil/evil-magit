@@ -448,6 +448,13 @@ denotes the original magit key for this command.")
   (kbd "gr")  'magit-list-repositories)
 (add-hook 'magit-repolist-mode-hook 'evil-normalize-keymaps)
 
+(evil-set-initial-state 'magit-submodule-list-mode 'motion)
+(evil-define-key 'motion magit-submodule-list-mode-map
+  (kbd "RET") 'magit-repolist-status
+  (kbd "gr")  'magit-list-submodules)
+(add-hook 'magit-submodule-list-mode-hook 'evil-normalize-keymaps)
+
+
 (eval-after-load 'git-rebase
   `(progn
      ;; for the compiler
