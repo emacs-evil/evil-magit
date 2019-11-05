@@ -47,6 +47,7 @@
 
 ;;; Code:
 
+;; test
 (require 'evil)
 (require 'magit)
 
