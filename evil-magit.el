@@ -49,7 +49,7 @@
 
 (require 'evil)
 (require 'magit)
-;;;  test
+;;;  test 2
 
 (defcustom evil-magit-use-y-for-yank t
   "When non nil, replace \"y\" for `magit-show-refs-popup' with
