@@ -301,6 +301,7 @@ moment.")
        (,states magit-mode-map "C-f"   evil-scroll-page-down)
        (,states magit-mode-map "C-b"   evil-scroll-page-up)
        (,states magit-mode-map ":"     evil-ex)
+       (,states magit-mode-map "q"     magit-mode-bury-buffer)
 
        ;; these are to fix the priority of the log mode map and the magit mode map
        ;; FIXME: Conflict between this and revert. Revert seems more important here
