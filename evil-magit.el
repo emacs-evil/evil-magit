@@ -267,6 +267,14 @@ moment.")
   (advice-add 'evil-visual-expand-region
               :filter-args #'evil-magit--filter-args-visual-expand-region))
 
+;; keep visual state for magit-section movement commands
+(dolist (cmd '(magit-section-forward-sibling
+               magit-section-forward
+               magit-section-backward-sibling
+               magit-section-backward
+               magit-section-up))
+  (evil-set-command-property cmd :keep-visual t))
+
 (defvar evil-magit-mode-map-bindings
   (let ((states (if evil-magit-use-y-for-yank
                     `(,evil-magit-state visual)
