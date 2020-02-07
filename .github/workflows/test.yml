@@ -20,10 +20,12 @@ jobs:
           - 26.3
           - snapshot
     steps:
+
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
     - uses: purcell/setup-emacs@master
       with:
         version: ${{ matrix.emacs_version }}
-
-    - uses: actions/checkout@v2
+    - uses: conao3/setup-cask@master
     - name: Run tests
-      run: 'emacs -Q -batch -L . -l evil-magit-tests.el -f ert-run-tests-batch-and-exit'
+      run: make test
