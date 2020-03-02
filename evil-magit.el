@@ -675,7 +675,6 @@ using `evil-magit-toggle-text-mode'"
   "Yank whole line."
   :motion evil-line-or-visual-line
   (interactive "<R><x>")
-  (debug)
   (evil-yank beg end type register yank-handler))
 
 ;;; evil-magit.el ends soon
