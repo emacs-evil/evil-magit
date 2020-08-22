@@ -126,6 +126,7 @@ tables. Blank columns indicate that the key is carried over from the left.
    | subtree                | =O=     | "                      |                       |               |          |
    | prev section           | =p=     | =C-k=                  |                       |               |          |
    | prev section sibling   | =M-p=   | =gk= or =[=            |                       |               |          |
+   | section parent         | =^=     | =gh=                   |                       |               |          |
    | push                   | =P=     | =P= or =p=             |                       |               |          |
    | quit                   | =q=     | =q= or =ESC=           |                       |               |          |
    | rebase                 | =r=     |                        |                       |               |          |
