@@ -149,8 +149,7 @@ should be a string suitable for `kbd'."
   ;; TODO do something here
   '(git-popup-mode
     magit-blame-mode
-    magit-blame-read-only-mode
-    magit-file-mode)
+    magit-blame-read-only-mode)
   "Modes whose evil states are unchanged")
 
 (defvar evil-magit-ignored-modes
@@ -161,7 +160,6 @@ should be a string suitable for `kbd'."
     magit-merge-preview-mode
     transient-resume-mode
     magit-rebase-mode
-    magit-file-mode-major-mode
     magit-wip-after-save-mode
     magit-wip-after-save-local-mode-major-mode
     magit-wip-after-save-local-mode
