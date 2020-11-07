@@ -436,7 +436,6 @@ denotes the original magit key for this command.")
                    magit-log-select-mode-map
                    magit-reflog-mode-map
                    magit-status-mode-map
-                   magit-file-mode-map
                    magit-log-read-revs-map
                    magit-process-mode-map
                    magit-refs-mode-map))
