@@ -1,5 +1,7 @@
 [[evil-magit-test][https://github.com/emacs-evil/evil-magit/workflows/evil-magit-test/badge.svg]] [[http://melpa.org/#/evil-magit][file:http://melpa.org/packages/evil-magit-badge.svg]] [[http://stable.melpa.org/#/evil-magit][file:http://stable.melpa.org/packages/evil-magit-badge.svg]]
 
+*NOTE [2019-11-24]: This repository is no longer maintained. This package is now a part of [[https://github.com/emacs-evil/evil-collection][evil-collection]].*
+
 * Black magic
 
 This library configures Magit and Evil to play well with each other. For some
