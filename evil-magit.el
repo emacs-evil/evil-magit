@@ -47,6 +47,8 @@
 
 ;;; Code:
 
+(message "evil-magit is obsolete. This package is now part of evil-collection. Having both installed will cause unintended behavior.")
+
 (require 'evil)
 (require 'magit)
 
