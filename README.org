@@ -1,6 +1,7 @@
 [[evil-magit-test][https://github.com/emacs-evil/evil-magit/workflows/evil-magit-test/badge.svg]]
 
-*NOTE [2021-2-1]: This package was removed from [[https://melpa.org][MELPA]].*
+*NOTE [2021-02-01]: This package was removed from [[https://melpa.org][MELPA]].*
+
 *NOTE [2020-11-24]: This repository is no longer maintained. This package is now a part of [[https://github.com/emacs-evil/evil-collection][evil-collection]].*
 
 * Black magic
