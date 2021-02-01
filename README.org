@@ -1,5 +1,6 @@
-[[evil-magit-test][https://github.com/emacs-evil/evil-magit/workflows/evil-magit-test/badge.svg]] [[http://melpa.org/#/evil-magit][file:http://melpa.org/packages/evil-magit-badge.svg]] [[http://stable.melpa.org/#/evil-magit][file:http://stable.melpa.org/packages/evil-magit-badge.svg]]
+[[evil-magit-test][https://github.com/emacs-evil/evil-magit/workflows/evil-magit-test/badge.svg]]
 
+*NOTE [2021-2-1]: This package was removed from [[https://melpa.org][MELPA]].*
 *NOTE [2020-11-24]: This repository is no longer maintained. This package is now a part of [[https://github.com/emacs-evil/evil-collection][evil-collection]].*
 
 * Black magic
@@ -48,8 +49,7 @@ commits to master. Any help is welcomed.
 * Installation and Use
 
 Everything is contained in evil-magit.el, so you may download and load that file
-directly. The recommended method is to use MELPA via package.el (=M-x
-package-install RET evil-magit RET=).
+directly.
 
 Evil and Magit are both required. After requiring those packages, the following
 will setup the new key bindings for you.
